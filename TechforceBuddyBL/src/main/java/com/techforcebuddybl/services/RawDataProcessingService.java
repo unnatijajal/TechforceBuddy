@@ -1,9 +1,10 @@
 package com.techforcebuddybl.services;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface RawDataProcessingService {
-	
-	public List<String> divideSentenceIntoWords(String data) throws Exception;
+
+	public Map<String,Set<String>> divideSentenceIntoWords(String data) throws Exception;
 	
 }

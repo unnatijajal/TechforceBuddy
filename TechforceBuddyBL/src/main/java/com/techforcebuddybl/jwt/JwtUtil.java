@@ -33,7 +33,6 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
     
-    @SuppressWarnings("deprecation")
 	public String createToken(Map<String, Object> claims, String username) {
     	
         return Jwts.builder()

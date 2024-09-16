@@ -9,11 +9,19 @@ public class ConstantData {
 	
 	static {
 		policyKeywords = new HashMap<String,String[]>();
-		policyKeywords.put("leave", new String[]{"hii","dates"});
-		policyKeywords.put("software", new String[]{"byy","kiya"});
-		policyKeywords.put("resign", new String[]{"h","kem"});
-		policyKeywords.put("vacation", new String[]{"byy","dates"});
-		policyKeywords.put("hr", new String[]{"byy","dates","ppp"});
+		
+		policyKeywords.put("leave", 
+				new String[]{"applicable","annual","compensatory","floating","work from home","without pay",
+						"maternity","paternity","work hour","after resignation","planned",
+						"un planned","medical","cancelation"});
+		
+		policyKeywords.put("payroll", 
+				new String[]{"salary account","employee salary account","account opening process",
+						"required documents","contact details","bank charges","date range",
+						"adjustment","tds","lop","final settlement"});
+		
+		policyKeywords.put("stipend", new String[]{"applicable","mode","date range","calculation"});
+		
 	}
 	
 }

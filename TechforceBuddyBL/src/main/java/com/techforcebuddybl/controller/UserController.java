@@ -1,6 +1,7 @@
 package com.techforcebuddybl.controller;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,17 +40,18 @@ public class UserController {
 		
 	}
 	
+
 	@PostMapping(path="/query",consumes = "application/json")
 	@CrossOrigin(origins = "http://localhost:8081")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<?> message(@RequestBody Question question ) {
 	//	System.out.println(question.getQuery());
-		List<String> data;
+		Map<String,Set<String>> data;
 		try {
 			data = dataProcessingServiceImpl.divideSentenceIntoWords(question.getQuery());
-			for (String string : data) {
-				System.out.println(string);
-			}
+			data.forEach((key,valueList) -> {
+				valueList.forEach(value-> System.out.println("Key: " + key + ", Value: " + value));
+			});
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

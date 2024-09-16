@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Autowired
@@ -39,7 +40,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		// Check if the header start with "Bearer"
 		if (header != null && header.startsWith("Bearer ")) {
 			token = header.substring(7); // Extract token
+			log.info("Token :"+token);
 			userName = jwtUtil.extractUsername(token); // Extract the username
+			log.info("UNM :"+userName);
 		}
 
 		// If the token is valid and no authentication is set in the context
