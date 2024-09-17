@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.techforcebuddybl.dto.Question;
 import com.techforcebuddybl.entity.UserEntity;
 import com.techforcebuddybl.jwt.JwtResponse;
-import com.techforcebuddybl.services.impl.RawDataProcessingServiceImpl;
+import com.techforcebuddybl.services.impl.UserDataProcessingServiceImpl;
 import com.techforcebuddybl.services.impl.UserServiceImpl;
 
 @RestController
@@ -26,7 +26,7 @@ public class UserController {
 	private UserServiceImpl userServiceImpl;
 	
 	@Autowired
-	private RawDataProcessingServiceImpl dataProcessingServiceImpl;
+	private UserDataProcessingServiceImpl dataProcessingServiceImpl;
 	
 	@PostMapping("/signin")
 	@CrossOrigin(origins = "http://localhost:8081")

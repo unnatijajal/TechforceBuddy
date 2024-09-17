@@ -15,7 +15,7 @@ public class ConstantData {
 						"maternity","paternity","work hour","after resignation","planned",
 						"un planned","medical","cancelation"});
 		
-		policyKeywords.put("payroll", 
+		policyKeywords.put("salary", 
 				new String[]{"salary account","employee salary account","account opening process",
 						"required documents","contact details","bank charges","date range",
 						"adjustment","tds","lop","final settlement"});
