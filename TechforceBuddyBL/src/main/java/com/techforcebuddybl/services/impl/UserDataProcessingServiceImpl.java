@@ -78,7 +78,7 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 				}
 			}
 	
-			searchKeywordsInFiles(compareKeyword(extractedWord));
+		//	searchKeywordsInFiles(compareKeyword(extractedWord));
 			return compareKeyword(extractedWord);
 
 		} catch (Exception e) {

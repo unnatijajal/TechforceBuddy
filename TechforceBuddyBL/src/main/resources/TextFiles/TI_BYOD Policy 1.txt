@@ -1,126 +1,126 @@
-TIBringYourOwnDevicePolicy    Techforce Infotech Pvt Ltd 
- 
-3  P a g e                                           w w w  t e c h f o r c e g l o b a l  c o m  
- 
-1 Introduction Benefits  Scope 
-Allowing employees to use their own electronic devices while working whether at home 
-at the office or while travelling has the following advantages according to Techforce 
- 
- Reduction in procurement overhead  
- End user comfort level with their own devices 
- Support Remote  Flexible working 
- Increased productivity 
- Provides Operational redundancy 
- 
-Bring your own device or BYOD is the term used to describe the use of gadgets like 
-laptops cellphones and tablets As a result employees continue to own hardware assets 
-while organizations continue to control information assets Techforce wants to safeguard 
-the availability confidentiality and integrity of data and technology by creating this 
-policy 
- 
-The following framework and legal requirements should be considered even if this policy 
-wont go into detail 
- 
- PCI DSS 321  40  
- ISO 270012013  ISO 270022022  
- NIST Cyber Security Framework V 11 
- Cloud Security Alliance – Level 1 CAIQ v4 
-2 Applicability 
- 
- This policy is only applicable for all permanent Fulltime employees of Techforce 
-Infotech Pvt Ltd 
- This policy can also be applied to specific contractors depending on their roles and 
-responsibilities This benefit can be offered at the time of the Contract 
- 
- 
-TIBringYourOwnDevicePolicy    Techforce Infotech Pvt Ltd 
- 
-4  P a g e                                           w w w  t e c h f o r c e g l o b a l  c o m  
- 
-3 BYOD Challenges  
-BYOD residual hazards may be decreased to a manageable level by implementing strict 
-administrative physical  technical restrictions and better monitoring Here are a few 
-difficulties 
- Contractual complexity and adherence to the law  
- Conflict with an employees right to privacy 
- More complicated measures for safeguarding information assets  
- Wide variety of devices supported 
- Checking that employee devices adhere to the security guidelines set forth by the 
-firm 
- 
-4 Risks  Liabilities  
- While the IT team will take every reasonable precaution to safeguard employee 
-data in the event of a remote wipe it is the employees responsibility to take 
-additional safety measures such as backing up their email contacts and other 
-information 
- Lost or stolen devices must be reported to the company within 24 hours  
- The company maintains the right to disconnect devices or disable services without 
-notice 
- It is the responsibility of the employee to contact the cell carrier right away if a 
-device is lost  
- The employee is required to follow the companys acceptable use policy and to 
-always use their devices in an ethical manner  
- The employee is entirely responsible for all expenses related to their device  
- The risk of losing company and personal data entirely or partially because of an 
-operating system crash errors bugs viruses malware andor other software or 
-hardware failures or programming mistakes that render the device unusable is 
-fully assumed by the employee  
- Techforce reserves the right to take appropriate disciplinary action up to and 
-including termination for noncompliance with this policy 
- 
-TIBringYourOwnDevicePolicy    Techforce Infotech Pvt Ltd 
- 
-5  P a g e                                           w w w  t e c h f o r c e g l o b a l  c o m  
- 
-5 Responsibilities  
- Every employee should be aware of their devices security measures so they can 
-protect their personal information as well as Techforce data 
- Make that the device is not utilized for any activity that might violate a Techforce 
-Policy  
- While Techforce will always try to help staff members where it can Techforce 
-cannot be held liable for maintaining devices that it does not supply  
- Employees who use BYOD must 
-o Configure passwords passcodes passkeys or their biometric counterparts 
-This ought to be sophisticated enough and long enough for the gadget 
-o  Always keep your operating system antivirus software and firmware up to 
-date 
-o If you have the option set up remote wipe tools and use them if they lose the 
-device 
-o When necessary encrypt data or devices 
-o Holding sensitive private confidential or commercially valuable information 
-on privately owned devices should be avoided wherever possible 
-o If Techforce information must be kept on a personal device but is critical it 
-should be destroyed as soon as it is no longer needed 
-o Inform infratechforceglobalcom about any security event 
-o Dont let any Techforce data remain on a personal device indefinitely  
-o If a gadget is thrown away sold or given to someone else caution must be 
-exercised 
-o As per the Antivirus and Threat Protection policy install Threat Protection 
-software on a personal device 
-o Manage Engine agent will be installed in order to check vulnerability status of 
-machine and also keep track of installed software This will be mandatory to 
-your own device 
-  Employees adopting BYOD must take all necessary precautions to 
-o Prevent data loss and theft 
-o Information should be kept private as necessary 
-o Ensure the accuracy of all data and information 
-o Be accountable for whatever software they install on their device 
-o If the gadget is left idle for three minutes it must lock itself with a password 
-or PIN 
-TIBringYourOwnDevicePolicy    Techforce Infotech Pvt Ltd 
- 
-6  P a g e                                           w w w  t e c h f o r c e g l o b a l  c o m  
- 
-o The device will lock after three unsuccessful login attempts 
- 
- 
-6 Exceptions 
-Exceptions to the policy statements in this text are only permitted if it is approved 
-by CEO or CoFounder or Techforce Management 
- 
-7 Enforcement  
- For Employees temporary workers and consultants violating this policy may result 
-in termination of employment relations for contractors and consultants violating 
-this policy may result in termination of access andor disciplinary action which 
-may include termination and it may also result in additional legal or criminal 
-action 
+TIBringYourOwnDevicePolicy Techforce Infotech Pvt
+
+3 t
+
+1 Introduction Benefits Scope
+Allowing employees electronic devices working
+office travelling advantages Techforce
+
+Reduction procurement overhead
+user comfort level devices
+Support Remote Flexible working
+Increased productivity
+Operational redundancy
+
+Bring device BYOD term describe gadgets
+laptops cellphones tablets result employees continue hardware assets
+organizations continue control assets Techforce safeguard
+availability confidentiality integrity data technology creating
+policy
+
+framework legal requirements considered policy
+detail
+
+PCI DSS 321 40
+ISO 270012013 ISO 270022022
+NIST Cyber Security Framework 11
+Cloud Security Alliance – Level 1 CAIQ v4
+2 Applicability
+
+policy applicable permanent Fulltime employees Techforce
+Infotech Pvt
+policy applied specific contractors depending roles
+responsibilities benefit offered time Contract
+
+
+TIBringYourOwnDevicePolicy Techforce Infotech Pvt
+
+4 t
+
+3 BYOD Challenges
+BYOD residual hazards decreased manageable level implementing strict
+administrative physical technical restrictions better monitoring
+difficulties
+Contractual complexity adherence law
+Conflict employees privacy
+complicated measures safeguarding assets
+Wide variety devices supported
+Checking employee devices adhere security guidelines set
+firm
+
+4 Risks Liabilities
+team will reasonable precaution safeguard employee
+data event remote wipe employees responsibility
+additional safety measures backing email contacts
+
+Lost stolen devices reported company 24 hours
+company maintains disconnect devices disable services
+notice
+responsibility employee contact cell carrier
+device lost
+employee required follow companys acceptable policy
+devices ethical manner
+employee entirely responsible expenses device
+risk losing company personal data entirely partially
+operating system crash errors bugs viruses malware andor software
+hardware failures programming mistakes render device unusable
+fully assumed employee
+Techforce reserves appropriate disciplinary action
+including termination noncompliance policy
+
+TIBringYourOwnDevicePolicy Techforce Infotech Pvt
+
+5 t
+
+5 Responsibilities
+employee aware devices security measures
+protect personal well Techforce data
+device utilized activity violate Techforce
+Policy
+Techforce will help staff members Techforce
+held liable maintaining devices supply
+Employees BYOD
+Configure passwords passcodes passkeys biometric counterparts
+sophisticated long gadget
+keep operating system antivirus software firmware
+
+option set remote wipe tools lose
+device
+encrypt data devices
+Holding sensitive private confidential commercially valuable
+privately owned devices avoided
+Techforce personal device critical
+destroyed longer needed
+Inform infratechforceglobalcom security event
+Dont Techforce data remain personal device indefinitely
+gadget thrown sold caution
+exercised
+Antivirus Threat Protection policy install Threat Protection
+software personal device
+Manage Engine agent will installed order check vulnerability status
+machine keep track installed software will mandatory
+device
+Employees adopting BYOD precautions
+Prevent data loss theft
+private
+Ensure accuracy data
+accountable software install device
+gadget left idle three minutes lock password
+PIN
+TIBringYourOwnDevicePolicy Techforce Infotech Pvt
+
+6 t
+
+device will lock three unsuccessful login attempts
+
+
+6 Exceptions
+Exceptions policy statements text permitted approved
+CEO CoFounder Techforce Management
+
+7 Enforcement
+Employees temporary workers consultants violating policy result
+termination employment relations contractors consultants violating
+policy result termination access andor disciplinary action
+include termination result additional legal criminal
+action

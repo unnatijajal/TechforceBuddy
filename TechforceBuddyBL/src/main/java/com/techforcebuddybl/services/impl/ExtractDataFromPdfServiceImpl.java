@@ -1,12 +1,14 @@
 package com.techforcebuddybl.services.impl;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.techforcebuddybl.services.ExtractDataFromPdfService;
@@ -16,6 +18,9 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 
 	// Get the current directory
 	private String currentDir = System.getProperty("user.dir");
+	
+	@Autowired
+	private DataParsingServiceImpl dataParsingServiceImpl;
 
 	public void accessFiles() throws IOException {
 
@@ -50,6 +55,9 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 
 			text = text.replaceAll("[,.•&&[^\\n]]+|[-—]+|[\\p{Punct}]", "");
 			String[] lines = text.split("\n");
+			
+			lines = dataParsingServiceImpl.removeWordStop(lines);
+			
 
 			createTextFile(lines, file.getName());
 		} catch (IOException e) {

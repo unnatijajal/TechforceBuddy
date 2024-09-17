@@ -49,6 +49,7 @@ public class UserController {
 		Map<String,Set<String>> data;
 		try {
 			data = dataProcessingServiceImpl.divideSentenceIntoWords(question.getQuery());
+			
 			data.forEach((key,valueList) -> {
 				valueList.forEach(value-> System.out.println("Key: " + key + ", Value: " + value));
 			});
