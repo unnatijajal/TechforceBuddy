@@ -3,11 +3,14 @@ package com.techforcebuddybl.services.impl;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
+import org.hibernate.tool.schema.internal.StandardForeignKeyExporter;
 import org.springframework.stereotype.Service;
 
 import com.techforcebuddybl.services.DataParsingService;
@@ -15,6 +18,13 @@ import com.techforcebuddybl.services.DataParsingService;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.tokenize.WhitespaceTokenizer;
+
+import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.util.CoreMap;
+import edu.stanford.nlp.ling.CoreLabel;
+
 
 @Service
 public class DataParsingServiceImpl implements DataParsingService {
@@ -72,5 +82,32 @@ public class DataParsingServiceImpl implements DataParsingService {
 		
 		return lines;
 	}
+
+	@Override
+	public String[] lemmatizationOfData(String[] lines) throws FileNotFoundException, IOException {
+		File stanfordPropertiesFile = new File(currentDir + "/src/main/resources","standford-corenlp.properties");
+		Properties props = new Properties();
+		props.load(new FileInputStream(stanfordPropertiesFile));
+		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+
+        // Lemmatize each line of text
+        for (int i = 0; i < lines.length; i++) {
+            Annotation annotation = new Annotation(lines[i]);
+            pipeline.annotate(annotation);
+
+            // Iterate over the sentences and tokens to extract the lemmas
+            StringBuilder lemmatizedLine = new StringBuilder();
+            for (CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class)) {
+                for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
+                    String lemma = token.get(CoreAnnotations.LemmaAnnotation.class);
+                    lemmatizedLine.append(lemma).append(" ");
+                }
+            }
+            lines[i] = lemmatizedLine.toString().trim();
+        }    	
+		return lines;
+	}
+	
+	
 
 }

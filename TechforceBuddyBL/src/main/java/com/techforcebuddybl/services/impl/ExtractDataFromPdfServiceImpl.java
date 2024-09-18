@@ -1,6 +1,7 @@
 package com.techforcebuddybl.services.impl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -55,8 +56,14 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 
 			text = text.replaceAll("[,.•&&[^\\n]]+|[-—]+|[\\p{Punct}]", "");
 			String[] lines = text.split("\n");
+
+			try {
+				lines = dataParsingServiceImpl.removeWordStop(lines);
+				lines = dataParsingServiceImpl.lemmatizationOfData(lines);
+			} catch (IOException e) {
+				System.out.println("Exception "+e.getMessage());
+			}
 			
-			lines = dataParsingServiceImpl.removeWordStop(lines);
 			
 
 			createTextFile(lines, file.getName());

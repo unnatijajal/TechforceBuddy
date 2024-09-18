@@ -2,35 +2,35 @@ TIBringYourOwnDevicePolicy Techforce Infotech Pvt
 
 3 t
 
-1 Introduction Benefits Scope
-Allowing employees electronic devices working
-office travelling advantages Techforce
+1 introduction benefit scope
+allow employee electronic device work
+office travel advantage Techforce
 
-Reduction procurement overhead
-user comfort level devices
-Support Remote Flexible working
-Increased productivity
-Operational redundancy
+reduction procurement overhead
+user comfort level device
+support remote flexible working
+increase productivity
+operational redundancy
 
-Bring device BYOD term describe gadgets
-laptops cellphones tablets result employees continue hardware assets
-organizations continue control assets Techforce safeguard
-availability confidentiality integrity data technology creating
+bring device byod term describe gadget
+laptop cellphone tablet result employee continue hardware asset
+organization continue control asset Techforce safeguard
+availability confidentiality integrity datum technology create
 policy
 
-framework legal requirements considered policy
+framework legal requirement consider policy
 detail
 
-PCI DSS 321 40
+pci dss 321 40
 ISO 270012013 ISO 270022022
 NIST Cyber Security Framework 11
 Cloud Security Alliance – Level 1 CAIQ v4
 2 Applicability
 
-policy applicable permanent Fulltime employees Techforce
+policy applicable permanent Fulltime employee Techforce
 Infotech Pvt
-policy applied specific contractors depending roles
-responsibilities benefit offered time Contract
+policy apply specific contractor depend role
+responsibility benefit offer time contract
 
 
 TIBringYourOwnDevicePolicy Techforce Infotech Pvt
@@ -38,89 +38,89 @@ TIBringYourOwnDevicePolicy Techforce Infotech Pvt
 4 t
 
 3 BYOD Challenges
-BYOD residual hazards decreased manageable level implementing strict
-administrative physical technical restrictions better monitoring
-difficulties
-Contractual complexity adherence law
-Conflict employees privacy
-complicated measures safeguarding assets
-Wide variety devices supported
-Checking employee devices adhere security guidelines set
+BYOD residual hazard decrease manageable level implement strict
+administrative physical technical restriction well monitoring
+difficulty
+contractual complexity adherence law
+conflict employee privacy
+complicated measure safeguard asset
+wide variety device support
+check employee device adhere security guideline set
 firm
 
-4 Risks Liabilities
+4 risk liability
 team will reasonable precaution safeguard employee
-data event remote wipe employees responsibility
-additional safety measures backing email contacts
+datum event remote wipe employee responsibility
+additional safety measure back email contact
 
-Lost stolen devices reported company 24 hours
-company maintains disconnect devices disable services
+lose steal device report company 24 hour
+company maintain disconnect device disable service
 notice
 responsibility employee contact cell carrier
-device lost
-employee required follow companys acceptable policy
-devices ethical manner
-employee entirely responsible expenses device
-risk losing company personal data entirely partially
-operating system crash errors bugs viruses malware andor software
-hardware failures programming mistakes render device unusable
-fully assumed employee
-Techforce reserves appropriate disciplinary action
-including termination noncompliance policy
+device lose
+employee require follow company acceptable policy
+device ethical manner
+employee entirely responsible expense device
+risk lose company personal datum entirely partially
+operate system crash error bug virus malware andor software
+hardware failure program mistake render device unusable
+fully assume employee
+Techforce reserve appropriate disciplinary action
+include termination noncompliance policy
 
 TIBringYourOwnDevicePolicy Techforce Infotech Pvt
 
 5 t
 
-5 Responsibilities
-employee aware devices security measures
-protect personal well Techforce data
-device utilized activity violate Techforce
-Policy
-Techforce will help staff members Techforce
-held liable maintaining devices supply
-Employees BYOD
-Configure passwords passcodes passkeys biometric counterparts
+5 responsibility
+employee aware device security measure
+protect personal well Techforce datum
+device utilize activity violate Techforce
+policy
+Techforce will help staff member Techforce
+hold liable maintain device supply
+employee byod
+configure password passcode passkey biometric counterpart
 sophisticated long gadget
-keep operating system antivirus software firmware
+keep operate system antivirus software firmware
 
-option set remote wipe tools lose
+option set remote wipe tool lose
 device
-encrypt data devices
+encrypt datum device
 Holding sensitive private confidential commercially valuable
-privately owned devices avoided
+privately own device avoid
 Techforce personal device critical
-destroyed longer needed
-Inform infratechforceglobalcom security event
-Dont Techforce data remain personal device indefinitely
-gadget thrown sold caution
-exercised
-Antivirus Threat Protection policy install Threat Protection
+destroy long need
+inform infratechforceglobalcom security event
+do not techforce datum remain personal device indefinitely
+gadget throw sell caution
+exercise
+antivirus threat Protection policy install threat protection
 software personal device
-Manage Engine agent will installed order check vulnerability status
-machine keep track installed software will mandatory
+manage Engine agent will install order check vulnerability status
+machine keep track install software will mandatory
 device
-Employees adopting BYOD precautions
-Prevent data loss theft
+employee adopt byod precaution
+prevent datum loss theft
 private
-Ensure accuracy data
+ensure accuracy datum
 accountable software install device
-gadget left idle three minutes lock password
-PIN
+gadget leave idle three minute lock password
+pin
 TIBringYourOwnDevicePolicy Techforce Infotech Pvt
 
 6 t
 
-device will lock three unsuccessful login attempts
+device will lock three unsuccessful login attempt
 
 
-6 Exceptions
-Exceptions policy statements text permitted approved
+6 exception
+exception policy statement text permit approve
 CEO CoFounder Techforce Management
 
-7 Enforcement
-Employees temporary workers consultants violating policy result
-termination employment relations contractors consultants violating
+7 enforcement
+employee temporary worker consultant violate policy result
+termination employment relation contractor consultant violate
 policy result termination access andor disciplinary action
 include termination result additional legal criminal
 action
