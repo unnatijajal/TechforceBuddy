@@ -30,7 +30,7 @@ public class DataParsingServiceImpl implements DataParsingService {
 
 	// Get the current directory
 	private String currentDir = System.getProperty("user.dir");
-
+	
 	@Override
 	public String[] tokenizeData(String text) throws IOException {
 		WhitespaceTokenizer tokenizer = WhitespaceTokenizer.INSTANCE;
@@ -92,49 +92,48 @@ public class DataParsingServiceImpl implements DataParsingService {
 
 		// Lemmatize each line of text
 		for (int i = 0; i < lines.length; i++) {
-			
-			CoreDocument document =pipeline.processToCoreDocument(lines[i]);
+
+			CoreDocument document = pipeline.processToCoreDocument(lines[i]);
 			// Iterate over the sentences and tokens to extract the lemmas
 			StringBuilder lemmatizedLine = new StringBuilder();
-				for (CoreLabel token : document.tokens()) {
-					String lemma = token.lemma();
-					// Prioritize lemmatization for verb participles (VBG)
-	                if (token.tag().equals("VBG")) {
-	                    lemma = token.lemma();
-	                }
-					lemmatizedLine.append(lemma).append(" ");
+			for (CoreLabel token : document.tokens()) {
+				String lemma = token.lemma();
+				// Prioritize lemmatization for verb participles (VBG)
+				if (token.tag().equals("VBG")) {
+					lemma = token.lemma();
 				}
+				lemmatizedLine.append(lemma).append(" ");
+			}
 			lines[i] = lemmatizedLine.toString().trim();
 		}
 
 		return lines;
 	}
 
-	
 	public void createTrainDataFile() {
 		String directoryPath = currentDir + "/src/main/resources/TextFiles";
-		
-        // Specify the output file path
-        String outputFile = currentDir + "/src/main/resources/TextFiles/TrainData.txt";
-        try {
-            // Get a list of all text files in the directory
-            Files.list(Paths.get(directoryPath))
-                    .filter(path -> path.toString().endsWith(".txt")) // filter only text files
-                    .forEach(path -> {
-                        try (BufferedReader reader = new BufferedReader(new FileReader(path.toFile()))) {
-                            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile, true))) {
-                                String line;
-                                while ((line = reader.readLine()) != null) {
-                                    writer.write(line);
-                                    writer.newLine(); // add a newline character
-                                }
-                            }
-                        } catch (IOException e) {
-                            System.err.println("Error reading file: " + path);
-                        }
-                    });
-        } catch (IOException e) {
-            System.err.println("Error accessing directory: " + directoryPath);
-        }
+
+		// Specify the output file path
+		String outputFile = currentDir + "/src/main/resources/TextFiles/TrainData.txt";
+		try {
+			// Get a list of all text files in the directory
+			Files.list(Paths.get(directoryPath)).filter(path -> path.toString().endsWith(".txt")) // filter only text
+																									// files
+					.forEach(path -> {
+						try (BufferedReader reader = new BufferedReader(new FileReader(path.toFile()))) {
+							try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile, true))) {
+								String line;
+								while ((line = reader.readLine()) != null) {
+									writer.write(line);
+									writer.newLine(); // add a newline character
+								}
+							}
+						} catch (IOException e) {
+							System.err.println("Error reading file: " + path);
+						}
+					});
+		} catch (IOException e) {
+			System.err.println("Error accessing directory: " + directoryPath);
+		}
 	}
 }

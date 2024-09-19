@@ -3,6 +3,9 @@ package com.techforcebuddybl.services.impl;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -11,10 +14,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.techforcebuddybl.services.ExtractDataFromPdfService;
+import com.techforcebuddybl.util.TFIDFUtils;
 
 @Service
 public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService {
 
+	public static Map<String, List<String>> topWordsByFile = new HashMap<String, List<String>>();
+	
+	@Autowired
+	private TFIDFUtils tfidfUtils;
+	
 	// Get the current directory
 	private String currentDir = System.getProperty("user.dir");
 	
@@ -40,7 +49,6 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 				
 			}
 		}
-		dataParsingServiceImpl.createTrainDataFile();
 	}
 
 	@Override
@@ -79,6 +87,19 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 			for (int i = 0; i < lines.length; i++) {
 
 				fileWriter.write(lines[i] + "\n");
+				tfidfUtils.indexDocument(String.join(" ", tfidfUtils.preprocessText(lines[i])));
+				try {
+	                List<String> topWords = tfidfUtils.calculateTFIDF(100);
+	                topWordsByFile.put(fileName, topWords);
+	                
+	                for(Map.Entry<String, List<String>> entry: topWordsByFile.entrySet()) {
+	                	System.out.println(entry.getKey()+"\n"+entry.getValue());
+	                }
+	                
+	            } catch (Exception e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	            }
 			}
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
