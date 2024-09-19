@@ -1,8 +1,6 @@
 package com.techforcebuddybl.services.impl;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -42,6 +40,7 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 				
 			}
 		}
+		dataParsingServiceImpl.createTrainDataFile();
 	}
 
 	@Override
@@ -60,13 +59,10 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 			try {
 				lines = dataParsingServiceImpl.removeWordStop(lines);
 				lines = dataParsingServiceImpl.lemmatizationOfData(lines);
+				createTextFile(lines, file.getName());
 			} catch (IOException e) {
 				System.out.println("Exception "+e.getMessage());
 			}
-			
-			
-
-			createTextFile(lines, file.getName());
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
