@@ -1,42 +1,31 @@
 TIBringYourOwnDevicePolicy Techforce Infotech Pvt
-
 3 t
-
 1 introduction benefit scope
 allow employee electronic device work
 office travel advantage Techforce
-
 reduction procurement overhead
 user comfort level device
 support remote flexible working
 increase productivity
 operational redundancy
-
 bring device byod term describe gadget
 laptop cellphone tablet result employee continue hardware asset
 organization continue control asset Techforce safeguard
 availability confidentiality integrity datum technology create
 policy
-
 framework legal requirement consider policy
 detail
-
 pci dss 321 40
 ISO 270012013 ISO 270022022
 NIST Cyber Security Framework 11
 Cloud Security Alliance – Level 1 CAIQ v4
 2 Applicability
-
 policy applicable permanent Fulltime employee Techforce
 Infotech Pvt
 policy apply specific contractor depend role
 responsibility benefit offer time contract
-
-
 TIBringYourOwnDevicePolicy Techforce Infotech Pvt
-
 4 t
-
 3 BYOD Challenges
 BYOD residual hazard decrease manageable level implement strict
 administrative physical technical restriction well monitoring
@@ -47,12 +36,10 @@ complicated measure safeguard asset
 wide variety device support
 check employee device adhere security guideline set
 firm
-
 4 risk liability
 team will reasonable precaution safeguard employee
 datum event remote wipe employee responsibility
 additional safety measure back email contact
-
 lose steal device report company 24 hour
 company maintain disconnect device disable service
 notice
@@ -67,11 +54,8 @@ hardware failure program mistake render device unusable
 fully assume employee
 Techforce reserve appropriate disciplinary action
 include termination noncompliance policy
-
 TIBringYourOwnDevicePolicy Techforce Infotech Pvt
-
 5 t
-
 5 responsibility
 employee aware device security measure
 protect personal well Techforce datum
@@ -83,7 +67,6 @@ employee byod
 configure password passcode passkey biometric counterpart
 sophisticated long gadget
 keep operate system antivirus software firmware
-
 option set remote wipe tool lose
 device
 encrypt datum device
@@ -108,16 +91,11 @@ accountable software install device
 gadget leave idle three minute lock password
 pin
 TIBringYourOwnDevicePolicy Techforce Infotech Pvt
-
 6 t
-
 device will lock three unsuccessful login attempt
-
-
 6 exception
 exception policy statement text permit approve
 CEO CoFounder Techforce Management
-
 7 enforcement
 employee temporary worker consultant violate policy result
 termination employment relation contractor consultant violate

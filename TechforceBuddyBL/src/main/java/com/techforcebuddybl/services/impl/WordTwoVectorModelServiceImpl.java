@@ -42,10 +42,7 @@ public class WordTwoVectorModelServiceImpl implements WordTwoVectorModelService 
         vec.fit();
 
         // Save the model to a file
-        WordVectorSerializer.writeWord2VecModel(vec, new File(System.getProperty("user.dir")+"/src/main/resources/TextFiles/word2vecModel.txt"));
-
-        // Now you can use the model
-        System.out.println("Model trained and saved!");
+        WordVectorSerializer.writeWord2VecModel(vec, new File(System.getProperty("user.dir")+"/src/main/resources/AiModal/word2vecModel.txt"));
 
         // Example: Get similar words to "example"
         System.out.println(vec.wordsNearest("applicable", 5));

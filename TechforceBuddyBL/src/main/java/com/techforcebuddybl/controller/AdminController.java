@@ -32,7 +32,7 @@ public class AdminController {
 		}
 	}
 	
-	@GetMapping("/trainModel")
+	@GetMapping("/trainModal")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<?> trainModel(){
 		try {

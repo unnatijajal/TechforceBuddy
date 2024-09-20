@@ -1,31 +1,20 @@
-
 3
-
 WFH Policy Effective 01032021
 1 objective
-
-
 11 policy outline applicability rule procedure consumption
 approval leave
 2 Applicability
-
 21 policy applicable fulltime employee Techforce InfoTech Pvt
-
 22 policy applicable contractor employee
 work manner benefit employee term
 “ Permanent Employee ” “ employee ” document applicable
 employee contractor
-
 3 eligibility criterion
-
 31 employee opt “ Work Home ” facility prior approval team
 leader valid reason situation
-
 32 ‘ work home ’ day will consider full day work employee
 team lead will satisfied employee work day reject
 leave employee will apply half day full day leave
-
-
 33 wfh notice period
 employee notice period will opt work
 facility
@@ -35,30 +24,21 @@ employee will work choice day will consider
 personal medical reason good opt leave lop case
 work letter medical practitioner
 final decision will pm TL consider day work day
-
-
 4
-
 4 point consider WFH
-
 41 Mark Attendance manually
 employee wfh require mark attendance manually hr portal
 Signin Signout require mark full day half day work
-
 42 Top Tracker time work reason
 Tracker work email approval need pl sanction work day
 day copy hr
-
 43 everyday tracker showcase Minimum 8 hour day 75 hour will
 consider Half Day hour 4 hour will consider
 leave pay
-
 44 week total work hour minimum 40 hour
 will consider leave pay miss hour 1 4 hour half day
 8 hour leave full day
-
 45 Employee Broadband connection
-
 46 miss scheduled call attend daily call standup 2
 time month day will consider Half Day
 pm pl report hr

@@ -17,7 +17,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.techforcebuddybl.jwt.JwtAuthenticationFilter;
-import com.techforcebuddybl.jwt.JwtUtil;
 import com.techforcebuddybl.services.CustomUserDetailsService;
 
 @Configuration
@@ -25,9 +24,6 @@ import com.techforcebuddybl.services.CustomUserDetailsService;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-	@Autowired
-	private JwtUtil jwtUtil;
-	
 	@Autowired
 	private JwtAuthenticationFilter authenticationFilter;
 

@@ -54,8 +54,7 @@ public class UserController {
 				valueList.forEach(value-> System.out.println("Key: " + key + ", Value: " + value));
 			});
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.getMessage();
 		}
 		
 		return ResponseEntity.ok(new JwtResponse(question.getQuery()));

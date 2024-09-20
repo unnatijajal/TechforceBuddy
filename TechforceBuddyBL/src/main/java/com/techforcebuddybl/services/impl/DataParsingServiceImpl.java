@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -79,7 +80,9 @@ public class DataParsingServiceImpl implements DataParsingService {
 			lines[i] = newLine.toString().trim(); // update the line with the new string
 		}
 
-		return lines;
+		  return Arrays.stream(lines)
+		            .filter(line -> !line.isEmpty())
+		            .toArray(String[]::new);
 	}
 
 	@Override

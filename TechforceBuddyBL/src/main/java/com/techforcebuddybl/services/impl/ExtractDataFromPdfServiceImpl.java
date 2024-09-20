@@ -14,19 +14,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.techforcebuddybl.services.ExtractDataFromPdfService;
-import com.techforcebuddybl.util.TFIDFUtils;
+import com.techforcebuddybl.util.ConstantData;
 
 @Service
 public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService {
 
 	public static Map<String, List<String>> topWordsByFile = new HashMap<String, List<String>>();
-	
+
 	@Autowired
-	private TFIDFUtils tfidfUtils;
-	
+	private ConstantData constantData;
+
 	// Get the current directory
 	private String currentDir = System.getProperty("user.dir");
-	
+
 	@Autowired
 	private DataParsingServiceImpl dataParsingServiceImpl;
 
@@ -46,7 +46,7 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 				// Get the file
 				File f = new File(resourceDir, fileName);
 				extractDataFromPdf(f);
-				
+
 			}
 		}
 	}
@@ -63,13 +63,16 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 
 			text = text.replaceAll("[,.•&&[^\\n]]+|[-—]+|[\\p{Punct}]", "");
 			String[] lines = text.split("\n");
-
+			/*
+			 * for (int i = 0; i < lines.length; i++) {
+			 * constantData.createKeywords(file.getName(), lines[i]); }
+			 */
 			try {
 				lines = dataParsingServiceImpl.removeWordStop(lines);
 				lines = dataParsingServiceImpl.lemmatizationOfData(lines);
 				createTextFile(lines, file.getName());
 			} catch (IOException e) {
-				System.out.println("Exception "+e.getMessage());
+				System.out.println("Exception " + e.getMessage());
 			}
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
@@ -78,7 +81,7 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 
 	@Override
 	public void createTextFile(String[] lines, String fileName) throws IOException {
-		// Navigate to the TextFiles directory		
+		// Navigate to the TextFiles directory
 		File textFileDir = new File(currentDir + "/src/main/resources/TextFiles");
 
 		File textFile = new File(textFileDir, fileName.substring(0, fileName.lastIndexOf(".")) + ".txt");
@@ -87,19 +90,13 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 			for (int i = 0; i < lines.length; i++) {
 
 				fileWriter.write(lines[i] + "\n");
-				tfidfUtils.indexDocument(String.join(" ", tfidfUtils.preprocessText(lines[i])));
-				try {
-	                List<String> topWords = tfidfUtils.calculateTFIDF(100);
-	                topWordsByFile.put(fileName, topWords);
-	                
-	                for(Map.Entry<String, List<String>> entry: topWordsByFile.entrySet()) {
-	                	System.out.println(entry.getKey()+"\n"+entry.getValue());
-	                }
-	                
-	            } catch (Exception e) {
-	                // TODO Auto-generated catch block
-	                e.printStackTrace();
-	            }
+				/*
+				 * tfidfUtils.indexDocument(String.join(" ",
+				 * tfidfUtils.preprocessText(lines[i]))); try { List<String> topWords =
+				 * tfidfUtils.calculateTFIDF(100); topWordsByFile.put(fileName, topWords); }
+				 * catch (Exception e) { // TODO Auto-generated catch block e.printStackTrace();
+				 * }
+				 */
 			}
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
