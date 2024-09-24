@@ -42,7 +42,6 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 		
 			// Token of user's query will store into the list
 			List<String> extractedWord = Arrays.asList(tokens);
-			
 			// Invoke the getSimilarityFiles() to find the similarity file 
 			// means this file content have similarity with user's query.
 			similarityServiceImpl.getSimilarityFiles(extractedWord);

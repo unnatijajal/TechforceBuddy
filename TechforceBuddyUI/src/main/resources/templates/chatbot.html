@@ -13,10 +13,19 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/fontawesome.min.css"
 	integrity="sha512-B46MVOJpI6RBsdcU307elYeStF2JKT87SsHZfRSkjVi4/iZ3912zXi45X5/CBr/GbCyLx6M1GQtTKYRd52Jxgw=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/solid.min.css"
+	integrity="sha512-/r+0SvLvMMSIf41xiuy19aNkXxI+3zb/BN8K9lnDDWI09VM0dwgTMzK7Qi5vv5macJ3VH4XZXr60ip7v13QnmQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 <body>
 	<!---Chat Board Start-->
-
+	<div>
+		<button id="logout">
+			<i class="fa-solid fa-arrow-right-from-bracket"></i> 		
+		</button>
+	</div>
 	<div class="chat-board chatbot chat new trending"></div>
 	<div class="frame-content">
 		<div class="widget-position-right sidebar-position-right onlyBubble"
@@ -65,8 +74,8 @@
 						<hr>
 						<div class="drag-active-wrapper footer-input-wrapper">
 							<textarea id="chat-input" rows="1"
-								placeholder="Hit the buttons to respond"
-								aria-label="New message" data-testid="newMessageTextarea"></textarea>
+								placeholder="Ask Question"
+								aria-label="New message" data-testid="newMessageTextarea" required="required"></textarea>
 
 							<button id="SentButton" class="send-icon" title="SentButton"
 								type="button">
@@ -82,12 +91,6 @@
 				</form>
 			</div>
 
-		</div>
-		<div>
-			<button id="logout">
-				<i class="fa-solid fa-arrow-right-from-bracket"></i>
-				Logout
-			</button>
 		</div>
 		<div id="chat-button" data-testid="widgetButton"
 			class="chat-closed mobile-size__medium">
@@ -122,8 +125,8 @@
 		crossorigin="anonymous"></script>
 
 	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/fontawesome.min.js"
-		integrity="sha512-NeFv3hB6XGV+0y96NVxoWIkhrs1eC3KXBJ9OJiTFktvbzJ/0Kk7Rmm9hJ2/c2wJjy6wG0a0lIgehHjCTDLRwWw=="
+		src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/solid.min.js"
+		integrity="sha512-L2znesU64H/rvdnaD4WBaRAmEcGvhBsVLXygPkhpgpUwcgjymD4amy68shdgZgLiIvyvV/vHRXAM4mTV8xqp+Q=="
 		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 </html>

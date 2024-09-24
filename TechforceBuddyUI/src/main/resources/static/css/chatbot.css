@@ -264,7 +264,7 @@ body:not(.mobile) #button button:not(.disabled):hover i.type1::after,
 
 .input-group {
 	padding: 0px 28px 6px;
-	width: 100%;
+	width: 80%;
 	position: relative;
 	background: rgb(255, 255, 255);
 	z-index: 3;
@@ -279,7 +279,7 @@ body:not(.mobile) #button button:not(.disabled):hover i.type1::after,
 
 textarea {
 	border: 0px;
-	width: 100%;
+	width: 50%;
 	font-size: 17px;
 	margin: 20px 0px 14px;
 	resize: none;
@@ -300,6 +300,7 @@ textarea {
 	-webkit-transition: all .3s;
 	transition: all .3s;
 	cursor: pointer;
+	margin-left: 10px;
 }
 
 hr {
@@ -628,7 +629,7 @@ element.style {
 
 .sentText {
 	margin: 0px auto;
-	min-width: 100%;
+	min-width: 85%;
 	display: block;
 	font-size: 16px;
 	line-height: 19px;
@@ -641,6 +642,7 @@ element.style {
 	border-radius: 20px;
 	font-weight: normal;
 	margin: 10px;
+	overflow-wrap: break-word;
 }
 
 .botText {

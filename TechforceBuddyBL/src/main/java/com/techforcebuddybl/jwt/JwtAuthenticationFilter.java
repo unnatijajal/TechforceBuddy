@@ -18,6 +18,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
+/*
+ * This is the class which implement the OncePerRequestFilter
+ * to check every request is authorized or not.
+ */
+
 @Component
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {

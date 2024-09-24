@@ -4,11 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.deeplearning4j.models.word2vec.Word2Vec;
-
 public interface FindSimilarityService {
 	
-	public double[] getAveragePolicyVector(Word2Vec model, File policyFile) throws IOException;
 	
 	public double cosineSimilarity(double[] vecA, double[] vecB);
 	

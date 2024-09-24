@@ -15,6 +15,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+/*
+ * This is the utility class for the JWT
+ */
+
 @Component
 public class JwtUtil {
 
@@ -33,6 +37,7 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
     
+    // Create the JWT token for the user credentials
 	public String createToken(Map<String, Object> claims, String username) {
     	
         return Jwts.builder()
