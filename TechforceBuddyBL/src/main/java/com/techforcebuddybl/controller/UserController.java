@@ -1,8 +1,5 @@
 package com.techforcebuddybl.controller;
 
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +14,11 @@ import com.techforcebuddybl.entity.UserEntity;
 import com.techforcebuddybl.jwt.JwtResponse;
 import com.techforcebuddybl.services.impl.UserDataProcessingServiceImpl;
 import com.techforcebuddybl.services.impl.UserServiceImpl;
+/*
+ * Controller class for use's related API
+ */
 
 @RestController
-
 public class UserController {
 
 	@Autowired
@@ -28,6 +27,9 @@ public class UserController {
 	@Autowired
 	private UserDataProcessingServiceImpl dataProcessingServiceImpl;
 	
+	/*
+	 * Create the POST API for saving the user's details into the DB.
+	 */
 	@PostMapping("/signin")
 	@CrossOrigin(origins = "http://localhost:8081")
 	public ResponseEntity<?> signin(@RequestBody UserEntity entity) {
@@ -45,16 +47,12 @@ public class UserController {
 	@CrossOrigin(origins = "http://localhost:8081")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<?> message(@RequestBody Question question ) {
-	//	System.out.println(question.getQuery());
-		Map<String,Set<String>> data;
+
 		try {
-			data = dataProcessingServiceImpl.divideSentenceIntoWords(question.getQuery());
-			
-			data.forEach((key,valueList) -> {
-				valueList.forEach(value-> System.out.println("Key: " + key + ", Value: " + value));
-			});
+			dataProcessingServiceImpl.divideSentenceIntoWords(question.getQuery());
 		} catch (Exception e) {
-			e.getMessage();
+			System.out.println(e.getMessage());
+			e.getStackTrace();
 		}
 		
 		return ResponseEntity.ok(new JwtResponse(question.getQuery()));

@@ -10,6 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.techforcebuddybl.entity.UserEntity;
 
+/*
+ * This is class which is implements the USerDetails class to get the username
+ * password and roles of user etc. for JWT authentication.  
+ */
+
 public class UserInfoDetails implements UserDetails {
 	
 	private String username ;

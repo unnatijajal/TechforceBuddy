@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.techforcebuddybl.jwt.JwtResponse;
 import com.techforcebuddybl.jwt.JwtUtil;
 
-@RestController
+/*
+ * This is the RestController class to create the Rest API
+ * and this create the API for authenticate the user. 
+ */
 
+@RestController
 public class AuthController {
 
 	@Autowired
@@ -23,8 +27,9 @@ public class AuthController {
 	@Autowired
 	private JwtUtil jwtUtil;
 	
-	
-	
+	/*
+	 * This is POST API for login process	 
+	 */
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestParam("email") String email, @RequestParam("password") String password ) {
 		//Authenticate the user

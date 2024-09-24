@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techforcebuddybl.services.impl.ExtractDataFromPdfServiceImpl;
 import com.techforcebuddybl.services.impl.WordTwoVectorModelServiceImpl;
-
+/*
+ * This is the controller class for Admin
+ */
 @RestController
 public class AdminController {
 
@@ -19,6 +21,11 @@ public class AdminController {
 	
 	@Autowired
 	private WordTwoVectorModelServiceImpl modelServiceImpl;
+	
+	/*
+	 * This is GET API for pre process the data of the pdf file 
+	 * and only admin can access this API.
+	 */
 	
 	@GetMapping("/preProcess")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -32,6 +39,10 @@ public class AdminController {
 		}
 	}
 	
+	/*
+	 * This is GET API for training the modal using all raw data files 
+	 * and only admin can access this API.
+	 */
 	@GetMapping("/trainModal")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<?> trainModel(){

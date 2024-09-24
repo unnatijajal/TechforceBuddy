@@ -1,15 +1,11 @@
 package com.techforcebuddybl.services.impl;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
@@ -26,12 +22,22 @@ import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.tokenize.WhitespaceTokenizer;
 
+
+
+/*
+ * This is class which have different methods for
+ * pre process the pdf content.
+ * 
+ */
+
 @Service
 public class DataParsingServiceImpl implements DataParsingService {
 
 	// Get the current directory
 	private String currentDir = System.getProperty("user.dir");
 	
+	
+	// This method convert the text into the token using whitespace to convert into the token.
 	@Override
 	public String[] tokenizeData(String text) throws IOException {
 		WhitespaceTokenizer tokenizer = WhitespaceTokenizer.INSTANCE;
@@ -39,6 +45,8 @@ public class DataParsingServiceImpl implements DataParsingService {
 		return tokens;
 	}
 
+	
+	// This is the method the get Part Of Speech tag of tokens.
 	@Override
 	public String[] parsingData(String[] tokens) throws IOException {
 		String currentDir = System.getProperty("user.dir");
@@ -50,20 +58,32 @@ public class DataParsingServiceImpl implements DataParsingService {
 		return tagger.tag(tokens);
 	}
 
+	
+	/* 
+	 * This is method to check whether the given string is 
+	 * Noun, verb or adjective
+	 * 
+	 */
 	@Override
 	public boolean isNounOrVerb(String posTag) {
 		return posTag.startsWith("NN") || posTag.startsWith("VB") || posTag.startsWith("JJ");
 	}
 
+	
+	/*
+	 * This is the method which remove the all the stop words like 
+	 * and, he, she etc from the lines of files.
+	 * 
+	 */
 	public String[] removeWordStop(String[] lines) throws IOException {
 		Set<String> stopWords = new HashSet<>();
+		
 		// Navigate to the TextFiles directory
 		File wordStopFile = new File(currentDir + "/src/main/resources", "englishStopWords.txt");
 
 		try (BufferedReader reader = new BufferedReader(new FileReader(wordStopFile))) {
 			String word;
 			while ((word = reader.readLine()) != null) {
-				// System.out.println(word);
 				stopWords.add(word.toLowerCase());
 			}
 		}
@@ -85,11 +105,22 @@ public class DataParsingServiceImpl implements DataParsingService {
 		            .toArray(String[]::new);
 	}
 
+	
+	/*
+	 * This method perform the lemmatization on the data.
+	 * Lemmatization is process to convert the word into the it's root form
+	 * Eg : Running will be convert into Run, Derived will be convert into Derive.
+	 *  
+	 */
 	@Override
 	public String[] lemmatizationOfData(String[] lines) throws FileNotFoundException, IOException {
 
 		File stanfordPropertiesFile = new File(currentDir + "/src/main/resources", "standford-corenlp.properties");
+		
+		// Create the properties object to set the properties further
 		Properties props = new Properties();
+		
+		// Load the properties file for Standford-corenlp.
 		props.load(new FileInputStream(stanfordPropertiesFile));
 		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
@@ -113,30 +144,4 @@ public class DataParsingServiceImpl implements DataParsingService {
 		return lines;
 	}
 
-	public void createTrainDataFile() {
-		String directoryPath = currentDir + "/src/main/resources/TextFiles";
-
-		// Specify the output file path
-		String outputFile = currentDir + "/src/main/resources/TextFiles/TrainData.txt";
-		try {
-			// Get a list of all text files in the directory
-			Files.list(Paths.get(directoryPath)).filter(path -> path.toString().endsWith(".txt")) // filter only text
-																									// files
-					.forEach(path -> {
-						try (BufferedReader reader = new BufferedReader(new FileReader(path.toFile()))) {
-							try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile, true))) {
-								String line;
-								while ((line = reader.readLine()) != null) {
-									writer.write(line);
-									writer.newLine(); // add a newline character
-								}
-							}
-						} catch (IOException e) {
-							System.err.println("Error reading file: " + path);
-						}
-					});
-		} catch (IOException e) {
-			System.err.println("Error accessing directory: " + directoryPath);
-		}
-	}
 }

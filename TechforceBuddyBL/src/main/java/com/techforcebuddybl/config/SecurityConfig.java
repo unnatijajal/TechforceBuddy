@@ -19,6 +19,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.techforcebuddybl.jwt.JwtAuthenticationFilter;
 import com.techforcebuddybl.services.CustomUserDetailsService;
 
+/*
+ * This is configuration class for the security configuration.
+ */
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -52,6 +56,7 @@ public class SecurityConfig {
 				.build();
 	}
 
+	// Create the Bean of AuthenticationProvider
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -59,12 +64,14 @@ public class SecurityConfig {
 		authenticationProvider.setPasswordEncoder(passwordEncoder());
 		return authenticationProvider;
 	}
-
+	
+	// Create the Bean of PasswordEncoder
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
+	// Create the Bean of AuthenticationManager
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 		return config.getAuthenticationManager();

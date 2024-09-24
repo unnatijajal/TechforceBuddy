@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 
 import com.techforcebuddybl.services.WordTwoVectorModelService;
 
+/*
+ * This is implementation class of WordTwoVectorModelService
+ * which is has method to train modal using raw data.
+ */
+
 @Service
 public class WordTwoVectorModelServiceImpl implements WordTwoVectorModelService {
 
@@ -44,8 +49,6 @@ public class WordTwoVectorModelServiceImpl implements WordTwoVectorModelService 
         // Save the model to a file
         WordVectorSerializer.writeWord2VecModel(vec, new File(System.getProperty("user.dir")+"/src/main/resources/AiModal/word2vecModel.txt"));
 
-        // Example: Get similar words to "example"
-        System.out.println(vec.wordsNearest("applicable", 5));
 	}
 	
 }

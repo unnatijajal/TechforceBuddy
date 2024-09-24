@@ -3,6 +3,7 @@ package com.techforcebuddybl.services.impl;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,27 +15,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.techforcebuddybl.services.ExtractDataFromPdfService;
-import com.techforcebuddybl.util.ConstantData;
+import com.techforcebuddybl.util.TFIDFUtils;
+
+/*
+ * This is class which have methods for extracting data from the pdf files.
+ * This is implementation class of ExtractDataFormPdfService.
+ */
+
 
 @Service
 public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService {
 
-	public static Map<String, List<String>> topWordsByFile = new HashMap<String, List<String>>();
-
-	@Autowired
-	private ConstantData constantData;
-
+	//public static Map<String, List<String>> topWordsByFile = new HashMap<String, List<String>>();
+	
 	// Get the current directory
 	private String currentDir = System.getProperty("user.dir");
+
+	// This will store the content of all pdf.
+	private List<String[]> allDocuments;
+	
+	
+	/*
+	 * This is map which store the content of file in form of array as a value and
+	 * file name as key. This will further use for extracting data from the file
+	 */
+	public static Map<String,String[]> documentMapToken =
+			new HashMap<String, String[]>();
 
 	@Autowired
 	private DataParsingServiceImpl dataParsingServiceImpl;
 
+	
+	/*
+	 * This the method to access the file from the "/src/main/resources/pdf"
+	 */
 	public void accessFiles() throws IOException {
 
 		// Navigate to the src/main/resources directory
 		File resourceDir = new File(currentDir + "/src/main/resources/pdf");
-
+		
+		allDocuments = new ArrayList<String[]>();
+		
 		// Get the list of files
 		String[] files = resourceDir.list();
 
@@ -45,32 +66,66 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 			if (fileName.endsWith(".pdf")) {
 				// Get the file
 				File f = new File(resourceDir, fileName);
+				
+				// Invoke the method to extract the data from the pdf
 				extractDataFromPdf(f);
 
 			}
 		}
+		
+		// Invoke the computeIDF() of TFIDFUtils which calculate the Inverse Document Frequency 
+		// of all files
+		TFIDFUtils.computeIDF(allDocuments);
 	}
 
+	/*
+	 * This method is extract the data from the pdf file using Apache PdfBox
+	 */
 	@Override
 	public void extractDataFromPdf(File file) {
 		try {
+			
+			// Create the document to load the file.
 			PDDocument document = Loader.loadPDF(file);
 
+			// Create the object of PDFTextStripper which is help to extract the data from the pdf.
 			PDFTextStripper textStripper = new PDFTextStripper();
-
+			
+			// Set the staring page the extract the data.
 			textStripper.setStartPage(3);
+			
+			// Get the text from the pdf file.
 			String text = textStripper.getText(document);
-
-			text = text.replaceAll("[,.•&&[^\\n]]+|[-—]+|[\\p{Punct}]", "");
+			
+			// Used regex to remove all bulleting and punctuation extra white spaces from the text
+			// for data Pre-Process
+			text = text.replaceAll("[,•&&[^\\n]]+|[-—]+|[\\p{Punct}&&[^\u002E]]", "");
+			
+			// Split the text into the array of string
 			String[] lines = text.split("\n");
-			/*
-			 * for (int i = 0; i < lines.length; i++) {
-			 * constantData.createKeywords(file.getName(), lines[i]); }
-			 */
+			
 			try {
+				
+				// Invoke the removeWordStop() to remove all the stop words.
 				lines = dataParsingServiceImpl.removeWordStop(lines);
+				
+				// Invoke the lemmatizationOfData() to convert the word into it's root form.
 				lines = dataParsingServiceImpl.lemmatizationOfData(lines);
+				
+				// Invoke the method to create the Text file of Pre-Process the data
 				createTextFile(lines, file.getName());
+				
+				// Invoke the computeTF() of TFIDFUtils which calculate the Term Frequency of each file. 
+				TFIDFUtils.computeTF(file.getName(),lines);
+				
+				// Add the all content of the file into the list which is further used to 
+				// calculate the IDF of all files
+				allDocuments.add(lines);
+				
+				// Store the file name and it's content into the map which will use 
+				// for searching data from the file.
+				documentMapToken.put(file.getName(), lines);
+				
 			} catch (IOException e) {
 				System.out.println("Exception " + e.getMessage());
 			}
@@ -79,28 +134,27 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 		}
 	}
 
+	
+	/*
+	 * This is the method of creating text file of pre-proccessed data
+	 */
 	@Override
 	public void createTextFile(String[] lines, String fileName) throws IOException {
 		// Navigate to the TextFiles directory
 		File textFileDir = new File(currentDir + "/src/main/resources/TextFiles");
 
+		// Create the file object for text file
 		File textFile = new File(textFileDir, fileName.substring(0, fileName.lastIndexOf(".")) + ".txt");
 
+		// Create the object of the FileWriter to write the data into the TextFile.
 		try (FileWriter fileWriter = new FileWriter(textFile)) {
 			for (int i = 0; i < lines.length; i++) {
-
 				fileWriter.write(lines[i] + "\n");
-				/*
-				 * tfidfUtils.indexDocument(String.join(" ",
-				 * tfidfUtils.preprocessText(lines[i]))); try { List<String> topWords =
-				 * tfidfUtils.calculateTFIDF(100); topWordsByFile.put(fileName, topWords); }
-				 * catch (Exception e) { // TODO Auto-generated catch block e.printStackTrace();
-				 * }
-				 */
 			}
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
+		
 	}
 }

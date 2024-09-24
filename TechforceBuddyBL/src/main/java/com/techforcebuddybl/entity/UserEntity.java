@@ -8,6 +8,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+/*
+ * This is the entity class have a different the states which represent as columns
+ * inside the table of DB.
+ */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

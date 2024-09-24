@@ -1,24 +1,24 @@
 stipend policy Techforce Infotech Pvt
-3 t
-stipend policy effective 01012022 Version 11
+3 . t .
+stipend policy effective 01012022 Version 1.1
 applicability
 candidate will join Techforce Intern Trainee will eligible
-stipend decide interview process
+stipend decide interview process .
 candidate will require training go employment
 Techforce will stipend salary duration amount will
-decide time interview
+decide time interview .
 Mode Payment
 Trainee Intern will receive online transfer personal bank account
-detail provide hr
+detail provide hr .
 candidate bank account bank company will online
 transfer provide cheque relative 's will candidate 's
-responsibility bank account open
-will eligible benefit company provide bank salary account
+responsibility bank account open .
+will eligible benefit company provide bank salary account .
 Range Stipend payment
 Company 's norm process candidate will stipend start
-month 5th 10th current month 's working
+month 5th 10th current month 's working .
 subject change company account week long holiday
-date
+date .
 stipend calculation
 candidate leave exam 15 calendar day stipend
-will calculate total attendant day service
+will calculate total attendant day service .
