@@ -1,14 +1,15 @@
 package com.techforcebuddybl.services.impl;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,8 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 	 */
 
 	@Override
-	public Map<String,List<String>> getSimilarityFiles(List<String> keywords) throws IOException, DataNotFoundException {
+	public Map<String, List<String>> getSimilarityFiles(List<String> keywords)
+			throws IOException, DataNotFoundException {
 		@SuppressWarnings("deprecation")
 		Word2Vec model = WordVectorSerializer.readWord2Vec(new File(modalFileDirectory + "/word2vecModel.txt"));
 
@@ -110,7 +112,7 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 							tokens);
 					// Invoke the cosineSimilarity() to calculate the similarities.
 					double similarity = cosineSimilarity(queryVector, documentVector);
-					
+
 					// Store the similarity file only if the similarity is greater than the 0.69
 					if (similarity >= 0.70) {
 						similarityMap.put(policyFile, similarity);
@@ -127,140 +129,100 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 		return extractContentAcrossFiles(relevantFiles, keywords);
 	}
 
+	public Map<String, List<String>> extractContentAcrossFiles(List<File> files, List<String> keywords)
+			throws IOException, DataNotFoundException {
+		
+		int globalMaxKeywordCount = 0; // Maximum keyword count across all files
+		String correspondingFileName = null; // Track which file had the max keyword count
+		List<String> foundLines = new ArrayList<String>();
+		boolean flag = false;
+		for (File file : files) {
 
-	
-	public Map<String,List<String>> extractContentAcrossFiles(List<File> files, List<String> keywords) 
-			throws IOException,DataNotFoundException {
-	    int globalMaxKeywordCount = 0;      // Maximum keyword count across all files
-	    String correspondingFileName = null; // Track which file had the max keyword count
-	    List<String> foundLines = new ArrayList<String>();
-	    for (File file : files) {
-	        StringBuilder fileContent = new StringBuilder();
+			// Create the document to load the file.
+			PDDocument document = Loader.loadPDF(file);
 
-	        // Read entire file content
-	        try (BufferedReader reader = new BufferedReader(new FileReader(
-	                textFileDirectory + file.getName().substring(0, file.getName().lastIndexOf(".")) + ".txt"))) {
-	            String line;
-	            while ((line = reader.readLine()) != null) {
-	                fileContent.append(line).append(" ");
-	            }
-	        }
+			// Create the object of PDFTextStripper which is help to extract the data from
+			// the pdf.
+			PDFTextStripper textStripper = new PDFTextStripper();
 
-	        // Split content into paragraphs
-	        List<String> paragraphs = splitIntoParagraphs(fileContent.toString());
+			// Set the staring page the extract the data.
+			textStripper.setStartPage(3);
 
-	        // Find the paragraph and line with the maximum number of keyword matches
-	        for (String paragraph : paragraphs) {
-	            List<String> lines = splitIntoLines(paragraph);
+			// Get the text from the pdf file.
+			String text = textStripper.getText(document);
+			;
+			// Split content into paragraphs
+			List<String> paragraphs = splitIntoParagraphs(text.toString());
 
-	            for (String line : lines) {
-	                int keywordCount = 0;
+			// Find the paragraph and line with the maximum number of keyword matches
+			for (String paragraph : paragraphs) {
+				List<String> lines = splitIntoLines(paragraph);
+				flag =false;
+				for (String line : lines) {
+					int keywordCount = 0;
+					
+					// Check how many keywords the line contains
+					for (String keyword : keywords) {
+						if (line.toLowerCase().contains(keyword.toLowerCase())) {
+							keywordCount++;
+						}
+					}
 
-	                // Check how many keywords the line contains
-	                for (String keyword : keywords) {
-	                    if (line.toLowerCase().contains(keyword.toLowerCase())) {
-	                        keywordCount++;
-	                    }
-	                }
+					// Update the global max if this line has more keywords than the current global
+					// max
+					if (keywordCount >= globalMaxKeywordCount) {
+						globalMaxKeywordCount = keywordCount;
+						flag = true;
+						correspondingFileName = file.getName();
+					}
+				}
+				if(flag) {
+					foundLines.add(paragraph);
+				}
+			}
+		}
+		Map<String, List<String>> responseData = new HashMap<String, List<String>>();
+		if (!foundLines.isEmpty()) {
+			foundLines = filterResponse(foundLines);
+			responseData.put(correspondingFileName, foundLines);
+		} else {
+			throw new DataNotFoundException("No Data found");
 
-	                // Update the global max if this line has more keywords than the current global max
-	                if (keywordCount >= globalMaxKeywordCount) {
-	                    globalMaxKeywordCount = keywordCount;
-	                    foundLines.add(line);
-	                    correspondingFileName = file.getName();
-	                }
-	            }
-	        }
-	    }
-	   Map<String,List<String>> responseData = new HashMap<String, List<String>>();
-	    if(!foundLines.isEmpty()) {
-	    	for(String line : foundLines) {
-	    		System.out.println(line);
-	    	}
-	    	responseData.put(correspondingFileName, foundLines);
-	    }else {
-	    	throw new DataNotFoundException("No Data found");
-	    	
-	    }
-	    
-	    return responseData;
+		}
+		
+		return responseData;
 	}
 
 	/*
 	 * This method splits the content into paragraphs.
 	 */
 	public List<String> splitIntoParagraphs(String content) {
-	    List<String> paragraphs = new ArrayList<>();
-	    String[] paragraphArray = content.split("\\."); // Split by period
-	    for (String paragraph : paragraphArray) {
-	        paragraphs.add(paragraph.trim());
-	    }
-	    return paragraphs;
+		List<String> paragraphs = new ArrayList<>();
+		String[] paragraphArray = content.split("(?<!\\d\\.)\\.(?!\\d)"); // Split by period
+		for (String paragraph : paragraphArray) {
+			paragraphs.add(paragraph.trim());
+		}
+		return paragraphs;
 	}
 
 	/*
 	 * This method splits a paragraph into individual lines.
 	 */
 	public List<String> splitIntoLines(String paragraph) {
-	    List<String> lines = new ArrayList<>();
-	    String[] lineArray = paragraph.split("\\r?\\n"); // Split by new lines
-	    for (String line : lineArray) {
-	        lines.add(line.trim());
-	    }
-	    return lines;
+		List<String> lines = new ArrayList<>();
+		String[] lineArray = paragraph.split("\\r?\\n"); // Split by new lines
+		for (String line : lineArray) {
+			lines.add(line.trim());
+		}
+		return lines;
 	}
 
-	public void extractContent(File file, List<String> keywords) throws IOException {
-	    StringBuilder fileContent = new StringBuilder();
-
-	    // Read entire file content
-	    try (BufferedReader reader = new BufferedReader(new FileReader(
-	            textFileDirectory + file.getName().substring(0, file.getName().lastIndexOf(".")) + ".txt"))) {
-	        String line;
-	        while ((line = reader.readLine()) != null) {
-	            fileContent.append(line).append(" ");
-	        }
-	    }
-
-	    // Split content into paragraphs
-	    List<String> paragraphs = splitIntoParagraphs(fileContent.toString());
-	  
-	    String paragraphWithMaxKeywords = null;
-	    int maxKeywordCount = 0;
-
-	    // Find the paragraph with the maximum number of keyword matches
-	    for (String paragraph : paragraphs) {
-	        int keywordCount = 0;
-
-	        // Check how many keywords the paragraph contains
-	        for (String keyword : keywords) {
-	            if (paragraph.toLowerCase().contains(keyword.toLowerCase())) {
-	                keywordCount++;
-	            }
-	        }
-
-	        // Update if this paragraph contains more keywords than the previous max
-	        if (keywordCount > maxKeywordCount) {
-	            maxKeywordCount = keywordCount;
-	            paragraphWithMaxKeywords = paragraph;
-	        }
-	    }
-
-	    // Print the paragraph with the maximum keyword matches
-	    if (paragraphWithMaxKeywords != null) {
-	        System.out.println("Paragraph with maximum keywords (" + maxKeywordCount + "):");
-			/*
-			 * for (String keyword : keywords) { paragraphWithMaxKeywords =
-			 * paragraphWithMaxKeywords.replaceAll("(?i)" + keyword, "\033[43m\033[91m" +
-			 * keyword + "\033[0m"); }
-			 */
-	        System.out.println(paragraphWithMaxKeywords);
-	    } else {
-	        System.out.println("No paragraph contains the given keywords.");
-	    }
+	public List<String> filterResponse(List<String> responseData) {
+		responseData.removeIf(
+				s -> s.matches("\\d+(\\.\\d+)? .*") || 
+				s.trim().split("\\s+").length < 4);
+        // Print the modified text
+        System.out.println(responseData);
+		return responseData;
 	}
-
-
-
-	
 }

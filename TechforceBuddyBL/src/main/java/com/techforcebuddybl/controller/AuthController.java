@@ -39,7 +39,7 @@ public class AuthController {
 		if(authentication.isAuthenticated()) {
 			//Generate a token for the authenticated user
 			String token = jwtUtil.generateToken(email);
-			System.out.println(token);
+			
 			//Return the token in the response
 			return ResponseEntity.ok(new JwtResponse(token));
 		}else {
