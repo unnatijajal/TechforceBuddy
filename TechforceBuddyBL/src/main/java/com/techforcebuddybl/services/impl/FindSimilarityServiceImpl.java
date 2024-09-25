@@ -67,7 +67,7 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 	 */
 
 	@Override
-	public Map<String, List<String>> getSimilarityFiles(List<String> keywords)
+	public List<File> getRelaventFiles(List<String> keywords)
 			throws IOException, DataNotFoundException {
 		@SuppressWarnings("deprecation")
 		Word2Vec model = WordVectorSerializer.readWord2Vec(new File(modalFileDirectory + "/word2vecModel.txt"));
@@ -112,9 +112,8 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 							tokens);
 					// Invoke the cosineSimilarity() to calculate the similarities.
 					double similarity = cosineSimilarity(queryVector, documentVector);
-
 					// Store the similarity file only if the similarity is greater than the 0.69
-					if (similarity >= 0.70) {
+					if (similarity > 0.50) {
 						similarityMap.put(policyFile, similarity);
 					}
 				}
@@ -126,10 +125,10 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 				.sorted((entry1, entry2) -> Double.compare(entry2.getValue(), entry1.getValue())).limit(5)
 				.map(Map.Entry::getKey).toList();
 
-		return extractContentAcrossFiles(relevantFiles, keywords);
+		return relevantFiles;
 	}
 
-	public Map<String, List<String>> extractContentAcrossFiles(List<File> files, List<String> keywords)
+	public Map<String, List<String>> getTheResponseFromRelaventFile(List<File> files, List<String> keywords)
 			throws IOException, DataNotFoundException {
 		
 		int globalMaxKeywordCount = 0; // Maximum keyword count across all files
@@ -150,7 +149,7 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 
 			// Get the text from the pdf file.
 			String text = textStripper.getText(document);
-			;
+			
 			// Split content into paragraphs
 			List<String> paragraphs = splitIntoParagraphs(text.toString());
 
@@ -177,13 +176,14 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 					}
 				}
 				if(flag) {
+					paragraph = filterParagraph(paragraph);
 					foundLines.add(paragraph);
 				}
 			}
 		}
 		Map<String, List<String>> responseData = new HashMap<String, List<String>>();
 		if (!foundLines.isEmpty()) {
-			foundLines = filterResponse(foundLines);
+			
 			responseData.put(correspondingFileName, foundLines);
 		} else {
 			throw new DataNotFoundException("No Data found");
@@ -217,10 +217,11 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 		return lines;
 	}
 
-	public List<String> filterResponse(List<String> responseData) {
-		responseData.removeIf(
-				s -> s.matches("\\d+(\\.\\d+)? .*") || 
-				s.trim().split("\\s+").length < 4);
+	public String filterParagraph(String responseData) {
+		responseData = responseData.replaceAll("\\b\\d+\\.\\d+\\b", "");
+		responseData = responseData.split("\\s").length < 4 ? "" : responseData;
+		responseData = responseData.replaceAll("^\\d+\\s*\\|\\s*P\\s*a\\s*g\\s*e", "");
+		
         // Print the modified text
         System.out.println(responseData);
 		return responseData;

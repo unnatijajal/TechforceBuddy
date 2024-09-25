@@ -51,8 +51,9 @@ public class UserController {
 	public ResponseEntity<?> message(@RequestBody Question question ) {
 
 		try {
-			dataProcessingServiceImpl.divideSentenceIntoWords(question.getQuery());
-			return new ResponseEntity<Map<String, List<String>>>(dataProcessingServiceImpl.divideSentenceIntoWords(question.getQuery()),HttpStatus.OK);
+			return new ResponseEntity<Map<String, List<String>>>(
+					dataProcessingServiceImpl.getResponsAfterProcessQuery(
+							question.getQuery()),HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);
 		}
