@@ -1,5 +1,8 @@
 package com.techforcebuddybl.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techforcebuddybl.dto.Question;
 import com.techforcebuddybl.entity.UserEntity;
-import com.techforcebuddybl.jwt.JwtResponse;
 import com.techforcebuddybl.services.impl.UserDataProcessingServiceImpl;
 import com.techforcebuddybl.services.impl.UserServiceImpl;
 /*
@@ -50,11 +52,10 @@ public class UserController {
 
 		try {
 			dataProcessingServiceImpl.divideSentenceIntoWords(question.getQuery());
+			return new ResponseEntity<Map<String, List<String>>>(dataProcessingServiceImpl.divideSentenceIntoWords(question.getQuery()),HttpStatus.OK);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			e.getStackTrace();
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);
 		}
 		
-		return ResponseEntity.ok(new JwtResponse(question.getQuery()));
 	}
 }

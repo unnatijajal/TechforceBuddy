@@ -34,7 +34,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
 		// Store the token in local storage or a variable
 		localStorage.setItem('token', data.token);
 		// Redirect upon successful login
-		window.location.href = '/chatbot';
+		window.location.href = '/search';
 	})
     .catch(error => {
 		localStorage.removeItem('token');

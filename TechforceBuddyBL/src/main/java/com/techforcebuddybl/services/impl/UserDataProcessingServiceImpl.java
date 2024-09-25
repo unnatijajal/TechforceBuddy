@@ -2,10 +2,12 @@ package com.techforcebuddybl.services.impl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.techforcebuddybl.exception.DataNotFoundException;
 import com.techforcebuddybl.services.UserDataProcessingService;
 
 /*
@@ -29,7 +31,7 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 	String[] tags;
 
 	@Override
-	public void divideSentenceIntoWords(String data) throws Exception {
+	public Map<String, List<String>> divideSentenceIntoWords(String data) throws DataNotFoundException, Exception {
 		try {
 			// Invoke the tokenizeData() to convert the query into the tokens.
 			tokens = parsingServiceImpl.tokenizeData(data);
@@ -44,9 +46,12 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 			List<String> extractedWord = Arrays.asList(tokens);
 			// Invoke the getSimilarityFiles() to find the similarity file 
 			// means this file content have similarity with user's query.
-			similarityServiceImpl.getSimilarityFiles(extractedWord);
+			return similarityServiceImpl.getSimilarityFiles(extractedWord);
 			
-		} catch (Exception e) {
+		}catch (DataNotFoundException e) {
+			throw e;
+		} 
+		catch (Exception e) {
 			throw e;
 		}
 	}

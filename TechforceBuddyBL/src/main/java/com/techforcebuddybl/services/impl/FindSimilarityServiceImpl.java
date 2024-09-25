@@ -14,6 +14,7 @@ import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.techforcebuddybl.exception.DataNotFoundException;
 import com.techforcebuddybl.services.FindSimilarityService;
 import com.techforcebuddybl.services.TFIDFWord2VecService;
 
@@ -65,7 +66,7 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 	 */
 
 	@Override
-	public void getSimilarityFiles(List<String> keywords) throws IOException {
+	public Map<String,List<String>> getSimilarityFiles(List<String> keywords) throws IOException, DataNotFoundException {
 		@SuppressWarnings("deprecation")
 		Word2Vec model = WordVectorSerializer.readWord2Vec(new File(modalFileDirectory + "/word2vecModel.txt"));
 
@@ -123,19 +124,13 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 				.sorted((entry1, entry2) -> Double.compare(entry2.getValue(), entry1.getValue())).limit(5)
 				.map(Map.Entry::getKey).toList();
 
-		/*
-		 * // Read content from relevant files for (File file : relevantFiles) {
-		 * System.out.println("Content from: " + file.getName());
-		 * 
-		 * // Invoke the method to extract the content from the text file.
-		 * extractContent(file, keywords); }
-		 */
-		extractContentAcrossFiles(relevantFiles, keywords);
+		return extractContentAcrossFiles(relevantFiles, keywords);
 	}
 
 
 	
-	public void extractContentAcrossFiles(List<File> files, List<String> keywords) throws IOException {
+	public Map<String,List<String>> extractContentAcrossFiles(List<File> files, List<String> keywords) 
+			throws IOException,DataNotFoundException {
 	    int globalMaxKeywordCount = 0;      // Maximum keyword count across all files
 	    String correspondingFileName = null; // Track which file had the max keyword count
 	    List<String> foundLines = new ArrayList<String>();
@@ -177,15 +172,18 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 	            }
 	        }
 	    }
-	    System.out.println("From : "+ correspondingFileName);
+	   Map<String,List<String>> responseData = new HashMap<String, List<String>>();
 	    if(!foundLines.isEmpty()) {
 	    	for(String line : foundLines) {
 	    		System.out.println(line);
 	    	}
+	    	responseData.put(correspondingFileName, foundLines);
 	    }else {
-	    	System.out.println("Null");
+	    	throw new DataNotFoundException("No Data found");
+	    	
 	    }
 	    
+	    return responseData;
 	}
 
 	/*
