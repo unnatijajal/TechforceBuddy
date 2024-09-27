@@ -27,7 +27,7 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 
 	@Autowired
 	private FindSimilarityServiceImpl similarityServiceImpl;
-
+	
 	String[] tokens;
 	String[] tags;
 
@@ -60,6 +60,8 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 		List<File> relaventFile = similarityServiceImpl.getRelaventFiles(extractedWord);
 		
 		Map<String, List<String>> responseData = similarityServiceImpl.getTheResponseFromRelaventFile(relaventFile, extractedWord);
+		
+		
 		return responseData;
 	}
 

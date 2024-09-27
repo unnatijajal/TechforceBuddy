@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.word2vec.Word2Vec;
@@ -67,8 +67,7 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 	 */
 
 	@Override
-	public List<File> getRelaventFiles(List<String> keywords)
-			throws IOException, DataNotFoundException {
+	public List<File> getRelaventFiles(List<String> keywords) throws IOException, DataNotFoundException {
 		@SuppressWarnings("deprecation")
 		Word2Vec model = WordVectorSerializer.readWord2Vec(new File(modalFileDirectory + "/word2vecModel.txt"));
 
@@ -106,7 +105,9 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 
 					// Get the tokens for the current document
 					String[] tokens = ExtractDataFromPdfServiceImpl.documentMapToken.get(policyFile.getName());
-
+					if (tokens == null) {
+						continue;
+					}
 					// Call the computeTFIDFWeightedWord2Vec method
 					double[] documentVector = tfidfWord2VecService.computeTFIDFWeightedWord2Vec(policyFile.getName(),
 							tokens);
@@ -128,68 +129,134 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 		return relevantFiles;
 	}
 
+	/*
+	 * public Map<String, List<String>> getTheResponseFromRelaventFile(List<File>
+	 * files, List<String> keywords) throws IOException, DataNotFoundException {
+	 * 
+	 * int globalMaxKeywordCount = keywords.size()/2; // Maximum keyword count
+	 * across all files String correspondingFileName = null; // Track which file had
+	 * the max keyword count List<String> foundLines = new ArrayList<String>();
+	 * boolean flag = false;
+	 * 
+	 * Map<String,Integer> linesKeywords = new HashMap<String, Integer>();
+	 * 
+	 * for (File file : files) {
+	 * 
+	 * // Create the document to load the file. PDDocument document =
+	 * PDDocument.load(file);
+	 * 
+	 * // Create the object of PDFTextStripper which is help to extract the data
+	 * from // the pdf. PDFTextStripper textStripper = new PDFTextStripper();
+	 * 
+	 * // Set the staring page the extract the data. textStripper.setStartPage(3);
+	 * 
+	 * // Get the text from the pdf file. String text =
+	 * textStripper.getText(document);
+	 * 
+	 * // Split content into paragraphs List<String> paragraphs =
+	 * splitIntoParagraphs(text.toString());
+	 * 
+	 * // Find the paragraph and line with the maximum number of keyword matches for
+	 * (String paragraph : paragraphs) { List<String> lines =
+	 * splitIntoLines(paragraph); flag =false; for (String line : lines) { int
+	 * keywordCount = 0;
+	 * 
+	 * // Check how many keywords the line contains for (String keyword : keywords)
+	 * { if (line.toLowerCase().contains(keyword.toLowerCase())) { keywordCount++; }
+	 * }
+	 * 
+	 * // Update the global max if this line has more keywords than the current
+	 * global // max if (keywordCount > globalMaxKeywordCount) {
+	 * globalMaxKeywordCount = keywordCount; flag = true; correspondingFileName =
+	 * file.getName(); } } if(flag) { linesKeywords.put(paragraph,
+	 * globalMaxKeywordCount); //paragraph = filterParagraph(paragraph);
+	 * foundLines.add(paragraph); } } }
+	 * 
+	 * List<String> relaventParagraphs = linesKeywords.entrySet().stream()
+	 * .sorted((entryOne,entryTwo)->Double.compare(entryTwo.getValue(),
+	 * entryOne.getValue())) .limit(2) .map(Map.Entry::getKey) .toList();
+	 * 
+	 * List<String> filteredParagrap = new ArrayList<String>(); for(String para :
+	 * relaventParagraphs) { filteredParagrap.add(filterParagraph(para)); }
+	 * Map<String, List<String>> responseData = new HashMap<String, List<String>>();
+	 * if (!foundLines.isEmpty()) { responseData.put(correspondingFileName,
+	 * filteredParagrap); //responseData.put(correspondingFileName, foundLines); }
+	 * else { throw new DataNotFoundException("No Data found");
+	 * 
+	 * }
+	 * 
+	 * return responseData; }
+	 */
+
 	public Map<String, List<String>> getTheResponseFromRelaventFile(List<File> files, List<String> keywords)
 			throws IOException, DataNotFoundException {
-		
-		int globalMaxKeywordCount = 0; // Maximum keyword count across all files
-		String correspondingFileName = null; // Track which file had the max keyword count
-		List<String> foundLines = new ArrayList<String>();
-		boolean flag = false;
-		for (File file : files) {
 
-			// Create the document to load the file.
-			PDDocument document = Loader.loadPDF(file);
+		String correspondingFileName = null; // Track which file had the paragraph with all keywords
+		List<String> foundParagraphs = new ArrayList<>();
 
-			// Create the object of PDFTextStripper which is help to extract the data from
-			// the pdf.
-			PDFTextStripper textStripper = new PDFTextStripper();
+		// Store paragraphs that match all keywords
+		Map<String, Integer> paragraphsKeywords = new HashMap<>();
+		File resourceDir = new File(System.getProperty("user.dir") + "/src/main/resources/pdf");
+		String[] allFiles = resourceDir.list();
 
-			// Set the staring page the extract the data.
-			textStripper.setStartPage(3);
+		// Iterate over the files
+		for (String fileName : allFiles) {
 
-			// Get the text from the pdf file.
-			String text = textStripper.getText(document);
-			
-			// Split content into paragraphs
-			List<String> paragraphs = splitIntoParagraphs(text.toString());
+			// Check if the file is a PDF file
+			if (fileName.endsWith(".pdf")) {
+				// Get the file
+				File f = new File(resourceDir, fileName);
+				// Load the document
+				PDDocument document = PDDocument.load(f);
 
-			// Find the paragraph and line with the maximum number of keyword matches
-			for (String paragraph : paragraphs) {
-				List<String> lines = splitIntoLines(paragraph);
-				flag =false;
-				for (String line : lines) {
-					int keywordCount = 0;
-					
-					// Check how many keywords the line contains
-					for (String keyword : keywords) {
-						if (line.toLowerCase().contains(keyword.toLowerCase())) {
-							keywordCount++;
-						}
+				// Create PDFTextStripper object to extract text
+				PDFTextStripper textStripper = new PDFTextStripper();
+				textStripper.setStartPage(3);
+
+				// Extract text from the PDF file
+				String text = textStripper.getText(document);
+				text = getContentAfterRemoveFooter(document, fileName).toString();
+				// Split content into paragraphs
+				List<String> paragraphs = splitIntoParagraphs(text.toString());
+
+				// Find paragraphs that contain all keywords
+				for (String paragraph : paragraphs) {
+
+					// Check if all keywords are present in the paragraph
+					boolean allKeywordsPresent = keywords.stream()
+							.allMatch(keyword -> paragraph.toLowerCase().contains(keyword.toLowerCase()));
+
+					// If the paragraph contains all keywords, store it
+					if (allKeywordsPresent) {
+						correspondingFileName = f.getName();
+						paragraphsKeywords.put(paragraph, keywords.size()); // Use total keyword count as the value
+						foundParagraphs.add(paragraph);
 					}
-
-					// Update the global max if this line has more keywords than the current global
-					// max
-					if (keywordCount >= globalMaxKeywordCount) {
-						globalMaxKeywordCount = keywordCount;
-						flag = true;
-						correspondingFileName = file.getName();
-					}
-				}
-				if(flag) {
-					paragraph = filterParagraph(paragraph);
-					foundLines.add(paragraph);
 				}
 			}
 		}
-		Map<String, List<String>> responseData = new HashMap<String, List<String>>();
-		if (!foundLines.isEmpty()) {
-			
-			responseData.put(correspondingFileName, foundLines);
+
+		// Collect the paragraphs that matched all keywords
+		List<String> relevantParagraphs = paragraphsKeywords.entrySet().stream()
+				.sorted((entryOne, entryTwo) -> Double.compare(entryTwo.getValue(), entryOne.getValue()))
+				.limit(2) 																									
+				.map(Map.Entry::getKey).toList();
+
+		// Filter the relevant paragraphs (optional, based on your filterParagraph
+		// method)
+		List<String> filteredParagraphs = new ArrayList<>();
+		for (String para : relevantParagraphs) {
+			filteredParagraphs.add(filterParagraph(para));
+		}
+
+		// Prepare the final response data
+		Map<String, List<String>> responseData = new HashMap<>();
+		if (!foundParagraphs.isEmpty()) {
+			responseData.put(correspondingFileName, filteredParagraphs);
 		} else {
 			throw new DataNotFoundException("No Data found");
-
 		}
-		
+
 		return responseData;
 	}
 
@@ -198,7 +265,7 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 	 */
 	public List<String> splitIntoParagraphs(String content) {
 		List<String> paragraphs = new ArrayList<>();
-		String[] paragraphArray = content.split("(?<!\\d\\.)\\.(?!\\d)"); // Split by period
+		String[] paragraphArray = content.split("(?m)(\\n{2,}|\\n\\d\\.)"); // Split by period
 		for (String paragraph : paragraphArray) {
 			paragraphs.add(paragraph.trim());
 		}
@@ -220,10 +287,42 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 	public String filterParagraph(String responseData) {
 		responseData = responseData.replaceAll("\\b\\d+\\.\\d+\\b", "");
 		responseData = responseData.split("\\s").length < 4 ? "" : responseData;
-		responseData = responseData.replaceAll("^\\d+\\s*\\|\\s*P\\s*a\\s*g\\s*e", "");
-		
-        // Print the modified text
-        System.out.println(responseData);
+
 		return responseData;
 	}
+	
+	public StringBuilder getContentAfterRemoveFooter
+			(PDDocument document, String fileName) throws IOException {
+	    // PDFTextStripper to extract the text from each page
+	    PDFTextStripper textStripper = new PDFTextStripper();
+	    
+	    // Iterate through the pages
+	    int numberOfPages = document.getNumberOfPages();
+	    StringBuilder modifiedContent = new StringBuilder();
+
+	    for (int i = 2; i < numberOfPages; i++) {
+	        PDPage page = document.getPage(i);
+
+	        textStripper.setStartPage(i + 1);
+	        textStripper.setEndPage(i + 1);
+
+	        // Extract the text of the page
+	        String pageText = textStripper.getText(document);
+
+	        // Split the text into lines
+            String[] lines = pageText.split("\\r?\\n");
+
+            // Check if the page has more than two lines
+            if (lines.length > 2) {
+               
+                for (int j = 0; j < lines.length - 2; j++) {
+                    modifiedContent.append(lines[j]).append(System.lineSeparator());
+                }
+            }
+
+	        
+	    }
+	    return modifiedContent;
+	}
+	
 }
