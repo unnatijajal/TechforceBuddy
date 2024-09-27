@@ -9,6 +9,6 @@ public interface FindSimilarityService {
 	
 	public double cosineSimilarity(double[] vecA, double[] vecB);
 	
-	public List<File> getRelaventFiles(List<String> extractWord) throws IOException;
+
 	
 }

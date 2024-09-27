@@ -90,7 +90,6 @@ employee will work choice day will consider
 “ leave pay ” .
 personal medical reason good opt leave lop . case
 work letter medical practitioner
-same . final decision will pm TL consider day work day .
 tileavepolicy2024 Techforce Infotech Pvt
 6 . t .
 7 . leave pay
@@ -121,7 +120,6 @@ depend project need . team project leader manager allow
 define project specific work hour .
 total work hour 8 hour despite project break .
 9.2 employee allow total 1hour break day . divide
-30 min lunch break 15 min break Teatime .
 tileavepolicy2024 Techforce Infotech Pvt
 7 . t .
 9.3 lunch time 1230 pm 230 pm employee allow adjust
@@ -160,7 +158,6 @@ supervisor Head day leave .
 10.4 employee keep hisher supervisorhod inform case extension
 leave . proceed leave approval writing will treat
 misconduct employee will liable disciplinary action deem
-necessary .
 tileavepolicy2024 Techforce Infotech Pvt
 8 . t .
 10.5 case approve leave pay medical grounds employee
@@ -192,7 +189,6 @@ team leader .
 inform team leader call emergency unplanned leave .
 inform Team team 's chat group unplanned leave .
 apply leave hr portal resume work leave follow
-concern Team Leader Approver leave approve .
 tileavepolicy2024 Techforce Infotech Pvt
 9 . t .
 note “ not apply ” leave will consider loss pay will
@@ -218,4 +214,3 @@ apply leave approve TL
 cancel approve leave apply leave cancellation
 GreytHR portal
 refer hr portal site understand leaf process
-Employee Service Portal leave activity

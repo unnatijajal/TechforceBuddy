@@ -30,8 +30,6 @@ retrieve message store system sender recipient .
 employee will assign unique email address
 conduct company business email .
 employee prohibit forward electronic message
-company provide system external messaging system personal
-purpose JobCommercial site .
 4 www.techforceglobal.com
 TIITPolicy Techforce Infotech Pvt
 employee authorize instant messaging program will advise
@@ -67,8 +65,6 @@ determine message deliver electronically versus person .
 electronic message legally discoverable permissible evidence court
 law . message compose read loud
 court law .
-employee prohibit unauthorized transmission company trade secret
-confidential privileged communication .
 5 www.techforceglobal.com
 TIITPolicy Techforce Infotech Pvt
 unauthorized copying distribution copyright material prohibit .
@@ -163,8 +159,6 @@ maintain security company business application software tool email
 system network facility voice mail critical provide datum integrity
 stability system . password provide limit access company asset
 need basis .
-company access network electronic mail voice mail resource
-employee support company mission . password assign access
 8 www.techforceglobal.com
 TIITPolicy Techforce Infotech Pvt
 resource authenticate user identity protect network user
@@ -234,8 +228,6 @@ copyright software archival purpose violation copyright law
 contrary company Software usage policy .
 purchase software employee approval department
 manager will follow procedure acquire company
-asset .
-approve software will purchase Purchasing Department .
 10 www.techforceglobal.com
 TIITPolicy Techforce Infotech Pvt
 CIO designate member Department will sole governing
@@ -299,8 +291,6 @@ full cooperation employee require software audits .
 5 . pc software standard
 5.1 objective
 provide guideline purchase installing software company pc 's .
-5.2 apply
-TraineeInterns Employees Consultants
 12 www.techforceglobal.com
 TIITPolicy Techforce Infotech Pvt
 5.3 key guideline
@@ -334,8 +324,6 @@ liaison department deal computing vendor .
 recommend evaluate tasksjobsfunction accomplish
 software product .
 assist hardware system requirement .
-install software need .
-enforce company hardware software standard .
 13 www.techforceglobal.com
 TIITPolicy Techforce Infotech Pvt
 5.7 standard pc Equipment Software List
@@ -399,8 +387,6 @@ time company employee provide hisher login email password
 family member .
 Company employee contractor remote access privilege ensure
 company own personal computer workstation remotely
-connected company corporate network connect network
-time .
 15 www.techforceglobal.com
 TIITPolicy Techforce Infotech Pvt
 company employee contractor remote access privilege
@@ -463,7 +449,6 @@ management will require adhere to .
 9 . lose Assets
 9.1 objective
 provide guideline lose asset LaptopMouseHeadphonesLaptop Bags
-etc. provide organization Techforce Infotech Pvt Ltd. .
 17 www.techforceglobal.com
 TIITPolicy Techforce Infotech Pvt
 9.2 apply
@@ -481,4 +466,3 @@ invoice amount
 1 2 year 80
 2 3 year 64
 3 4 year 51
-4 year 40

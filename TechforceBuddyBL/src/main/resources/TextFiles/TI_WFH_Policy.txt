@@ -24,7 +24,6 @@ employee will work choice day will consider
 “ leave pay ” .
 personal medical reason good opt leave lop . case
 work letter medical practitioner
-same . final decision will pm TL consider day work day .
 4
 4 . point consider WFH
 4.1 Mark Attendance manually
@@ -41,5 +40,3 @@ will consider leave pay miss hour 1 4 hour half day
 8 hour leave full day
 4.5 Employee Broadband connection home .
 4.6 miss scheduled call attend daily call standup 2
-time month day will consider Half Day .
-pm pl report hr same .

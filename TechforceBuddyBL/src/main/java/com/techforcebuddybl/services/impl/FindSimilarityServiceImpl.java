@@ -4,20 +4,23 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.word2vec.Word2Vec;
+import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.techforcebuddybl.exception.DataNotFoundException;
 import com.techforcebuddybl.services.FindSimilarityService;
-import com.techforcebuddybl.services.TFIDFWord2VecService;
+
 
 /*
  * 
@@ -29,8 +32,6 @@ import com.techforcebuddybl.services.TFIDFWord2VecService;
 @Service
 public class FindSimilarityServiceImpl implements FindSimilarityService {
 
-	@Autowired
-	private TFIDFWord2VecService tfidfWord2VecService;
 
 	// Path of directory of the pdf files
 	private String fileDirectory = System.getProperty("user.dir") + "/src/main/resources/pdf";
@@ -61,139 +62,170 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 		return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
 	}
 
-	/*
-	 * This is the method which find the relative similarities file which content is
-	 * relative to the user query.
-	 */
+	public StringBuilder getContentAfterRemoveFooter
+			(PDDocument document, String fileName) throws IOException {
+	    // PDFTextStripper to extract the text from each page
+	    PDFTextStripper textStripper = new PDFTextStripper();
+	    
+	    // Iterate through the pages
+	    int numberOfPages = document.getNumberOfPages();
+	    StringBuilder modifiedContent = new StringBuilder();
 
-	@Override
-	public List<File> getRelaventFiles(List<String> keywords)
+	    for (int i = 2; i < numberOfPages; i++) {
+	        PDPage page = document.getPage(i);
+
+	        textStripper.setStartPage(i);
+	        textStripper.setEndPage(i);
+
+	        // Extract the text of the page
+	        String pageText = textStripper.getText(document);
+
+	        // Split the text into lines
+            String[] lines = pageText.split("\\n");
+
+            // Check if the page has more than two lines
+            if (lines.length > 2) {
+               
+                for (int j = 0; j < lines.length - 2; j++) {
+                    modifiedContent.append(lines[j]).append(System.lineSeparator());
+                }
+            }
+
+	        
+	    }
+	    return modifiedContent;
+	}
+	
+	
+	public List<String> getRelaventFilesResponse(List<String> queryKeywords)
 			throws IOException, DataNotFoundException {
 		@SuppressWarnings("deprecation")
-		Word2Vec model = WordVectorSerializer.readWord2Vec(new File(modalFileDirectory + "/word2vecModel.txt"));
-
-		Map<File, Double> similarityMap = new HashMap<>();
-
-		double[] queryVector = new double[model.getLayerSize()];
-		int count = 0;
-
-		// Aggregate vectors for the keywords
-		for (String keyword : keywords) {
-			if (model.hasWord(keyword)) {
-				double[] wordVector = model.getWordVector(keyword);
-				for (int i = 0; i < queryVector.length; i++) {
-					queryVector[i] += wordVector[i];
-				}
-				count++;
-			}
-		}
-
-		// Normalize the query vector if any keywords were found
-		if (count > 0) {
-			for (int i = 0; i < queryVector.length; i++) {
-				queryVector[i] /= count;
-			}
-		}
+		Word2Vec word2Vec = WordVectorSerializer.readWord2Vec(new File(modalFileDirectory + "/word2vecModel.txt"));
 
 		// Get the all the policy files from the directory
 		File[] policyFiles = new File(fileDirectory).listFiles();
+		Map<String, SectionData> relevantSections = new HashMap<>();
 
 		if (policyFiles != null) {
 
 			for (File policyFile : policyFiles) {
 
 				if (policyFile.isFile() && policyFile.getName().endsWith(".pdf")) {
+					PDDocument document = PDDocument.load(policyFile);
 
-					// Get the tokens for the current document
-					String[] tokens = ExtractDataFromPdfServiceImpl.documentMapToken.get(policyFile.getName());
+					// Create the object of PDFTextStripper which is help to extract the data from the pdf.
+					PDFTextStripper textStripper = new PDFTextStripper();
+					
+					// Set the staring page the extract the data.
+					textStripper.setStartPage(3);
+					
+					// Get the text from the pdf file.
+					String text = textStripper.getText(document);
+					
+					List<String> paragraphs = splitIntoParagraphs(text.toString());
 
-					// Call the computeTFIDFWeightedWord2Vec method
-					double[] documentVector = tfidfWord2VecService.computeTFIDFWeightedWord2Vec(policyFile.getName(),
-							tokens);
-					// Invoke the cosineSimilarity() to calculate the similarities.
-					double similarity = cosineSimilarity(queryVector, documentVector);
-					// Store the similarity file only if the similarity is greater than the 0.69
-					if (similarity > 0.50) {
-						similarityMap.put(policyFile, similarity);
+					// Find the paragraph and line with the maximum number of keyword matches
+					for (String paragraph : paragraphs) {
+						List<String> lines = splitIntoLines(paragraph);
+						
+						for(String line: lines) {
+							String lowerCaseLine = line.toLowerCase();
+				            // Tokenize each line (representing a sentence or section)
+				            List<String> sentenceTokens = tokenize(lowerCaseLine);
+
+				            // Calculate similarity for each keyword in the query
+				            double totalSimilarity = 0.0;
+				            int keywordCount = 0;
+				            
+				            // Use a Set to ensure that each keyword is only counted once per section
+				            Set<String> matchedKeywords = new HashSet<>();
+				            boolean firstKeywordFound = false;  // To track if the first keyword has been found
+				            
+				            for (String queryKeyword : queryKeywords) {
+				                if (word2Vec.hasWord(queryKeyword) && !matchedKeywords.contains(queryKeyword)) {
+				                    for (String token : sentenceTokens) {
+										if (word2Vec.hasWord(token)) {
+											// Count keyword matches
+											if (queryKeyword.equals(token)) {
+												matchedKeywords.add(queryKeyword); // Mark the keyword as matched
+												if (!firstKeywordFound) {
+				                                    keywordCount += 3;  // Higher weight for the first keyword match
+				                                    firstKeywordFound = true;
+				                                } else {
+				                                    keywordCount++;  // Normal weight for subsequent keywords
+				                                }
+												break; // Move to the next keyword after matching
+											}
+				                            double[] queryVector = word2Vec.getWordVector(queryKeyword);
+				                            double[] tokenVector = word2Vec.getWordVector(token);
+				                            double similarity = cosineSimilarity(queryVector, tokenVector);
+				                            totalSimilarity += similarity;
+				                        }
+				                    }
+				                }
+				            }
+
+							if (keywordCount > 0) {
+								// Calculate average similarity for the section
+								double avgSimilarity = totalSimilarity / sentenceTokens.size();
+								SectionData sectionData = new SectionData(line, keywordCount, avgSimilarity);
+								 relevantSections.put(line, sectionData);
+							}
+				        }
 					}
 				}
 			}
 		}
+
+		// Sort the sections first by keyword count, then by similarity
+		List<Map.Entry<String, SectionData>> sortedSections = new ArrayList<>(relevantSections.entrySet());
+		sortedSections.sort((e1, e2) -> {
+			int keywordComparison = Integer.compare(e2.getValue().getKeywordCount(), e1.getValue().getKeywordCount());
+			if (keywordComparison == 0) {
+				return Double.compare(e2.getValue().getAvgSimilarity(), e1.getValue().getAvgSimilarity());
+			} else {
+				return keywordComparison;
+			}
+		});
+
+		// Extract the sorted relevant sections
+        List<String> relevantResults = new ArrayList<>();
+        for (Map.Entry<String, SectionData> entry : sortedSections) {
+        	String response = filterParagraph(entry.getKey());
+            relevantResults.add(response);
+        }
+        return relevantResults;
 
 		// Sort and retrieve top 5 similar policies
-		List<File> relevantFiles = similarityMap.entrySet().stream()
-				.sorted((entry1, entry2) -> Double.compare(entry2.getValue(), entry1.getValue())).limit(5)
-				.map(Map.Entry::getKey).toList();
-
-		return relevantFiles;
 	}
+	
+	// Tokenizer function to tokenize sentences
+    private List<String> tokenize(String text) {
+    	DefaultTokenizerFactory tokenizerFactory = new DefaultTokenizerFactory();
+    	return tokenizerFactory.create(text).getTokens();
+    }
+    
+    private class SectionData {
+        private String section;
+        private int keywordCount;
+        private double avgSimilarity;
 
-	public Map<String, List<String>> getTheResponseFromRelaventFile(List<File> files, List<String> keywords)
-			throws IOException, DataNotFoundException {
-		
-		int globalMaxKeywordCount = 0; // Maximum keyword count across all files
-		String correspondingFileName = null; // Track which file had the max keyword count
-		List<String> foundLines = new ArrayList<String>();
-		boolean flag = false;
-		for (File file : files) {
+        public SectionData(String section, int keywordCount, double avgSimilarity) {
+            this.section = section;
+            this.keywordCount = keywordCount;
+            this.avgSimilarity = avgSimilarity;
+        }
 
-			// Create the document to load the file.
-			PDDocument document = Loader.loadPDF(file);
+        public int getKeywordCount() {
+            return keywordCount;
+        }
 
-			// Create the object of PDFTextStripper which is help to extract the data from
-			// the pdf.
-			PDFTextStripper textStripper = new PDFTextStripper();
-
-			// Set the staring page the extract the data.
-			textStripper.setStartPage(3);
-
-			// Get the text from the pdf file.
-			String text = textStripper.getText(document);
-			
-			// Split content into paragraphs
-			List<String> paragraphs = splitIntoParagraphs(text.toString());
-
-			// Find the paragraph and line with the maximum number of keyword matches
-			for (String paragraph : paragraphs) {
-				List<String> lines = splitIntoLines(paragraph);
-				flag =false;
-				for (String line : lines) {
-					int keywordCount = 0;
-					
-					// Check how many keywords the line contains
-					for (String keyword : keywords) {
-						if (line.toLowerCase().contains(keyword.toLowerCase())) {
-							keywordCount++;
-						}
-					}
-
-					// Update the global max if this line has more keywords than the current global
-					// max
-					if (keywordCount >= globalMaxKeywordCount) {
-						globalMaxKeywordCount = keywordCount;
-						flag = true;
-						correspondingFileName = file.getName();
-					}
-				}
-				if(flag) {
-					paragraph = filterParagraph(paragraph);
-					foundLines.add(paragraph);
-				}
-			}
-		}
-		Map<String, List<String>> responseData = new HashMap<String, List<String>>();
-		if (!foundLines.isEmpty()) {
-			
-			responseData.put(correspondingFileName, foundLines);
-		} else {
-			throw new DataNotFoundException("No Data found");
-
-		}
-		
-		return responseData;
-	}
-
-	/*
+        public double getAvgSimilarity() {
+            return avgSimilarity;
+        }
+    }
+    
+    /*
 	 * This method splits the content into paragraphs.
 	 */
 	public List<String> splitIntoParagraphs(String content) {
