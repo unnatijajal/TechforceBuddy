@@ -4,8 +4,8 @@
 1. Create the Database names "tfb".
 2. Set your databse username and password in application.properties file.
 
-# Run TechforceBuddyUi - For front end
-# Run TechforceBuddyBl - For back end
+Run TechforceBuddyUi 
+Run TechforceBuddyBl 
 
 To process the data pdf hit : 
 /preProcess API
