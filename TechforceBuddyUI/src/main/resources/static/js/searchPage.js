@@ -8,6 +8,11 @@ document.getElementById('logout').addEventListener('click', function() {
 
 document.getElementById('search').addEventListener('click', function(event) {
 	event.preventDefault();
+
+	const searchButton = document.getElementById('search');
+	// Disable the button and show the spinner
+	searchButton.disabled = true;
+
 	const message = document.getElementById('query').value;
 	const userData = {
 		query: message,
@@ -49,8 +54,8 @@ document.getElementById('search').addEventListener('click', function(event) {
 				// If there was something in the loop, display it in the textarea
 				document.getElementById('responseTextArea').value = resultText;
 				document.getElementById('fileName').textContent = 'For more information read\n'
-						+fileName+' file.';  // Use textContent for <p> tag
-			} 
+					+ fileName + ' file.';  // Use textContent for <p> tag
+			}
 		})
 		.catch(error => {
 			// Display the error message in the textarea
