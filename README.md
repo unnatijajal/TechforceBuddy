@@ -4,15 +4,18 @@
 1. Create the Database names "tfb".
 2. Set your databse username and password in application.properties file.
 
-Run TechforceBuddyUi 
-Run TechforceBuddyBl 
+**Run TechforceBuddyUi** 
 
-To process the data pdf hit : 
+**Run TechforceBuddyBl**
+
+**To process the data pdf hit :** 
+
 /preProcess API
 
 **Note: For pre process the data of pdf you have add all policy pdfs into the "src/main/resources/pdf" folder**
 
-To train the modal hit the :
+**To train the modal hit the :**
+
 /trainModal API
 
 **Note : Only admin can hit this API User does not have right for this. And for that you have enter one mannual entry of admin detail into the database table named User**
