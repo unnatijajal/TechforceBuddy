@@ -1,26 +1,32 @@
-# TechforceBuddy
+# Techforce Buddy
+
+This is the project for processing and searching the data related to the different policy from the different policy's PDFs.
+
+Following are the steps for how to set up and use the Techforce Buddy :
 
 **DataBase configuration**
-1. Create the Database names "tfb".
-2. Set your databse username and password in application.properties file.
+     1. Create the Database names "tfb".
+     2. Set your databse username and password in application.properties file.
 
-**Run TechforceBuddyUi** 
+**How to run app?**
+     1. Run the TechforceBuddyBlApplication as Java application.
+     2. Runt the TechforceBuddyUiApplication as java appliction.
 
-**Run TechforceBuddyBl**
+**Note: For /preProcess and /trainModal, you must manually add an admin entry to the User database table.** 
 
-**To process the data pdf hit :** 
+**To process the Pdfs(Admin only)** 
+     1. To prepare PDFs for processing, place them in "src/main/resources/pdf"
+     2. Hit the /preProcess API endpoint for pre processing
 
-/preProcess API
+**Training the Modal(Admin only)**
+     1. Hit the /trainModal API endpoint to train the modal.
 
-**Note: For pre process the data of pdf you have add all policy pdfs into the "src/main/resources/pdf" folder**
+**Note : Only authorized admin can access the /preProcess and /trainModal API endpoint**
 
-**To train the modal hit the :**
+**Query search**
+     1. User must be logged in to search for the queries.
+     2. If user not registred, user must create the an account before logging in.
+     3. Once logged in, user can enter a query in the text box and click the search button to   
+        retrieve relevant result.
 
-/trainModal API
-
-**Note : Only admin can hit this API User does not have right for this. And for that you have to enter one mannual entry of admin detail into the database table named User**
-
-**Step for Query search**
-
- For Query Search user have to login.If user does not have account then first create account then login into the system.
- Then write the query into the text box and then click the search button. And it will give the relavent output.
+ 
