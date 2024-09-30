@@ -20,7 +20,7 @@
 
 **Note : Only admin can hit this API User does not have right for this. And for that you have enter one mannual entry of admin detail into the database table named User**
 
-**Step for Queary search**
+**Step for Query search**
 
  For Query Search user have to login.If user does not have account then first create account then login into the system.
  Then write the query into the text box and then click the search button. And it will give the relavent output.
