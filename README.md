@@ -18,7 +18,7 @@
 
 /trainModal API
 
-**Note : Only admin can hit this API User does not have right for this. And for that you have enter one mannual entry of admin detail into the database table named User**
+**Note : Only admin can hit this API User does not have right for this. And for that you have to enter one mannual entry of admin detail into the database table named User**
 
 **Step for Query search**
 
