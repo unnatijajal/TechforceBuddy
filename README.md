@@ -10,7 +10,7 @@ Run TechforceBuddyBl
 To process the data pdf hit : 
 /preProcess API
 
-# Note: For pre process the data of pdf you have add all policy pdfs into the "src/main/resources/pdf" folder
+**Note: For pre process the data of pdf you have add all policy pdfs into the "src/main/resources/pdf" folder**
 
 To train the modal hit the :
 /trainModal API
