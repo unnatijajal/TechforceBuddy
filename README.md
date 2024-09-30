@@ -14,7 +14,7 @@ Following are the steps for how to set up and use the Techforce Buddy :
      1. Run the TechforceBuddyBlApplication as Java application.
      2. Runt the TechforceBuddyUiApplication as java appliction.
 
-**Note: For /preProcess and /trainModal, you must manually add an admin entry to the User database table.** 
+**Note: Only authorized admin can access the /preProcess and /trainModal API endpoint, you must manually add an admin entry to the User database table.** 
 
 **To process the Pdfs(Admin only)** 
 
@@ -24,8 +24,6 @@ Following are the steps for how to set up and use the Techforce Buddy :
 **Training the Modal(Admin only)**
 
      1. Hit the /trainModal API endpoint to train the modal.
-
-**Note : Only authorized admin can access the /preProcess and /trainModal API endpoint**
 
 **Query search**
 
