@@ -61,6 +61,10 @@ document.getElementById('search').addEventListener('click', function(event) {
 			// Display the error message in the textarea
 			console.error('Error:', error);
 			document.getElementById('responseTextArea').value = `${error.message}`;
-		});
+		})
+		.finally(() => {
+                	// Re-enable the button and hide the spinner after response
+                	searchButton.disabled = false;
+                });
 
 });
