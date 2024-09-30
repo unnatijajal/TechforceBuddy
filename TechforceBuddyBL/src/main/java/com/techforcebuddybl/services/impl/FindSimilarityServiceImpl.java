@@ -127,7 +127,7 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 							if (keywordCount > 0) {
 								// Calculate average similarity for the section
 								double avgSimilarity = totalSimilarity / sentenceTokens.size();
-								SectionData sectionData = new SectionData(line, keywordCount, avgSimilarity);
+								SectionData sectionData = new SectionData(paragraph, keywordCount, avgSimilarity);
 								 relevantSections.put(line, sectionData);
 							}
 				        }
@@ -152,7 +152,7 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 		// Extract the sorted relevant sections
         List<String> relevantResults = new ArrayList<>();
         for (Map.Entry<String, SectionData> entry : sortedSections) {
-        	String response = filterParagraph(entry.getKey());
+        	String response = filterParagraph(entry.getValue().getSection());
             relevantResults.add(response);
         }
         if(relevantResults.size()>10) {
@@ -168,10 +168,12 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
     }
     
     private class SectionData {
+    	private String section;
         private int keywordCount;
         private double avgSimilarity;
 
         public SectionData(String section, int keywordCount, double avgSimilarity) {
+        	this.section = section;
             this.keywordCount = keywordCount;
             this.avgSimilarity = avgSimilarity;
         }
@@ -182,6 +184,10 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 
         public double getAvgSimilarity() {
             return avgSimilarity;
+        }
+        
+        public String getSection() {
+        	return section;
         }
     }
     
