@@ -29,9 +29,9 @@ public class AdminController {
 	
 	@GetMapping("/preProcess")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<?> extractPdf() {
+	public ResponseEntity<?> processDataOfPDF() {
 		try {
-			dataFromPdfServiceImpl.accessFiles();
+			dataFromPdfServiceImpl.processDataOfPDF();
 			return ResponseEntity.ok("PDF extraction successful");
 		} catch (IOException e) {
 			e.printStackTrace();

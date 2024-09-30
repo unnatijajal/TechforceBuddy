@@ -34,6 +34,7 @@ public class SecurityConfig {
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
 
+	@SuppressWarnings("removal")
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
@@ -43,9 +44,6 @@ public class SecurityConfig {
 				.authorizeHttpRequests(request -> request
 						.requestMatchers("/login","/signin")
 						.permitAll()
-				/*
-				 * .requestMatchers("/*") .hasAuthority("ROLE_USER")
-				 */
 				  .anyRequest() .authenticated()
 				 
 						)

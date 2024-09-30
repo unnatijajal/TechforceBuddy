@@ -4,6 +4,7 @@ package com.techforcebuddybl.exception;
  * This is the custom exception class. 
  * Which extends the RuntimeException
  */
+@SuppressWarnings("serial")
 public class DataNotFoundException extends RuntimeException{
 	String message;
 

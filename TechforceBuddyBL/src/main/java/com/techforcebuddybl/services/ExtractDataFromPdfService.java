@@ -7,7 +7,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 
 public interface ExtractDataFromPdfService {
 
-	public void extractDataFromPdf(File file);
+	public String extractDataFromPdf(File file);
 	
 	public void createTextFile(String[] lines, String fileName) throws IOException;
 	

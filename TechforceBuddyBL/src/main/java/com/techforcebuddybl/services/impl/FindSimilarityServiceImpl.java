@@ -10,12 +10,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.techforcebuddybl.exception.DataNotFoundException;
@@ -32,12 +30,8 @@ import com.techforcebuddybl.services.FindSimilarityService;
 @Service
 public class FindSimilarityServiceImpl implements FindSimilarityService {
 
-
 	// Path of directory of the pdf files
 	private String fileDirectory = System.getProperty("user.dir") + "/src/main/resources/pdf";
-
-	// Path of directory of the text files
-	private String textFileDirectory = System.getProperty("user.dir") + "/src/main/resources/TextFiles/";
 
 	// Assign the location of text files to the variable.
 	private String modalFileDirectory = System.getProperty("user.dir") + "/src/main/resources/AiModal";
@@ -62,41 +56,6 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 		return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
 	}
 
-	public StringBuilder getContentAfterRemoveFooter
-			(PDDocument document, String fileName) throws IOException {
-	    // PDFTextStripper to extract the text from each page
-	    PDFTextStripper textStripper = new PDFTextStripper();
-	    
-	    // Iterate through the pages
-	    int numberOfPages = document.getNumberOfPages();
-	    StringBuilder modifiedContent = new StringBuilder();
-
-	    for (int i = 2; i < numberOfPages; i++) {
-	        PDPage page = document.getPage(i);
-
-	        textStripper.setStartPage(i);
-	        textStripper.setEndPage(i);
-
-	        // Extract the text of the page
-	        String pageText = textStripper.getText(document);
-
-	        // Split the text into lines
-            String[] lines = pageText.split("\\n");
-
-            // Check if the page has more than two lines
-            if (lines.length > 2) {
-               
-                for (int j = 0; j < lines.length - 2; j++) {
-                    modifiedContent.append(lines[j]).append(System.lineSeparator());
-                }
-            }
-
-	        
-	    }
-	    return modifiedContent;
-	}
-	
-	
 	public List<String> getRelaventFilesResponse(List<String> queryKeywords)
 			throws IOException, DataNotFoundException {
 		@SuppressWarnings("deprecation")
@@ -176,13 +135,15 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 				}
 			}
 		}
-
+		
 		// Sort the sections first by keyword count, then by similarity
 		List<Map.Entry<String, SectionData>> sortedSections = new ArrayList<>(relevantSections.entrySet());
 		sortedSections.sort((e1, e2) -> {
-			int keywordComparison = Integer.compare(e2.getValue().getKeywordCount(), e1.getValue().getKeywordCount());
+			int keywordComparison = Integer
+					.compare(e2.getValue().getKeywordCount(), e1.getValue().getKeywordCount());
 			if (keywordComparison == 0) {
-				return Double.compare(e2.getValue().getAvgSimilarity(), e1.getValue().getAvgSimilarity());
+				return Double
+						.compare(e2.getValue().getAvgSimilarity(), e1.getValue().getAvgSimilarity());
 			} else {
 				return keywordComparison;
 			}
@@ -194,9 +155,10 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
         	String response = filterParagraph(entry.getKey());
             relevantResults.add(response);
         }
+        if(relevantResults.size()>10) {
+        	return relevantResults.stream().limit(10).toList();
+        }
         return relevantResults;
-
-		// Sort and retrieve top 5 similar policies
 	}
 	
 	// Tokenizer function to tokenize sentences
@@ -206,12 +168,10 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
     }
     
     private class SectionData {
-        private String section;
         private int keywordCount;
         private double avgSimilarity;
 
         public SectionData(String section, int keywordCount, double avgSimilarity) {
-            this.section = section;
             this.keywordCount = keywordCount;
             this.avgSimilarity = avgSimilarity;
         }
@@ -253,9 +213,6 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 		responseData = responseData.replaceAll("\\b\\d+\\.\\d+\\b", "");
 		responseData = responseData.split("\\s").length < 4 ? "" : responseData;
 		responseData = responseData.replaceAll("^\\d+\\s*\\|\\s*P\\s*a\\s*g\\s*e", "");
-		
-        // Print the modified text
-        System.out.println(responseData);
 		return responseData;
 	}
 }

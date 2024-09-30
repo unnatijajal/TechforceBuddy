@@ -1,3 +1,17 @@
+2 . t .
+contents
+salary account ................................................................................................................ 3
+1 . employee salary account ......................................................................................... 3
+2 . account opening process ......................................................................................... 3
+3 . require document ................................................................................................ 3
+4 . employee contact Details Bank account ................................................................ 4
+5 . Bank charge ......................................................................................................... 4
+Payroll norm .................................................................................................................. 4
+1 . Range Salary Payment ................................................................................. 4
+2 . Adjustment Salary ............................................................................................... 5
+3 . tds salary ........................................................................................................ 5
+4 . salary calculation lop loss pay .............................................................. 5
+5 . full final settlement ............................................................................................. 6
 Payroll Policy Techforce Infotech Pvt
 3 . t .
 Payroll Policy Effective 01062019 Version 1.0
@@ -70,9 +84,3 @@ annual leave balance salary will calculate accordingly .
 employee will attend office 50 total work day month
 salary will calculate base total attendant day .
 LOP will calculate hr portal configuration .
-Payroll Policy Techforce Infotech Pvt
-6 . t .
-5 . full final settlement
-employee resign service liable fulfill Notice Period
-mention appointment letter salary lieu thereof .
-full final settlement will time regular monthly payroll process .

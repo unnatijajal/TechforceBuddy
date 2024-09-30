@@ -18,8 +18,6 @@ import com.techforcebuddybl.services.DataParsingService;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import opennlp.tools.postag.POSModel;
-import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.tokenize.WhitespaceTokenizer;
 
 
@@ -43,30 +41,6 @@ public class DataParsingServiceImpl implements DataParsingService {
 		WhitespaceTokenizer tokenizer = WhitespaceTokenizer.INSTANCE;
 		String[] tokens = tokenizer.tokenize(text);
 		return tokens;
-	}
-
-	
-	// This is the method the get Part Of Speech tag of tokens.
-	@Override
-	public String[] parsingData(String[] tokens) throws IOException {
-		String currentDir = System.getProperty("user.dir");
-		File resourceDir = new File(currentDir + "/src/main/resources/OpenNlp_models");
-		FileInputStream inputStream = new FileInputStream(new File(resourceDir, "en-pos-maxent.bin"));
-
-		POSModel model = new POSModel(inputStream);
-		POSTaggerME tagger = new POSTaggerME(model);
-		return tagger.tag(tokens);
-	}
-
-	
-	/* 
-	 * This is method to check whether the given string is 
-	 * Noun, verb or adjective
-	 * 
-	 */
-	@Override
-	public boolean isNounOrVerb(String posTag) {
-		return posTag.startsWith("NN") || posTag.startsWith("VB") || posTag.startsWith("JJ");
 	}
 
 	

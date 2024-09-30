@@ -15,6 +15,7 @@ import com.techforcebuddybl.entity.UserEntity;
  * password and roles of user etc. for JWT authentication.  
  */
 
+@SuppressWarnings("serial")
 public class UserInfoDetails implements UserDetails {
 	
 	private String username ;

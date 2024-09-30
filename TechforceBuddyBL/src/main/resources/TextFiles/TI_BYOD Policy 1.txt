@@ -1,4 +1,14 @@
 TIBringYourOwnDevicePolicy Techforce Infotech Pvt
+2 . t .
+contents
+1 . introduction benefit scope ............................................................................................... 3
+2 . applicability ........................................................................................................................... 3
+3 . BYOD Challenges .................................................................................................................... 4
+4 . risk liability ................................................................................................................... 4
+5 . responsibility ...................................................................................................................... 5
+6 . expectation ........................................................................................................................... 6
+7 . Enforcement ........................................................................................................................... 6
+TIBringYourOwnDevicePolicy Techforce Infotech Pvt
 3 . t .
 1 . introduction benefit scope
 allow employee electronic device work
@@ -89,13 +99,3 @@ prevent datum loss theft .
 private necessary .
 ensure accuracy datum information .
 accountable software install device .
-TIBringYourOwnDevicePolicy Techforce Infotech Pvt
-6 . t .
-device will lock three unsuccessful login attempt .
-6 . exception
-exception policy statement text permit approve
-CEO CoFounder Techforce Management
-7 . enforcement
-employee temporary worker consultant violate policy result
-termination employment relation contractor consultant violate
-policy result termination access andor disciplinary action
