@@ -18,11 +18,7 @@ import com.techforcebuddybl.services.DataParsingService;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import opennlp.tools.postag.POSModel;
-import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.tokenize.WhitespaceTokenizer;
-
-
 
 /*
  * This is class which have different methods for
@@ -34,10 +30,16 @@ import opennlp.tools.tokenize.WhitespaceTokenizer;
 public class DataParsingServiceImpl implements DataParsingService {
 
 	// Get the current directory
-	private String currentDir = System.getProperty("user.dir");
-	
-	
-	// This method convert the text into the token using whitespace to convert into the token.
+	private static String currentDir = System.getProperty("user.dir");
+
+	// Navigate to the TextFiles directory
+	private static File wordStopFile = new File(currentDir + "/src/main/resources", "englishStopWords.txt");
+
+	private static File stanfordPropertiesFile = new File(currentDir + "/src/main/resources",
+			"standford-corenlp.properties");
+
+	// This method convert the text into the token using whitespace to convert into
+	// the token.
 	@Override
 	public String[] tokenizeData(String text) throws IOException {
 		WhitespaceTokenizer tokenizer = WhitespaceTokenizer.INSTANCE;
@@ -45,41 +47,13 @@ public class DataParsingServiceImpl implements DataParsingService {
 		return tokens;
 	}
 
-	
-	// This is the method the get Part Of Speech tag of tokens.
-	@Override
-	public String[] parsingData(String[] tokens) throws IOException {
-		String currentDir = System.getProperty("user.dir");
-		File resourceDir = new File(currentDir + "/src/main/resources/OpenNlp_models");
-		FileInputStream inputStream = new FileInputStream(new File(resourceDir, "en-pos-maxent.bin"));
-
-		POSModel model = new POSModel(inputStream);
-		POSTaggerME tagger = new POSTaggerME(model);
-		return tagger.tag(tokens);
-	}
-
-	
-	/* 
-	 * This is method to check whether the given string is 
-	 * Noun, verb or adjective
-	 * 
-	 */
-	@Override
-	public boolean isNounOrVerb(String posTag) {
-		return posTag.startsWith("NN") || posTag.startsWith("VB") || posTag.startsWith("JJ");
-	}
-
-	
 	/*
-	 * This is the method which remove the all the stop words like 
-	 * and, he, she etc from the lines of files.
+	 * This is the method which remove the all the stop words like and, he, she etc
+	 * from the lines of files.
 	 * 
 	 */
 	public String[] removeWordStop(String[] lines) throws IOException {
 		Set<String> stopWords = new HashSet<>();
-		
-		// Navigate to the TextFiles directory
-		File wordStopFile = new File(currentDir + "/src/main/resources", "englishStopWords.txt");
 
 		try (BufferedReader reader = new BufferedReader(new FileReader(wordStopFile))) {
 			String word;
@@ -100,26 +74,21 @@ public class DataParsingServiceImpl implements DataParsingService {
 			lines[i] = newLine.toString().trim(); // update the line with the new string
 		}
 
-		  return Arrays.stream(lines)
-		            .filter(line -> !line.isEmpty())
-		            .toArray(String[]::new);
+		return Arrays.stream(lines).filter(line -> !line.isEmpty()).toArray(String[]::new);
 	}
 
-	
 	/*
-	 * This method perform the lemmatization on the data.
-	 * Lemmatization is process to convert the word into the it's root form
-	 * Eg : Running will be convert into Run, Derived will be convert into Derive.
-	 *  
+	 * This method perform the lemmatization on the data. Lemmatization is process
+	 * to convert the word into the it's root form Eg : Running will be convert into
+	 * Run, Derived will be convert into Derive.
+	 * 
 	 */
 	@Override
 	public String[] lemmatizationOfData(String[] lines) throws FileNotFoundException, IOException {
 
-		File stanfordPropertiesFile = new File(currentDir + "/src/main/resources", "standford-corenlp.properties");
-		
 		// Create the properties object to set the properties further
 		Properties props = new Properties();
-		
+
 		// Load the properties file for Standford-corenlp.
 		props.load(new FileInputStream(stanfordPropertiesFile));
 		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
@@ -142,6 +111,31 @@ public class DataParsingServiceImpl implements DataParsingService {
 		}
 
 		return lines;
+	}
+
+	@Override
+	public String lemmatizationOfData(String line) throws FileNotFoundException, IOException {
+		// Create the properties object to set the properties further
+		Properties props = new Properties();
+
+		// Load the properties file for Standford-corenlp.
+		props.load(new FileInputStream(stanfordPropertiesFile));
+		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+		
+		CoreDocument document = pipeline.processToCoreDocument(line);
+		// Iterate over the sentences and tokens to extract the lemmas
+		StringBuilder lemmatizedLine = new StringBuilder();
+		for (CoreLabel token : document.tokens()) {
+			String lemma = token.lemma();
+			// Prioritize lemmatization for verb participles (VBG)
+			if (token.tag().equals("VBG")) {
+				lemma = token.lemma();
+			}
+			lemmatizedLine.append(lemma).append(" ");
+		}
+		line = lemmatizedLine.toString().trim();
+		
+		return line;
 	}
 
 }

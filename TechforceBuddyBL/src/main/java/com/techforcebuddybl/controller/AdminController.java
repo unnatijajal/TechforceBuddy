@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techforcebuddybl.services.impl.ExtractDataFromPdfServiceImpl;
+import com.techforcebuddybl.services.impl.Word2VecTrainerFromJSON;
 import com.techforcebuddybl.services.impl.WordTwoVectorModelServiceImpl;
 /*
  * This is the controller class for Admin
@@ -29,9 +30,9 @@ public class AdminController {
 	
 	@GetMapping("/preProcess")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<?> extractPdf() {
+	public ResponseEntity<?> processDataOfPDF() {
 		try {
-			dataFromPdfServiceImpl.accessFiles();
+			dataFromPdfServiceImpl.processDataOfPDF();
 			return ResponseEntity.ok("PDF extraction successful");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -48,6 +49,7 @@ public class AdminController {
 	public ResponseEntity<?> trainModel(){
 		try {
 			modelServiceImpl.trainModel();
+			Word2VecTrainerFromJSON.trainWordTwoVecJson();
 			return ResponseEntity.ok("Model Trained");
 		} catch (IOException e) {
 			e.printStackTrace();
