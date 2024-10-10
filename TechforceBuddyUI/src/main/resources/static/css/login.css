@@ -108,8 +108,8 @@ label {
 .fox {
   position: absolute;
   top: 25%;
-  left: 55%;
-  height: 18%;
+  left: 60%;
+  width:200px;
 }
 .back {
   position: absolute;

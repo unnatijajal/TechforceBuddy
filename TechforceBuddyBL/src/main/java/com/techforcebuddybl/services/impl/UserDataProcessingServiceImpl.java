@@ -1,12 +1,13 @@
 package com.techforcebuddybl.services.impl;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
+import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +28,15 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 	@Autowired
 	private DataParsingServiceImpl dataParsingServiceImpl;
 
+	/*
+	 * @Autowired private FindSimilarityServiceImpl similarityServiceImpl;
+	 */
+
 	@Autowired
-	private FindSimilarityServiceImpl similarityServiceImpl;
-	
-	
+	private TFIDFSimilarity tfidfSimilarity;
+
+	@Autowired
+	private CombineWorTwoVecAndLuceneSearchServiceImpl searchServiceImpl;
 	String[] tokens;
 
 	@Override
@@ -51,22 +57,49 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 
 		// Invoke the removeWordStop() to remove the stop word from the user's query.
 		tokens = dataParsingServiceImpl.removeWordStop(tokens);
-		
+
 		// Lemitisation.
 		tokens = dataParsingServiceImpl.lemmatizationOfData(tokens);
-		
-		// Token of user's query will store into the list 
-		List<String> extractedWord = Arrays.asList(tokens);
 
-		//List<String> response = similarityServiceImpl.getRelaventFilesResponse(extractedWord);
-		//responseData.put("MyFile", response);
+		// Token of user's query will store into the list
+		List<String> extractedWord = Arrays.asList(tokens);
+		// List<String> response =
+		// similarityServiceImpl.getRelaventFilesResponse(extractedWord);
+		// responseData.put("MyFile", response);
 		Map<String, List<String>> responseData = new HashMap<>();
 		Map<String, List<String>> answer;
-		answer = TFIDFSimilarity.searchRelevantSection(extractedWord);
-		for(Map.Entry<String, List<String>> entry : answer.entrySet()) {
+		answer = tfidfSimilarity.searchRelevantSection(extractedWord);
+		for (Map.Entry<String, List<String>> entry : answer.entrySet()) {
 			responseData.put(entry.getKey(), entry.getValue());
 		}
 		return responseData;
 	}
 
+	public Map<String, Double> getResponsAfterQueryProcess(String query) throws DataNotFoundException, Exception {
+		// Split the sentence into the words.
+		tokens = divideSentenceIntoWords(query.toLowerCase());
+
+		// Invoke the removeWordStop() to remove the stop word from the user's query.
+		tokens = dataParsingServiceImpl.removeWordStop(tokens);
+
+		// Lemitisation.
+		tokens = dataParsingServiceImpl.lemmatizationOfData(tokens);
+
+		// Token of user's query will store into the list
+		List<String> extractedWord = Arrays.asList(tokens);
+
+		@SuppressWarnings("deprecation")
+		Word2Vec word2Vec = WordVectorSerializer.readWord2Vec(
+				new File(System.getProperty("user.dir") + "/src/main/resources/AiModal/word2vecModel.bin"));
+		Map<String, Double> responseData = new HashMap<>();
+		List<String> relevanSection;
+		relevanSection = tfidfSimilarity.searchRelevantSections(extractedWord);
+		Map<String, Double> answer;
+		answer = searchServiceImpl.refineWithWord2Vec(word2Vec, relevanSection, extractedWord);
+		;
+		for (Map.Entry<String, Double> entry : answer.entrySet()) {
+			responseData.put(entry.getKey(), entry.getValue());
+		}
+		return responseData;
+	}
 }

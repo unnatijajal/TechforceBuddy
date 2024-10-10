@@ -47,7 +47,7 @@ public class UserController {
 	@PostMapping(path="/query",consumes = "application/json")
 	@CrossOrigin(origins = "http://localhost:8081")
 	//@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<?> message(@RequestBody Question question ) {
+	public ResponseEntity<?> processQueryForResponse(@RequestBody Question question ) {
 
 		try {
 			return new ResponseEntity<Map<String, List<String>>>(
@@ -58,4 +58,20 @@ public class UserController {
 		}
 		
 	}
+	
+	@PostMapping(path="/processQuery",consumes = "application/json")
+	@CrossOrigin(origins = "http://localhost:8081")
+	//@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<?> processQuery(@RequestBody Question question ) {
+
+		try {
+			return new ResponseEntity<Map<String, Double>>(
+					dataProcessingServiceImpl.getResponsAfterQueryProcess(
+							question.getQuery()),HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);
+		}
+		
+	}
+	
 }

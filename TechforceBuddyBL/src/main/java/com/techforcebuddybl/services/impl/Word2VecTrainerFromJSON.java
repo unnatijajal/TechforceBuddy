@@ -43,10 +43,12 @@ public class Word2VecTrainerFromJSON {
 		DefaultTokenizerFactory tokenizer = new DefaultTokenizerFactory();
 
 		// Build the Word2Vec model
-		Word2Vec vec = new Word2Vec.Builder().minWordFrequency(1) // Words appearing less than 1 times will be ignored
+		Word2Vec vec = new Word2Vec.Builder()
+				.minWordFrequency(3) // Words appearing less than 1 times will be ignored
 				.iterations(10) // Number of iterations over the corpus
 				.layerSize(100) // Size of word vectors
 				.seed(42) // For reproducibility
+				.negativeSample(10)
 				.windowSize(2) // Context window size
 				.iterate(sentenceIterator) // Use the sentence iterator
 				.tokenizerFactory(tokenizer) // Use the tokenizer
