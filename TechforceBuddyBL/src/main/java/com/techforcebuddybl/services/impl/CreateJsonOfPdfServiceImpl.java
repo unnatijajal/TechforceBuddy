@@ -24,22 +24,7 @@ public class CreateJsonOfPdfServiceImpl implements CreateJsonOfPdfService {
 	
 	
     public static void setHeadingAndContent(String line, int scenario) {
-		/*
-		 * if(line.matches("^\\d+\\s\\.\\s.*") || line.matches("^\\d+\\.\\s.*")) {
-		 * if(subHeadingFlag) { JSONObject entry = new JSONObject();
-		 * entry.put("heading", currentHeading); entry.put("subheading",
-		 * currentSubheading); // Add the subheading entry.put("section",
-		 * sectionContent.toString().trim()); fileArray.put(entry);
-		 * sectionContent.setLength(0); subHeadingFlag = false; } // Set the current
-		 * heading, removing the numbering currentHeading =
-		 * line.replaceAll("^\\d+\\.\\s+", ""); // Remove number and space
-		 * subHeadingFlag = true;
-		 * 
-		 * }else if(line.matches("^\\d+\\.\\d+\\s+.*") || line.startsWith("")) {
-		 * sectionContent = sectionContent.append(line.replaceFirst("^\\d+\\.\\d*\\s+",
-		 * "")+"\n"); }
-		 */
-    	
+		
     	if (scenario == 1) {
 			if ( line.matches("^\\d+\\.\\s.*")) {
 				// Set the current heading, removing thenumbering

@@ -80,10 +80,6 @@ public class CombineWorTwoVecAndLuceneSearchServiceImpl implements CombineWorTwo
 				if(entry.getValue() > 0)
 					finalResults.put(entry.getKey(), entry.getValue());
 			});
-		
-		for(Map.Entry<String, Double> entry : finalResults.entrySet()) {
-			System.out.println(entry.getKey()+"\n"+entry.getValue());
-		}
 		return finalResults;
 	}
 	

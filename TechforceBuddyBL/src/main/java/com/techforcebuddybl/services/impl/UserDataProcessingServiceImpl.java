@@ -27,6 +27,9 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 
 	@Autowired
 	private DataParsingServiceImpl dataParsingServiceImpl;
+	
+	@Autowired
+	private SentinizeAnalyzerServiceImpl analyzerServiceImpl;
 
 	/*
 	 * @Autowired private FindSimilarityServiceImpl similarityServiceImpl;
@@ -72,6 +75,7 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 		for (Map.Entry<String, List<String>> entry : answer.entrySet()) {
 			responseData.put(entry.getKey(), entry.getValue());
 		}
+		
 		return responseData;
 	}
 
@@ -92,14 +96,17 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 		Word2Vec word2Vec = WordVectorSerializer.readWord2Vec(
 				new File(System.getProperty("user.dir") + "/src/main/resources/AiModal/word2vecModel.bin"));
 		Map<String, Double> responseData = new HashMap<>();
-		List<String> relevanSection;
-		relevanSection = tfidfSimilarity.searchRelevantSections(extractedWord);
+		List<String> relevantSection;
+		relevantSection = tfidfSimilarity.searchRelevantSections(extractedWord);
 		Map<String, Double> answer;
-		answer = searchServiceImpl.refineWithWord2Vec(word2Vec, relevanSection, extractedWord);
-		;
+		answer = searchServiceImpl.refineWithWord2Vec(word2Vec, relevantSection, extractedWord);;
 		for (Map.Entry<String, Double> entry : answer.entrySet()) {
 			responseData.put(entry.getKey(), entry.getValue());
 		}
+		
+		analyzerServiceImpl.retrieveContent(query, answer);
+		
+		
 		return responseData;
 	}
 }
