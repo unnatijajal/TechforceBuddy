@@ -23,10 +23,15 @@
 <body>
 	<div class="container container-width">
 		<div class="row div">
-			<form class="d-flex">
+			<form>
 				<input class="form-control me-2" type="search" placeholder="Search"
 					aria-label="Search" id="query">
-				<button class="btn btn-outline-success" type="submit" id="search">Search</button>
+				<br>
+				<div class="d-flex justify-content-center">
+					<button class="btn btn-outline-success" type="submit" id="searchVersionOne">Old Version</button>
+					&nbsp;&nbsp;
+					<button class="btn btn-outline-success" type="submit" id="searchVersionTwo">New Version</button>
+				</div>
 			</form>
 		</div>
 		<div class="row div">
@@ -39,7 +44,7 @@
 				<p id="fileName"></p>
 			</div>
 		</div>
-		<div class="div">
+		<div class="div ">
 			<button id="logout">
 				<i class="fa-solid fa-arrow-right-from-bracket"></i>
 			</button>

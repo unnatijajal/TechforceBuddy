@@ -102,8 +102,6 @@
 			<artifactId>weka-stable</artifactId>
 			<version>3.8.6</version>
 		</dependency>
-		<!--
-		https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-corenlp -->
 		<dependency>
 			<groupId>edu.stanford.nlp</groupId>
 			<artifactId>stanford-corenlp</artifactId>
@@ -114,6 +112,11 @@
 			<artifactId>stanford-corenlp</artifactId>
 			<version>4.5.4</version>
 			<classifier>models</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -131,6 +134,12 @@
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>
 			<version>2.0.29</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20240205</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.pdfbox/fontbox -->
 		<dependency>
@@ -176,6 +185,12 @@
 			<artifactId>lucene-analyzers-common</artifactId>
 			<version>8.11.0</version>
 		</dependency>
+		<!-- Lucene Query Parser -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-queryparser</artifactId>
+			<version>8.11.0</version>
+		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -186,6 +201,7 @@
 			<artifactId>json</artifactId>
 			<version>20240303</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>

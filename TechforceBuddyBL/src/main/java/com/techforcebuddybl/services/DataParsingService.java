@@ -8,4 +8,6 @@ public interface DataParsingService {
 	public String[] tokenizeData(String text) throws IOException;
 	
 	public String[] lemmatizationOfData(String[] lines)throws FileNotFoundException, IOException ;
+	
+	public String lemmatizationOfData(String line)throws FileNotFoundException, IOException ;
 }
