@@ -15,10 +15,10 @@ import com.techforcebuddybl.dto.Question;
 import com.techforcebuddybl.entity.UserEntity;
 import com.techforcebuddybl.services.impl.UserDataProcessingServiceImpl;
 import com.techforcebuddybl.services.impl.UserServiceImpl;
+
 /*
  * Controller class for use's related API
  */
-
 @RestController
 public class UserController {
 
@@ -44,14 +44,16 @@ public class UserController {
 	}
 	
 
-	@PostMapping(path="/query",consumes = "application/json")
+	/*
+	 * Search query in unstructured data
+	 */
+	@PostMapping(path="/v1/query",consumes = "application/json")
 	@CrossOrigin(origins = "http://localhost:8081")
-	//@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<?> processQueryForResponse(@RequestBody Question question ) {
 
 		try {
-			return new ResponseEntity<Map<String, List<String>>>(
-					dataProcessingServiceImpl.getResponsAfterProcessQuery(
+			return new ResponseEntity<Map<String,String>>(
+					dataProcessingServiceImpl.getResponsUsingUnstructuredData(
 							question.getQuery()),HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);
@@ -59,13 +61,17 @@ public class UserController {
 		
 	}
 	
-	@PostMapping(path="/processQuery",consumes = "application/json")
+	
+	/*
+	 * Search the query in structured data
+	 */
+	@PostMapping(path="/v2/query",consumes = "application/json")
 	@CrossOrigin(origins = "http://localhost:8081")
 	public ResponseEntity<?> processQuery(@RequestBody Question question ) {
 
 		try {
-			return new ResponseEntity<Map<String, List<String>>>(
-					dataProcessingServiceImpl.getResponsAfterQueryProcess(
+			return new ResponseEntity<List<String>>(
+					dataProcessingServiceImpl.getResponsUsingStructuredData(
 							question.getQuery()),HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);

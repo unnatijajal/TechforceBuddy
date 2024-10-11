@@ -28,14 +28,14 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 	
 	@Autowired
 	private CreateJsonOfPdfServiceImpl createJsonOfPdfServiceImpl;
+	// Navigate to the src/main/resources directory
+	private File resourceDir = new File(currentDir + "/src/main/resources/pdf");
 
 	/*
 	 * This the method for process the data from the pdf files
 	 */
 	public void processDataOfPDF() throws IOException {
 
-		// Navigate to the src/main/resources directory
-		File resourceDir = new File(currentDir + "/src/main/resources/pdf");
 		// Get the list of files
 		String[] files = resourceDir.list();
 		// Iterate over the files
@@ -77,6 +77,40 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 
 			}
 		}
+	}
+	
+	public void processPDFDataToCreateJson() {
+		// Get the list of files
+				String[] files = resourceDir.list();
+				// Iterate over the files
+				for (String fileName : files) {
+
+					// Check if the file is a PDF file
+					if (fileName.endsWith(".pdf")) {
+						// Get the file
+						File file = new File(resourceDir, fileName);
+						// Invoke the method to extract the data from the pdf
+						String text = extractDataFromPdf(file);
+						/*
+						 * Used regex to remove all bulleting and punctuation extra white spaces from
+						 * the text for data Pre-Process
+						 */
+						//text = text.replaceAll("[\\p{Punct}&&[^\u002E]]", "");
+
+						// Split the text into the array of string
+						String[] lines = text.split("\n");
+
+						try {
+							createJsonOfPdfServiceImpl.createJsonOfPdf(lines, fileName);
+
+						} catch (DataNotFoundException exception) {
+							System.out.println(exception.getMessage());
+						} catch (Exception e) {
+							System.out.println(e.getMessage());
+						}
+
+					}
+				}
 	}
 
 	/*

@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 import org.springframework.stereotype.Service;
@@ -35,7 +33,6 @@ public class SentinizeAnalyzerServiceImpl implements SentinizeAnalyzerService {
     public String analyzeSentiment(String query) {
         CoreDocument document = new CoreDocument(query);
         pipeline.annotate(document);
-
         // Get sentiment for the query (assuming it's one sentence)
         return document.sentences().get(0).sentiment();
     }

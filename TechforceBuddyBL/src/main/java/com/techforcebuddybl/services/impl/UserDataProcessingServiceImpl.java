@@ -3,7 +3,6 @@ package com.techforcebuddybl.services.impl;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,13 +27,9 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 
 	@Autowired
 	private DataParsingServiceImpl dataParsingServiceImpl;
-	
-	@Autowired
-	private SentinizeAnalyzerServiceImpl analyzerServiceImpl;
 
-	/*
-	 * @Autowired private FindSimilarityServiceImpl similarityServiceImpl;
-	 */
+	@Autowired
+	private FindSimilarityServiceImpl similarityServiceImpl;
 
 	@Autowired
 	private TFIDFSimilarity tfidfSimilarity;
@@ -55,7 +50,9 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 		}
 	}
 
-	public Map<String, List<String>> getResponsAfterProcessQuery(String query) throws DataNotFoundException, Exception {
+	// This is the method to get the response using unstructured data
+	@Override
+	public Map<String,String> getResponsUsingUnstructuredData(String query) throws DataNotFoundException, Exception {
 		// Split the sentence into the words.
 		tokens = divideSentenceIntoWords(query.toLowerCase());
 
@@ -67,47 +64,41 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 
 		// Token of user's query will store into the list
 		List<String> extractedWord = Arrays.asList(tokens);
-		// List<String> response =
-		// similarityServiceImpl.getRelaventFilesResponse(extractedWord);
-		// responseData.put("MyFile", response);
-		Map<String, List<String>> responseData = new HashMap<>();
-		Map<String, List<String>> answer;
-		answer = tfidfSimilarity.searchRelevantSection(extractedWord);
-		for (Map.Entry<String, List<String>> entry : answer.entrySet()) {
-			responseData.put(entry.getKey(), entry.getValue());
-		}
+		Map<String,String> response = similarityServiceImpl.getRelaventFilesResponse(extractedWord);
 		
-		return responseData;
+
+		return response;
 	}
 
-	public Map<String, List<String>> getResponsAfterQueryProcess(String query) throws DataNotFoundException, Exception {
-		// Split the sentence into the words.
-		tokens = divideSentenceIntoWords(query.toLowerCase());
+	// This is the method to get the data using structured data
 
-		// Invoke the removeWordStop() to remove the stop word from the user's query.
-		tokens = dataParsingServiceImpl.removeWordStop(tokens);
+	@Override
+	public List<String> getResponsUsingStructuredData(String query) throws DataNotFoundException, Exception {
+	    tokens = divideSentenceIntoWords(query.toLowerCase());
+	    tokens = dataParsingServiceImpl.removeWordStop(tokens);
+	    tokens = dataParsingServiceImpl.lemmatizationOfData(tokens);
 
-		// Lemitisation.
-		tokens = dataParsingServiceImpl.lemmatizationOfData(tokens);
+	    List<String> extractedWord = Arrays.asList(tokens);
 
-		// Token of user's query will store into the list
-		List<String> extractedWord = Arrays.asList(tokens);
+	    @SuppressWarnings("deprecation")
+	    Word2Vec word2Vec = WordVectorSerializer.readWord2Vec(
+	            new File(System.getProperty("user.dir") + "/src/main/resources/AiModal/word2vecModel.bin"));
+	     
+	    Map<String, List<String>> relevantSection;
+	    
+	    relevantSection = tfidfSimilarity.searchRelevantSections(extractedWord);
+	    
+	    Map<String, Map<String, Double>> answer;
+	    
+	    answer = searchServiceImpl.refineWithWord2Vec(word2Vec, relevantSection, extractedWord);
+	    List<String> rewrittenSections = new ArrayList<>();
+	    answer.forEach((fileName, sectionMap) -> {
+	        sectionMap.entrySet().stream().limit(2).forEach(entry -> {
+	            rewrittenSections.add(entry.getKey()+"\n[Reference : "+fileName+"]");
+	        });
+	    });
 
-		@SuppressWarnings("deprecation")
-		Word2Vec word2Vec = WordVectorSerializer.readWord2Vec(
-				new File(System.getProperty("user.dir") + "/src/main/resources/AiModal/word2vecModel.bin"));
-		Map<String, List<String>> responseData = new HashMap<>();
-		List<String> relevantSection;
-		relevantSection = tfidfSimilarity.searchRelevantSections(extractedWord);
-		Map<String, Double> answer;
-		List<String> response = new ArrayList<String>();
-		answer = searchServiceImpl.refineWithWord2Vec(word2Vec, relevantSection, extractedWord);
-		answer.entrySet()
-			.stream()
-			.limit(2)
-			.forEach(entry -> response.add(entry.getKey()));
-		System.out.println(analyzerServiceImpl.analyzeSentiment(query));
-		responseData.put("Myfile",response);
-		return responseData;
+	    return rewrittenSections;
 	}
+
 }

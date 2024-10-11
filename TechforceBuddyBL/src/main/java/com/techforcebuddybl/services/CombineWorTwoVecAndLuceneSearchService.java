@@ -9,6 +9,6 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 public interface CombineWorTwoVecAndLuceneSearchService {
 
 	public INDArray getQueryVector(List<String> keywords, Word2Vec word2Vec);
-	public Map<String, Double> refineWithWord2Vec(Word2Vec word2Vec, List<String> luceneResults, List<String> queryKeywords);
+	public Map<String, Map<String, Double>> refineWithWord2Vec(Word2Vec word2Vec, Map<String, List<String>> luceneResults, List<String> queryKeywords);
 	public double computeSimilarity(INDArray queryVector, INDArray sectionVector);
 }

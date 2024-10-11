@@ -6,18 +6,103 @@ document.getElementById('logout').addEventListener('click', function() {
 	}
 });
 
-document.getElementById('search').addEventListener('click', function(event) {
+document.getElementById('searchVersionOne').addEventListener('click', function(event) {
 	event.preventDefault();
 
-	const searchButton = document.getElementById('search');
-	// Disable the button and show the spinner
-	searchButton.disabled = true;
+	const searchVersionOneButton = document.getElementById('searchVersionOne');
+	const searchVersionTwoButton = document.getElementById('searchVersionTwo');
+	// Disable the button 
+	searchVersionOneButton.disabled = true;
+	searchVersionTwoButton.disabled = true;
 
 	const message = document.getElementById('query').value;
 	const userData = {
 		query: message,
 	};
-	fetch('http://localhost:8082/processQuery', {
+	fetch('http://localhost:8082/v1/query', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': 'Bearer ' + localStorage.getItem('token'),
+		},
+		body: JSON.stringify(userData),
+	})
+		.then(response => {
+			// Check if the response status is OK (status code 200)
+			if (!response.ok) {
+				// If not OK, throw an error to be caught in the catch block
+				return response.text().then(errMessage => {
+					throw new Error(errMessage);
+				});
+			}
+			// If the response is OK, parse the JSON
+			return response.json();
+		})
+		.then(data => {
+			let resultText = '';
+			let fileName = '';
+			// Main div reference
+			const mainDiv = document.getElementById('responseDiv');
+
+			// Clear the main div if needed
+			mainDiv.innerHTML = '';
+			// Log the parsed data to check the structure
+
+
+			// Check if 'data' is an object
+			if (typeof data === 'object' && data !== null) {
+				// Iterate over the map (assuming it's a JSON object where each key is a string and value is a list)
+				for (const [key, value] of Object.entries(data)) {
+					resultText += `${value.join('\n')}`;  // Use backticks for template literals
+					fileName = `${key}`;  // Store the key as the fileName
+
+					const pElement = document.createElement('p');
+					pElement.className = 'card-text'; // Set the class name
+					pElement.textContent = `${key.join('\n')}`;
+
+					// Create a new anchor element
+					const aElement = document.createElement('a');
+					aElement.className = 'card-link'; // Set the class name
+					aElement.textContent = 'For more information, read'; // Set the link text
+					aElement.href = `${value}`;
+
+					// Append the paragraph and anchor to the main div
+					mainDiv.appendChild(pElement);
+					mainDiv.appendChild(aElement);
+				}
+
+			}
+		})
+		.catch(error => {
+			const errorElement = document.createElement('p');
+			errorElement.textContent = `${error.message}`;
+			mainDiv.appendChild(errorElement);
+			// Display the error message in the textarea
+			console.error('Error:', error);
+			document.getElementById('responseTextArea').value = `${error.message}`;
+		}).finally(() => {
+			// Re-enable the button and hide the spinner after response
+			searchVersionOneButton.disabled = false;
+			searchVersionTwoButton.disabled = false;
+		});
+
+});
+
+
+document.getElementById('searchVersionTwo').addEventListener('click', function(event) {
+	event.preventDefault();
+
+	const searchVersionOneButton = document.getElementById('searchVersionOne');
+	const searchVersionTwoButton = document.getElementById('searchVersionTwo');
+	// Disable the button 
+	searchVersionOneButton.disabled = true;
+	searchVersionTwoButton.disabled = true;
+
+	const message = document.getElementById('query').value;
+	const userData = {
+		query: message,
+	};
+	fetch('http://localhost:8082/v2/query', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -63,7 +148,8 @@ document.getElementById('search').addEventListener('click', function(event) {
 			document.getElementById('responseTextArea').value = `${error.message}`;
 		}).finally(() => {
 			// Re-enable the button and hide the spinner after response
-			searchButton.disabled = false;
+			searchVersionOneButton.disabled = false;
+			searchVersionTwoButton.disabled = false;
 		});
 
 });
