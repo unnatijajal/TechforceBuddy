@@ -61,11 +61,10 @@ public class UserController {
 	
 	@PostMapping(path="/processQuery",consumes = "application/json")
 	@CrossOrigin(origins = "http://localhost:8081")
-	//@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<?> processQuery(@RequestBody Question question ) {
 
 		try {
-			return new ResponseEntity<Map<String, Double>>(
+			return new ResponseEntity<Map<String, List<String>>>(
 					dataProcessingServiceImpl.getResponsAfterQueryProcess(
 							question.getQuery()),HttpStatus.OK);
 		} catch (Exception e) {

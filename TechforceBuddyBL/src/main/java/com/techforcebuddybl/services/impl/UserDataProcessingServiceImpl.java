@@ -1,6 +1,7 @@
 package com.techforcebuddybl.services.impl;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +80,7 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 		return responseData;
 	}
 
-	public Map<String, Double> getResponsAfterQueryProcess(String query) throws DataNotFoundException, Exception {
+	public Map<String, List<String>> getResponsAfterQueryProcess(String query) throws DataNotFoundException, Exception {
 		// Split the sentence into the words.
 		tokens = divideSentenceIntoWords(query.toLowerCase());
 
@@ -95,18 +96,18 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 		@SuppressWarnings("deprecation")
 		Word2Vec word2Vec = WordVectorSerializer.readWord2Vec(
 				new File(System.getProperty("user.dir") + "/src/main/resources/AiModal/word2vecModel.bin"));
-		Map<String, Double> responseData = new HashMap<>();
+		Map<String, List<String>> responseData = new HashMap<>();
 		List<String> relevantSection;
 		relevantSection = tfidfSimilarity.searchRelevantSections(extractedWord);
 		Map<String, Double> answer;
-		answer = searchServiceImpl.refineWithWord2Vec(word2Vec, relevantSection, extractedWord);;
-		for (Map.Entry<String, Double> entry : answer.entrySet()) {
-			responseData.put(entry.getKey(), entry.getValue());
-		}
-		
-		analyzerServiceImpl.retrieveContent(query, answer);
-		
-		
+		List<String> response = new ArrayList<String>();
+		answer = searchServiceImpl.refineWithWord2Vec(word2Vec, relevantSection, extractedWord);
+		answer.entrySet()
+			.stream()
+			.limit(2)
+			.forEach(entry -> response.add(entry.getKey()));
+		System.out.println(analyzerServiceImpl.analyzeSentiment(query));
+		responseData.put("Myfile",response);
 		return responseData;
 	}
 }

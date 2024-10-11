@@ -1,6 +1,7 @@
 package com.techforcebuddybl.services.impl;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,39 +50,108 @@ public class CombineWorTwoVecAndLuceneSearchServiceImpl implements CombineWorTwo
 	    return dotProduct / (magnitudeA * magnitudeB);
 	}
 
-	@Override
+	/*
+	 * @Override public Map<String, Double> refineWithWord2Vec(Word2Vec word2Vec,
+	 * List<String> luceneResults, List<String> queryKeywords) { INDArray
+	 * queryVector = getQueryVector(queryKeywords, word2Vec); // After the normalize
+	 * the queryvector queryVector = normalizeVector(queryVector);
+	 * 
+	 * Map<String, Double> similarityScores = new HashMap<>(); for(String section :
+	 * luceneResults) { String[] words = section.split("\\s+"); INDArray
+	 * sectionVector = Nd4j.zeros(word2Vec.lookupTable().layerSize()); int
+	 * validWordCount = 0; for (String word : words) { if (word2Vec.hasWord(word)) {
+	 * sectionVector.addi(word2Vec.getWordVectorMatrix(word)); validWordCount++; } }
+	 * if (validWordCount > 0) { sectionVector.divi(validWordCount); } sectionVector
+	 * = normalizeVector(sectionVector); double similarity =
+	 * computeSimilarity(queryVector, sectionVector); similarityScores.put(section,
+	 * similarity); } Map<String, Double> finalResults = new HashMap<>();
+	 * similarityScores.entrySet().stream() .sorted(Map.Entry.<String,
+	 * Double>comparingByValue().reversed()) .forEach(entry -> { if(entry.getValue()
+	 * > 0) finalResults.put(entry.getKey(), entry.getValue()); }); return
+	 * finalResults; }
+	 */
+	
 	public Map<String, Double> refineWithWord2Vec(Word2Vec word2Vec, List<String> luceneResults, List<String> queryKeywords) {
-		INDArray queryVector = getQueryVector(queryKeywords, word2Vec);
-		// After the normalize the queryvector
-		queryVector = normalizeVector(queryVector);
+	    INDArray queryVector = getQueryVector(queryKeywords, word2Vec);
+	    // Normalize the query vector
+	    queryVector = normalizeVector(queryVector);
 
-		Map<String, Double> similarityScores = new HashMap<>();
-		for(String section : luceneResults) {
-			String[] words = section.split("\\s+");
-			INDArray sectionVector = Nd4j.zeros(word2Vec.lookupTable().layerSize());
-            int validWordCount = 0;
-            for (String word : words) {
-                if (word2Vec.hasWord(word)) {
-                    sectionVector.addi(word2Vec.getWordVectorMatrix(word));
-                    validWordCount++;
-                }
-            }
-            if (validWordCount > 0) {
-                sectionVector.divi(validWordCount);
-            }
-            sectionVector = normalizeVector(sectionVector);
-            double similarity = computeSimilarity(queryVector, sectionVector);
-            similarityScores.put(section, similarity);
-		}
-		 Map<String, Double> finalResults = new HashMap<>();
-		similarityScores.entrySet().stream()
-			.sorted(Map.Entry.<String, Double>comparingByValue().reversed())
-			.forEach(entry -> {
-				if(entry.getValue() > 0)
-					finalResults.put(entry.getKey(), entry.getValue());
-			});
-		return finalResults;
+	    Map<String, SectionData> sectionDataMap = new HashMap<>();
+
+	    for (String section : luceneResults) {
+	        String[] words = section.split("\\s+");
+	        
+	        // Count how many query keywords are present in the section
+	        int keywordCount = 0;
+	        boolean containsFirstKeyword = false;
+
+	        for (String queryKeyword : queryKeywords) {
+	            if (section.toLowerCase().contains(queryKeyword.toLowerCase())) {
+	                keywordCount++;
+	                if (queryKeyword.equalsIgnoreCase(queryKeywords.get(0))) {
+	                    containsFirstKeyword = true;  // Check if the first keyword is present
+	                }
+	            }
+	        }
+
+	        // If no keywords are found, skip the section
+	        if (keywordCount == 0) {
+	            continue;
+	        }
+
+	        // Calculate section vector and similarity
+	        INDArray sectionVector = Nd4j.zeros(word2Vec.lookupTable().layerSize());
+	        int validWordCount = 0;
+	        for (String word : words) {
+	            if (word2Vec.hasWord(word)) {
+	                sectionVector.addi(word2Vec.getWordVectorMatrix(word));
+	                validWordCount++;
+	            }
+	        }
+	        if (validWordCount > 0) {
+	            sectionVector.divi(validWordCount);
+	        }
+	        sectionVector = normalizeVector(sectionVector);
+	        double similarity = computeSimilarity(queryVector, sectionVector);
+
+	        // Store section details with similarity, keyword count, and if it contains the first keyword
+	        sectionDataMap.put(section, new SectionData(similarity, keywordCount, containsFirstKeyword));
+	    }
+
+	    // Sort the sections based on:
+	    // 1. Number of keyword matches (higher count comes first)
+	    // 2. Whether it contains the first keyword (true comes after multiple keywords)
+	    // 3. Similarity score (higher similarity comes before lower similarity)
+	    Map<String, Double> finalResults = new LinkedHashMap<>();
+	    sectionDataMap.entrySet().stream()
+	        .sorted((entry1, entry2) -> {
+	            SectionData data1 = entry1.getValue();
+	            SectionData data2 = entry2.getValue();
+
+	            // Sort by keyword count (higher is better)
+	            int keywordCountComparison = Integer.compare(data2.getKeywordCount(), data1.getKeywordCount());
+	            if (keywordCountComparison != 0) {
+	                return keywordCountComparison;
+	            }
+
+	            // Sort by whether the first keyword is present (true comes second)
+	            int firstKeywordComparison = Boolean.compare(data2.containsFirstKeyword(), data1.containsFirstKeyword());
+	            if (firstKeywordComparison != 0) {
+	                return firstKeywordComparison;
+	            }
+
+	            // Sort by similarity (higher is better)
+	            return Double.compare(data2.getSimilarity(), data1.getSimilarity());
+	        })
+	        .forEach(entry -> {
+	            if (entry.getValue().getSimilarity() > 0) {
+	                finalResults.put(entry.getKey(), entry.getValue().getSimilarity());
+	            }
+	        });
+	    return finalResults;
 	}
+
+
 	
 	private INDArray normalizeVector(INDArray vector) {
 	    // Calculate the L2 norm manually
@@ -95,6 +165,32 @@ public class CombineWorTwoVecAndLuceneSearchServiceImpl implements CombineWorTwo
 	    // Normalize the vector by dividing each component by the norm
 	    return vector.div(norm);
 	}
+	class SectionData {
+	    private double similarity;
+	    private int keywordCount;
+	    private boolean containsFirstKeyword;
+
+	    // Constructor
+	    public SectionData(double similarity, int keywordCount, boolean containsFirstKeyword) {
+	        this.similarity = similarity;
+	        this.keywordCount = keywordCount;
+	        this.containsFirstKeyword = containsFirstKeyword;
+	    }
+
+	    // Getters
+	    public double getSimilarity() {
+	        return similarity;
+	    }
+
+	    public int getKeywordCount() {
+	        return keywordCount;
+	    }
+
+	    public boolean containsFirstKeyword() {
+	        return containsFirstKeyword;
+	    }
+	}
+
 
 
 }

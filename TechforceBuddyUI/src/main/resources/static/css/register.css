@@ -1,0 +1,88 @@
+/* @import url('https://fonts.googleapis.com/css?family=PT+Sans'); */
+@import url('https://fonts.googleapis.com/css2?family=Nerko+One&display=swap');
+
+
+*{
+	font-family: 'Nerko One', cursive;
+}
+
+
+:root {
+  --colour-one: #ffd1b7;
+  --colour-two: #fee4d4;
+  --colour-three: #fdb493;
+  --colour-four: #fb966f;
+  --colour-five: #f45f34;
+  --colour-six: #302825;
+  --colour-seven: #a69f9c;
+  --colour-eight: #707e8d;
+}
+.customer {
+  
+  font-color: var(--colour-five);
+  background: var(--colour-four);
+  border-radius: 5px;
+  border: none;
+  height: 50px;
+  width: 150px;
+}
+
+body{
+  background: #fff;
+  font-family: 'PT Sans', sans-serif;
+  background: var(--colour-one);
+}
+h2{
+  padding-top: 1.5rem;
+}
+a{
+  color: #333;
+}
+a:hover{
+  color: #da5767;
+  text-decoration: none;
+  cursor: pointer;
+}
+.card{
+  border: 0.40rem solid #f8f9fa;
+  top: 10%;
+}
+.form-control{
+  background-color: #f8f9fa;
+  padding: 20px;
+  padding: 15px;
+  margin-bottom: 1.3rem;
+}
+
+.form{
+  border-bottom: 3px solid var(--colour-four);
+  border-right: 3px solid var(--colour-four);
+  
+  box-shadow: 10px 10px 6px 2px rgba(251,150,111,0.6);
+  overflow: hidden;
+}
+
+
+.form-control:focus {
+
+    color: #000000;
+    background-color: #ffffff;
+    border: 3px solid var(--colour-four);
+    outline: 0;
+    box-shadow: none;
+
+}
+
+.btn{
+  padding: 0.6rem 1.2rem;
+  background: #da5767;
+  border: 2px solid #da5767;
+}
+.btn-primary:hover {
+
+    
+    background-color: #df8c96;
+    border-color: #df8c96;
+  transition: .3s;
+
+}
