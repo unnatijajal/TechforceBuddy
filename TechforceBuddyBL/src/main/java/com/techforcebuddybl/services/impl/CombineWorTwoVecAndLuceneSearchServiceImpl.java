@@ -148,12 +148,14 @@ public class CombineWorTwoVecAndLuceneSearchServiceImpl implements CombineWorTwo
 	    private double similarity;
 	    private int keywordCount;
 	    private boolean containsFirstKeyword;
+	    
 
 	    // Constructor
-	    public SectionData(double similarity, int keywordCount, boolean containsFirstKeyword) {
+	    public SectionData(double similarity, int keywordCount, boolean containsFirstKeyword){
 	        this.similarity = similarity;
 	        this.keywordCount = keywordCount;
 	        this.containsFirstKeyword = containsFirstKeyword;
+	      
 	    }
 
 	    // Getters
@@ -168,6 +170,8 @@ public class CombineWorTwoVecAndLuceneSearchServiceImpl implements CombineWorTwo
 	    public boolean containsFirstKeyword() {
 	        return containsFirstKeyword;
 	    }
+
+	    
 	}
 
 }

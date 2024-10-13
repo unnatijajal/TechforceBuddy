@@ -1,8 +1,8 @@
 package com.techforcebuddybl.services.impl;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,7 +73,7 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 	// This is the method to get the data using structured data
 
 	@Override
-	public List<String> getResponsUsingStructuredData(String query) throws DataNotFoundException, Exception {
+	public Map<String,String> getResponsUsingStructuredData(String query) throws DataNotFoundException, Exception {
 	    tokens = divideSentenceIntoWords(query.toLowerCase());
 	    tokens = dataParsingServiceImpl.removeWordStop(tokens);
 	    tokens = dataParsingServiceImpl.lemmatizationOfData(tokens);
@@ -91,10 +91,10 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 	    Map<String, Map<String, Double>> answer;
 	    
 	    answer = searchServiceImpl.refineWithWord2Vec(word2Vec, relevantSection, extractedWord);
-	    List<String> rewrittenSections = new ArrayList<>();
+	    Map<String,String> rewrittenSections = new HashMap<String,String>();
 	    answer.forEach((fileName, sectionMap) -> {
 	        sectionMap.entrySet().stream().limit(2).forEach(entry -> {
-	            rewrittenSections.add(entry.getKey()+"\n[Reference : "+fileName+"]");
+	            rewrittenSections.put(entry.getKey(),fileName);
 	        });
 	    });
 

@@ -70,7 +70,7 @@ public class UserController {
 	public ResponseEntity<?> processQuery(@RequestBody Question question ) {
 
 		try {
-			return new ResponseEntity<List<String>>(
+			return new ResponseEntity<Map<String,String>>(
 					dataProcessingServiceImpl.getResponsUsingStructuredData(
 							question.getQuery()),HttpStatus.OK);
 		} catch (Exception e) {

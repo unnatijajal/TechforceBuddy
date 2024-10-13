@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -154,9 +155,17 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
         for (Map.Entry<String, SectionData> entry : sortedSections) {
             finalResults.put(entry.getValue().getSection(), entry.getValue().getFileName());
         }
-        if(finalResults.size()>10) {
-        	return (Map<String, String>) finalResults.entrySet().stream().limit(10);
+        
+ 
+        if (finalResults.size() > 10) {
+            return finalResults.entrySet().stream()
+                    .limit(10)
+                    .collect(Collectors.toMap(
+                        entry -> (String) entry.getKey(), 
+                        entry -> (String) entry.getValue()
+                    ));
         }
+
         return finalResults;
 	}
 
