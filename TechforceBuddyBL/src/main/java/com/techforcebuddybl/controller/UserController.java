@@ -1,5 +1,6 @@
 package com.techforcebuddybl.controller;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,7 +71,7 @@ public class UserController {
 	public ResponseEntity<?> processQuery(@RequestBody Question question ) {
 
 		try {
-			return new ResponseEntity<Map<String,List<String>>>(
+			return new ResponseEntity<LinkedHashMap<String,List<String>>>(
 					dataProcessingServiceImpl.getResponsUsingStructuredData(
 							question.getQuery()),HttpStatus.OK);
 		} catch (Exception e) {

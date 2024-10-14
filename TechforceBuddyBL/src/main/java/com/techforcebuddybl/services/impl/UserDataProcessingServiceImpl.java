@@ -2,6 +2,7 @@ package com.techforcebuddybl.services.impl;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -72,7 +73,7 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 	// This is the method to get the data using structured data
 
 	@Override
-	public Map<String,List<String>> getResponsUsingStructuredData(String query) throws DataNotFoundException, Exception {
+	public LinkedHashMap<String,List<String>> getResponsUsingStructuredData(String query) throws DataNotFoundException, Exception {
 	    tokens = divideSentenceIntoWords(query.toLowerCase());
 	    tokens = dataParsingServiceImpl.removeWordStop(tokens);
 	    tokens = dataParsingServiceImpl.lemmatizationOfData(tokens);
@@ -88,14 +89,16 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 	    relevantSection = tfidfSimilarity.searchRelevantSections(extractedWord);
 	    
 	    
-	    Map<String, List<String>> answer;
+	    LinkedHashMap<String, List<String>> answer;
 	    
 	    answer = searchServiceImpl.refineWithWord2Vec(word2Vec, relevantSection, extractedWord);
 	    
-	    Map<String, List<String>> finalResult = answer.entrySet().stream()
+	    LinkedHashMap<String, List<String>> finalResult = answer.entrySet().stream()
 	    	    .collect(Collectors.toMap(
 	    	        Map.Entry::getKey, // Keep the original key
-	    	        entry -> entry.getValue().stream().limit(2).collect(Collectors.toList()) // Limit the list to 2 elements
+	    	        entry -> entry.getValue().stream().limit(2).collect(Collectors.toList()), // Limit the list to 2 elements
+	    	        (existing, replacement) -> existing, // Merge function in case of duplicate keys
+	    	        LinkedHashMap::new // Use LinkedHashMap as the map type
 	    	    ));
 
 	    return finalResult;

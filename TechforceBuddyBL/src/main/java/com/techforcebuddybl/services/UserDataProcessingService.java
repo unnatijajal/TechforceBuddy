@@ -1,5 +1,6 @@
 package com.techforcebuddybl.services;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,6 @@ public interface UserDataProcessingService {
 	
 	Map<String,String> getResponsUsingUnstructuredData(String query) throws DataNotFoundException, Exception;
 	
-	Map<String,List<String>> getResponsUsingStructuredData(String query) throws DataNotFoundException, Exception;
+	LinkedHashMap<String,List<String>> getResponsUsingStructuredData(String query) throws DataNotFoundException, Exception;
 	
 }

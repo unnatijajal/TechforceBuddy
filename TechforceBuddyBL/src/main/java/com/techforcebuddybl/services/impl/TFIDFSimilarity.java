@@ -3,10 +3,9 @@ package com.techforcebuddybl.services.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -32,7 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class TFIDFSimilarity {
 
-	public Map<String, List<String>> searchRelevantSections(List<String> keywords) throws IOException, ParseException {
+	public LinkedHashMap<String, List<String>> searchRelevantSections(List<String> keywords) throws IOException, ParseException {
 		// Path to your JSON file
 		String jsonFilePath = System.getProperty("user.dir") + "/src/main/resources/json/output.json";
 
@@ -84,7 +83,7 @@ public class TFIDFSimilarity {
 		Query query = parser.parse(combinedQuery);
 		TopDocs results = searcher.search(query, 5);
 
-		Map<String, List<String>> relevantSectionsByFile = new HashMap<>();
+		LinkedHashMap<String, List<String>> relevantSectionsByFile = new LinkedHashMap<>();
 
 		// Step 5: Search and store results by file
 		for (ScoreDoc scoreDoc : results.scoreDocs) {

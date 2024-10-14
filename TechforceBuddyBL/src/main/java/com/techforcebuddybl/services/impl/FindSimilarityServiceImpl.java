@@ -3,8 +3,8 @@ package com.techforcebuddybl.services.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,14 +57,14 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String,String> getRelaventFilesResponse(List<String> queryKeywords)
+	public LinkedHashMap<String, String> getRelaventFilesResponse(List<String> queryKeywords)
 			throws IOException, DataNotFoundException {
 		@SuppressWarnings("deprecation")
 		Word2Vec word2Vec = WordVectorSerializer.readWord2Vec(new File(modalFileDirectory + "/word2vecModel.txt"));
 
 		// Get the all the policy files from the directory
 		File[] policyFiles = new File(fileDirectory).listFiles();
-		Map<String, SectionData> relevantSections = new HashMap<>();
+		LinkedHashMap<String, SectionData> relevantSections = new LinkedHashMap<>();
 
 		if (policyFiles != null) {
 
@@ -73,100 +73,99 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 				if (policyFile.isFile() && policyFile.getName().endsWith(".pdf")) {
 					PDDocument document = PDDocument.load(policyFile);
 
-					// Create the object of PDFTextStripper which is help to extract the data from the pdf.
+					// Create the object of PDFTextStripper which is help to extract the data from
+					// the pdf.
 					PDFTextStripper textStripper = new PDFTextStripper();
-					
+
 					// Set the staring page the extract the data.
 					textStripper.setStartPage(3);
-					
+
 					// Get the text from the pdf file.
 					String text = textStripper.getText(document);
-					
+
 					List<String> paragraphs = splitIntoParagraphs(text.toString());
 
 					// Find the paragraph and line with the maximum number of keyword matches
 					for (String paragraph : paragraphs) {
 						List<String> lines = splitIntoLines(paragraph);
-						
-						for(String line: lines) {
-							String lowerCaseLine = line.toLowerCase();
-				            // Tokenize each line (representing a sentence or section)
-				            List<String> sentenceTokens = tokenize(lowerCaseLine);
 
-				            // Calculate similarity for each keyword in the query
-				            double totalSimilarity = 0.0;
-				            int keywordCount = 0;
-				            
-				            // Use a Set to ensure that each keyword is only counted once per section
-				            Set<String> matchedKeywords = new HashSet<>();
-				            boolean firstKeywordFound = false;  // To track if the first keyword has been found
-				            
-				            for (String queryKeyword : queryKeywords) {
-				                if (word2Vec.hasWord(queryKeyword) && !matchedKeywords.contains(queryKeyword)) {
-				                    for (String token : sentenceTokens) {
+						for (String line : lines) {
+							String lowerCaseLine = line.toLowerCase();
+							// Tokenize each line (representing a sentence or section)
+							List<String> sentenceTokens = tokenize(lowerCaseLine);
+
+							// Calculate similarity for each keyword in the query
+							double totalSimilarity = 0.0;
+							int keywordCount = 0;
+
+							// Use a Set to ensure that each keyword is only counted once per section
+							Set<String> matchedKeywords = new HashSet<>();
+							boolean firstKeywordFound = false; // To track if the first keyword has been found
+
+							for (String queryKeyword : queryKeywords) {
+								if (word2Vec.hasWord(queryKeyword) && !matchedKeywords.contains(queryKeyword)) {
+									for (String token : sentenceTokens) {
 										if (word2Vec.hasWord(token)) {
 											// Count keyword matches
 											if (queryKeyword.equals(token)) {
 												matchedKeywords.add(queryKeyword); // Mark the keyword as matched
 												if (!firstKeywordFound) {
-				                                    keywordCount += 3;  // Higher weight for the first keyword match
-				                                    firstKeywordFound = true;
-				                                } else {
-				                                    keywordCount++;  // Normal weight for subsequent keywords
-				                                }
+													keywordCount += 3; // Higher weight for the first keyword match
+													firstKeywordFound = true;
+												} else {
+													keywordCount++; // Normal weight for subsequent keywords
+												}
 												break; // Move to the next keyword after matching
 											}
-				                            double[] queryVector = word2Vec.getWordVector(queryKeyword);
-				                            double[] tokenVector = word2Vec.getWordVector(token);
-				                            double similarity = cosineSimilarity(queryVector, tokenVector);
-				                            totalSimilarity += similarity;
-				                        }
-				                    }
-				                }
-				            }
+											double[] queryVector = word2Vec.getWordVector(queryKeyword);
+											double[] tokenVector = word2Vec.getWordVector(token);
+											double similarity = cosineSimilarity(queryVector, tokenVector);
+											totalSimilarity += similarity;
+										}
+									}
+								}
+							}
 
 							if (keywordCount > 0) {
 								// Calculate average similarity for the section
 								double avgSimilarity = totalSimilarity / sentenceTokens.size();
-								SectionData sectionData = new SectionData(paragraph, keywordCount, avgSimilarity,policyFile.getName());
-								 relevantSections.put(line, sectionData);
+								SectionData sectionData = new SectionData(paragraph, keywordCount, avgSimilarity,
+										policyFile.getName());
+								relevantSections.put(line, sectionData);
 							}
-				        }
+						}
 					}
 				}
 			}
 		}
-		
+
 		// Sort the sections first by keyword count, then by similarity
 		List<Map.Entry<String, SectionData>> sortedSections = new ArrayList<>(relevantSections.entrySet());
 		sortedSections.sort((e1, e2) -> {
-			int keywordComparison = Integer
-					.compare(e2.getValue().getKeywordCount(), e1.getValue().getKeywordCount());
+			int keywordComparison = Integer.compare(e2.getValue().getKeywordCount(), e1.getValue().getKeywordCount());
 			if (keywordComparison == 0) {
-				return Double
-						.compare(e2.getValue().getAvgSimilarity(), e1.getValue().getAvgSimilarity());
+				return Double.compare(e2.getValue().getAvgSimilarity(), e1.getValue().getAvgSimilarity());
 			} else {
 				return keywordComparison;
 			}
 		});
-		Map<String,String> finalResults = new HashMap<String, String>();
+		LinkedHashMap<String, String> finalResults = new LinkedHashMap<String, String>();
 		// Extract the sorted relevant sections
-       
-        for (Map.Entry<String, SectionData> entry : sortedSections) {
-            finalResults.put(entry.getValue().getSection(), entry.getValue().getFileName());
-        }
-        
- 
-        if (finalResults.size() > 10) {
-            return finalResults.entrySet().stream()
-                    .limit(10)
-                    .collect(Collectors.toMap(
-                        entry -> (String) entry.getKey(), 
-                        entry -> (String) entry.getValue()
-                    ));
-        }
 
-        return finalResults;
+		for (Map.Entry<String, SectionData> entry : sortedSections) {
+			finalResults.put(entry.getValue().getSection(), entry.getValue().getFileName());
+		}
+
+		// Limit the size to 10 if necessary and return a LinkedHashMap
+		if (finalResults.size() > 10) {
+			return finalResults.entrySet().stream().limit(10)
+					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+							(existing, replacement) -> existing, // In case of duplicate keys, keep the existing entry
+							LinkedHashMap::new // Use LinkedHashMap to maintain insertion order
+					));
+		}
+
+		return finalResults;
 	}
 
 	// Tokenizer function to tokenize sentences

@@ -1,0 +1,23 @@
+2 Confidential Manish Mori
+unauthorized request will reject appropriate message .
+3 . Registration Frontend
+description
+will allow user create account enter detail .
+ui element
+text Field
+text Field
+email text field
+password password field
+Register Button
+functionality
+form datum will validate JavaScript .
+post request will backend registration .
+Backend will store user detail return confirmation message .
+4 . Chat Interface PostLogin Frontend
+description
+user log will present Techforce Buddy chatbot
+interface enter query receive response .
+ui element
+search bar input field user query
+response area Textarea display chatbot response
+functionality

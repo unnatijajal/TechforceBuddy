@@ -1,7 +1,7 @@
 package com.techforcebuddybl.services.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,17 +51,17 @@ public class CombineWorTwoVecAndLuceneSearchServiceImpl implements CombineWorTwo
 	}
 
 
-	public Map<String, List<String>> refineWithWord2Vec(Word2Vec word2Vec, Map<String, List<String>> luceneResults, List<String> queryKeywords) {
+	public LinkedHashMap<String, List<String>> refineWithWord2Vec(Word2Vec word2Vec, Map<String, List<String>> luceneResults, List<String> queryKeywords) {
 	    INDArray queryVector = getQueryVector(queryKeywords, word2Vec);
 	    queryVector = normalizeVector(queryVector);
 
-	    Map<String, List<String>> refinedResults = new HashMap<>();
+	    LinkedHashMap<String, List<String>> refinedResults = new LinkedHashMap<>();
 
 	    for (Map.Entry<String, List<String>> entry : luceneResults.entrySet()) {
 	        String fileName = entry.getKey();
 	        List<String> sections = entry.getValue();
 
-	        Map<String, SectionData> sectionDataMap = new HashMap<>();
+	        Map<String, SectionData> sectionDataMap = new LinkedHashMap<>();
 
 	        for (String section : sections) {
 	            String[] words = section.split("\\s+");
@@ -99,7 +99,6 @@ public class CombineWorTwoVecAndLuceneSearchServiceImpl implements CombineWorTwo
 	            sectionDataMap.put(section, new SectionData(similarity, keywordCount, containsFirstKeyword));
 	        }
 
-	       // Map<String, Double> finalResults = new LinkedHashMap<>();
 	        List<String> finalResults = new ArrayList<String>();
 	        sectionDataMap.entrySet().stream()
 	            .sorted((entry1, entry2) -> {

@@ -91,12 +91,7 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 						File file = new File(resourceDir, fileName);
 						// Invoke the method to extract the data from the pdf
 						String text = extractDataFromPdf(file);
-						/*
-						 * Used regex to remove all bulleting and punctuation extra white spaces from
-						 * the text for data Pre-Process
-						 */
-						//text = text.replaceAll("[\\p{Punct}&&[^\u002E]]", "");
-
+						
 						// Split the text into the array of string
 						String[] lines = text.split("\n");
 
@@ -133,7 +128,6 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 
 			// Get the text from the pdf file.
 			text = textStripper.getText(document);
-		//	text = getContentAfterRemoveFooter(document, text).toString();
 		} catch (IOException exception) {
 			System.out.println(exception);
 		}
