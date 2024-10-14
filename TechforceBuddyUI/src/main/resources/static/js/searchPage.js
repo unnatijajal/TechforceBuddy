@@ -39,30 +39,57 @@ document.getElementById('searchVersionOne').addEventListener('click', function(e
 			return response.json();
 		})
 		.then(data => {
-			let resultText = '';
-			let fileName = '';
+			// Main div reference
+			const mainDiv = document.getElementById('responseDiv');
 
+			// Clear the main div if needed
+			mainDiv.innerHTML = '';
 			// Log the parsed data to check the structure
-			console.log('Response data:', data);
 
 			// Check if 'data' is an object
 			if (typeof data === 'object' && data !== null) {
+
 				// Iterate over the map (assuming it's a JSON object where each key is a string and value is a list)
 				for (const [key, value] of Object.entries(data)) {
-					resultText += `${value.join('\n')}`;  // Use backticks for template literals
-					fileName = `${key}`;  // Store the key as the fileName
+					/*resultText += `${key.join('\n')}`;  // Use backticks for template literals
+					fileName = `${value}`;  // Store the key as the fileName*/
+
+					const pElement = document.createElement('p');
+					pElement.className = 'card-text'; // Set the class name
+					pElement.textContent = `${key}`;
+
+					const smallTag = document.createElement('small'); // Create a <small> tag
+					smallTag.textContent = `${value}`;
+
+
+					// Create a new anchor element
+					const aElement = document.createElement('a');
+					aElement.className = 'card-link'; // Set the class name
+					aElement.appendChild(smallTag); // Set the link text
+
+
+					// Append the paragraph and anchor to the main div
+					mainDiv.appendChild(pElement);
+					mainDiv.appendChild(aElement);
+
+					// Create and append <br> tag
+					const brElement = document.createElement('br');
+					mainDiv.appendChild(brElement);
+
+					// Create and append <hr> tag
+					const hrElement = document.createElement('hr');
+					mainDiv.appendChild(hrElement);
 				}
 
-				// If there was something in the loop, display it in the textarea
-				document.getElementById('responseTextArea').value = resultText;
-				document.getElementById('fileName').textContent = 'For more information read\n'
-					+ fileName + ' file.';  // Use textContent for <p> tag
 			}
 		})
 		.catch(error => {
+			const errorElement = document.createElement('p');
+			errorElement.textContent = `${error.message}`;
+			mainDiv.appendChild(errorElement);
 			// Display the error message in the textarea
 			console.error('Error:', error);
-			document.getElementById('responseTextArea').value = `${error.message}`;
+
 		}).finally(() => {
 			// Re-enable the button and hide the spinner after response
 			searchVersionOneButton.disabled = false;
@@ -102,33 +129,52 @@ document.getElementById('searchVersionTwo').addEventListener('click', function(e
 				});
 			}
 			// If the response is OK, parse the JSON
+			
 			return response.json();
 		})
 		.then(data => {
-			let resultText = '';
-			let fileName = '';
+			// Main div reference
+			const mainDiv = document.getElementById('responseDiv');
 
+			// Clear the main div if needed
+			mainDiv.innerHTML = '';
 			// Log the parsed data to check the structure
-			console.log('Response data:', data);
 
 			// Check if 'data' is an object
 			if (typeof data === 'object' && data !== null) {
-				// Iterate over the map (assuming it's a JSON object where each key is a string and value is a list)
-				for (const [key, value] of Object.entries(data)) {
-					resultText += `${value.join('\n')}`;  // Use backticks for template literals
-					fileName = `${key}`;  // Store the key as the fileName
+
+				for (const [fileName, sections] of Object.entries(data)) {
+					// Create a new anchor for the file name
+					const aElement = document.createElement('a');
+					aElement.className = 'card-link';
+					aElement.textContent ='Reference : '+ fileName;
+					
+					// Iterate over the sections list and add each section in a <p> tag
+					sections.forEach(section => {
+						// Create a paragraph tag for each section
+						const pElement = document.createElement('p');
+						pElement.className = 'card-text';
+						pElement.innerHTML =  section.replace(/\n/g, '<br>');
+						
+						// Append the paragraph to the main div
+						mainDiv.appendChild(pElement);
+						mainDiv.appendChild(aElement);
+
+					});
+
+					// Append a horizontal rule after each file entry for better separation
+					const hrElement = document.createElement('hr');
+					mainDiv.appendChild(hrElement);
 				}
 
-				// If there was something in the loop, display it in the textarea
-				document.getElementById('responseTextArea').value = resultText;
-				document.getElementById('fileName').textContent = 'For more information read\n'
-					+ fileName + ' file.';  // Use textContent for <p> tag
 			}
 		})
 		.catch(error => {
+			const errorElement = document.createElement('p');
+			errorElement.textContent = `${error.message}`;
+			mainDiv.appendChild(errorElement);
 			// Display the error message in the textarea
 			console.error('Error:', error);
-			document.getElementById('responseTextArea').value = `${error.message}`;
 		}).finally(() => {
 			// Re-enable the button and hide the spinner after response
 			searchVersionOneButton.disabled = false;

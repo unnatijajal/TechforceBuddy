@@ -1,11 +1,10 @@
 package com.techforcebuddybl.services.impl;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.word2vec.Word2Vec;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.techforcebuddybl.exception.DataNotFoundException;
 import com.techforcebuddybl.services.UserDataProcessingService;
-import com.techforcebuddybl.util.ResponseRewriter;
 
 /*
  * This is the implementation class of UserDataProcessingService
@@ -54,7 +52,7 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 
 	// This is the method to get the response using unstructured data
 	@Override
-	public Map<String, List<String>> getResponsUsingUnstructuredData(String query) throws DataNotFoundException, Exception {
+	public Map<String, String> getResponsUsingUnstructuredData(String query) throws DataNotFoundException, Exception {
 		// Split the sentence into the words.
 		tokens = divideSentenceIntoWords(query.toLowerCase());
 
@@ -63,52 +61,46 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 
 		// Lemitisation.
 		tokens = dataParsingServiceImpl.lemmatizationOfData(tokens);
-		Map<String, List<String>> responseData = new HashMap<>();
+
 		// Token of user's query will store into the list
 		List<String> extractedWord = Arrays.asList(tokens);
-		List<String> response = similarityServiceImpl.getRelaventFilesResponse(extractedWord);
-		responseData.put("MyFile", response);
+		Map<String, String> response = similarityServiceImpl.getRelaventFilesResponse(extractedWord);
 
-		return responseData;
+		return response;
 	}
 
 	// This is the method to get the data using structured data
+
 	@Override
-	public Map<String, List<String>> getResponsUsingStructuredData(String query) throws DataNotFoundException, Exception {
-		// Split the sentence into the words.
-		tokens = divideSentenceIntoWords(query.toLowerCase());
+	public Map<String,List<String>> getResponsUsingStructuredData(String query) throws DataNotFoundException, Exception {
+	    tokens = divideSentenceIntoWords(query.toLowerCase());
+	    tokens = dataParsingServiceImpl.removeWordStop(tokens);
+	    tokens = dataParsingServiceImpl.lemmatizationOfData(tokens);
 
-		// Invoke the removeWordStop() to remove the stop word from the user's query.
-		tokens = dataParsingServiceImpl.removeWordStop(tokens);
+	    List<String> extractedWord = Arrays.asList(tokens);
 
-		// Lemitisation.
-		tokens = dataParsingServiceImpl.lemmatizationOfData(tokens);
+	    @SuppressWarnings("deprecation")
+	    Word2Vec word2Vec = WordVectorSerializer.readWord2Vec(
+	            new File(System.getProperty("user.dir") + "/src/main/resources/AiModal/word2vecModel.bin"));
+	     
+	    Map<String, List<String>> relevantSection;
+	    
+	    relevantSection = tfidfSimilarity.searchRelevantSections(extractedWord);
+	    
+	    
+	    Map<String, List<String>> answer;
+	    
+	    answer = searchServiceImpl.refineWithWord2Vec(word2Vec, relevantSection, extractedWord);
+	    
+	    Map<String, List<String>> finalResult = answer.entrySet().stream()
+	    	    .collect(Collectors.toMap(
+	    	        Map.Entry::getKey, // Keep the original key
+	    	        entry -> entry.getValue().stream().limit(2).collect(Collectors.toList()) // Limit the list to 2 elements
+	    	    ));
 
-		// Token of user's query will store into the list
-		List<String> extractedWord = Arrays.asList(tokens);
+	    return finalResult;
 
-		@SuppressWarnings("deprecation")
-		Word2Vec word2Vec = WordVectorSerializer.readWord2Vec(
-				new File(System.getProperty("user.dir") + "/src/main/resources/AiModal/word2vecModel.bin"));
-		
-		Map<String, List<String>> responseData = new HashMap<>();
-		
-		List<String> relevantSection;
-		
-		relevantSection = tfidfSimilarity.searchRelevantSections(extractedWord);
-		
-		Map<String, Double> answer;
-		
-		List<String> response = new ArrayList<String>();
-		
-		answer = searchServiceImpl.refineWithWord2Vec(word2Vec, relevantSection, extractedWord);
-		
-		ResponseRewriter rewriter = new ResponseRewriter();
-		answer.entrySet().stream().limit(2).forEach(entry -> {
-			response.add(rewriter.rewriteResponse(entry.getKey()));
-		});
 
-		responseData.put("Myfile", response);
-		return responseData;
 	}
+
 }

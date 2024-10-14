@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import com.techforcebuddybl.exception.DataNotFoundException;
 import com.techforcebuddybl.services.FindSimilarityService;
-
 
 /*
  * 
@@ -56,7 +56,8 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 		return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
 	}
 
-	public List<String> getRelaventFilesResponse(List<String> queryKeywords)
+	@SuppressWarnings("unchecked")
+	public Map<String,String> getRelaventFilesResponse(List<String> queryKeywords)
 			throws IOException, DataNotFoundException {
 		@SuppressWarnings("deprecation")
 		Word2Vec word2Vec = WordVectorSerializer.readWord2Vec(new File(modalFileDirectory + "/word2vecModel.txt"));
@@ -127,7 +128,7 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 							if (keywordCount > 0) {
 								// Calculate average similarity for the section
 								double avgSimilarity = totalSimilarity / sentenceTokens.size();
-								SectionData sectionData = new SectionData(paragraph, keywordCount, avgSimilarity);
+								SectionData sectionData = new SectionData(paragraph, keywordCount, avgSimilarity,policyFile.getName());
 								 relevantSections.put(line, sectionData);
 							}
 				        }
@@ -148,50 +149,63 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 				return keywordComparison;
 			}
 		});
-
+		Map<String,String> finalResults = new HashMap<String, String>();
 		// Extract the sorted relevant sections
-        List<String> relevantResults = new ArrayList<>();
+       
         for (Map.Entry<String, SectionData> entry : sortedSections) {
-        	String response = filterParagraph(entry.getValue().getSection());
-            relevantResults.add(response);
-        }
-        if(relevantResults.size()>10) {
-        	return relevantResults.stream().limit(10).toList();
-        }
-        return relevantResults;
-	}
-	
-	// Tokenizer function to tokenize sentences
-    private List<String> tokenize(String text) {
-    	DefaultTokenizerFactory tokenizerFactory = new DefaultTokenizerFactory();
-    	return tokenizerFactory.create(text).getTokens();
-    }
-    
-    private class SectionData {
-    	private String section;
-        private int keywordCount;
-        private double avgSimilarity;
-
-        public SectionData(String section, int keywordCount, double avgSimilarity) {
-        	this.section = section;
-            this.keywordCount = keywordCount;
-            this.avgSimilarity = avgSimilarity;
-        }
-
-        public int getKeywordCount() {
-            return keywordCount;
-        }
-
-        public double getAvgSimilarity() {
-            return avgSimilarity;
+            finalResults.put(entry.getValue().getSection(), entry.getValue().getFileName());
         }
         
-        public String getSection() {
-        	return section;
+ 
+        if (finalResults.size() > 10) {
+            return finalResults.entrySet().stream()
+                    .limit(10)
+                    .collect(Collectors.toMap(
+                        entry -> (String) entry.getKey(), 
+                        entry -> (String) entry.getValue()
+                    ));
         }
-    }
-    
-    /*
+
+        return finalResults;
+	}
+
+	// Tokenizer function to tokenize sentences
+	private List<String> tokenize(String text) {
+		DefaultTokenizerFactory tokenizerFactory = new DefaultTokenizerFactory();
+		return tokenizerFactory.create(text).getTokens();
+	}
+
+	private class SectionData {
+		private String section;
+		private int keywordCount;
+		private double avgSimilarity;
+		private String fileName;
+
+		public SectionData(String section, int keywordCount, double avgSimilarity, String fileName) {
+			this.section = section;
+			this.keywordCount = keywordCount;
+			this.avgSimilarity = avgSimilarity;
+			this.fileName = fileName;
+		}
+
+		public int getKeywordCount() {
+			return keywordCount;
+		}
+
+		public double getAvgSimilarity() {
+			return avgSimilarity;
+		}
+
+		public String getSection() {
+			return section;
+		}
+
+		public String getFileName() {
+			return fileName;
+		}
+	}
+
+	/*
 	 * This method splits the content into paragraphs.
 	 */
 	public List<String> splitIntoParagraphs(String content) {
