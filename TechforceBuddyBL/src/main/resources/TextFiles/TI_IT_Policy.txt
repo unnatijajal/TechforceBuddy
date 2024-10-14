@@ -1,0 +1,484 @@
+3 www.techforceglobal.com
+TIITPolicy Techforce Infotech Pvt
+1 . email instant messaging
+1.1 objective
+provide appropriate guideline productively utilize company email system
+instant messaging technology protect employee company benefit
+business .
+1.2 apply
+TraineeInterns Employees Consultants
+1.3 key guideline
+• company establish policy acceptable company
+provide electronic messaging system include limited email instant
+messaging .
+• email instant messaging sensitive business tool . policy
+apply electronic message compose receive employee
+person company provide electronic messaging resource .
+• company set policy reserve modify
+time support company
+1.4 General
+• company electronic messaging resource assist conduct
+company business .
+• message compose andor company provide electronic messaging
+resource comply company policy acceptable communication .
+• company prohibit discrimination base age race gender sexual orientation
+religious political belief . electronic messaging resource discriminate
+reason prohibit .
+• termination separation company company will deny access
+electronic messaging resource include ability download forward print
+retrieve message store system sender recipient .
+• employee will assign unique email address
+conduct company business email .
+• employee prohibit forward electronic message
+company provide system external messaging system personal
+purpose JobCommercial site .
+4 www.techforceglobal.com
+TIITPolicy Techforce Infotech Pvt
+• employee authorize instant messaging program will advise
+instant message program permissible .
+• employee authorize instant messaging program will assign unique
+instant messaging identifier buddy handle nickname .
+• electronic message frequently inadequate convey mood context .
+carefully consider recipient interpret message compose
+send it .
+• employee discover violation policy notify
+manager Human Resources Department .
+• employee violation policy subject disciplinary action include
+limited termination .
+1.5 ownership
+• emailelectronic messaging system company property . message store
+company provide electronic messaging system compose receive
+employee nonemployee property company . electronic
+message property employee .
+• company reserve intercept monitor review andor disclose
+message compose receive .
+• company reserve alter modify reroute block delivery
+message appropriate .
+• unique email address andor instant messaging identifier assign
+employee property company . employee identifier
+employ company .
+1.6 confidentiality
+• message electronically intercept inside company
+expectation confidentiality . disclose
+proprietary confidential email instant message .
+• electronic message unconditionally unequivocally delete .
+remote possibility discovery exist . caution judgment
+determine message deliver electronically versus person .
+• electronic message legally discoverable permissible evidence court
+law . message compose read loud
+court law .
+• employee prohibit unauthorized transmission company trade secret
+confidential privileged communication .
+5 www.techforceglobal.com
+TIITPolicy Techforce Infotech Pvt
+• unauthorized copying distribution copyright material prohibit .
+1.7 security
+• company employ sophisticated antivirus software . employee prohibit
+disable antivirus software run company provide computer
+equipment .
+• company employ antivirus software virus infect message
+enter company 's messaging system . virus “ worm ” malicious
+code spread appropriate precaution take . follow
+precaution discuss
+suspicious message person you .
+open attachment anticipate you . sure
+verify sender
+email attachment .
+disable feature electronic messaging program automatically preview
+message open they .
+forward chain letter . simply delete they .
+• company consider unsolicited commercial email spam nuisance
+potential security threat . attempt remove future delivery
+message determine spam . “ remove I ” link
+verify exist .
+• internet message board fertile source mass junk emailer harvest
+email address email domain . company provide email address
+post message board .
+1.8 Inappropriate
+• email electronic messaging system transmit message
+pornography profanity derogatory defamatory sexual racist harass
+offensive material .
+• Company provide electronic messaging resource
+promotion publication one 's political religious view operation
+business undertaking personal gain .
+tool email instant messaging office365 Microsoft
+team .
+6 www.techforceglobal.com
+TIITPolicy Techforce Infotech Pvt
+2 . internet usage
+2.1 objective
+provide appropriate guideline access utilize internet
+company network .
+2.2 apply
+TraineeInterns Employees Consultants authorize access internet
+service .
+2.3 key guideline
+internet service authorize designate employee manager enhance
+job responsibility . internet excellent tool create security
+implication company guard against . reason employee
+grant access provide support fulfil job responsibility .
+2.4 General
+• internet account approve designate employee
+manager provide tool assist work .
+• responsible account issue himher .
+• share internet account userid prohibit .
+• organizational internet service reflect mission company
+support company goal objective .
+• service support legitimate mission activity company
+consistent prudent operational security privacy consideration .
+• CIO lead Internet Steering Committee will responsibility web site
+content i.e. company web site format presentation reflect
+company mission support company departmental objective .
+• company control content access
+internet hold responsible content .
+• software file download internet company network
+property company . file software way
+consistent licens copyright .
+7 www.techforceglobal.com
+TIITPolicy Techforce Infotech Pvt
+2.5 Inappropriate
+• company provide internet access permit
+access upload download distribute pornographic sexually explicit
+material .
+violate state local federal law .
+vandalize damage property individual organization .
+invade abuse privacy other .
+violate copyright intellectual material permission .
+network financial commercial gain
+degrade disrupt network performance .
+• employee company facility knowingly download distribute pirate
+software datum . file swap software company computer
+company network prohibit .
+• employee company 's internet facility deliberately propagate
+virus worm Trojan horse trapdoor program code .
+note activity happen networkinternet log .
+3 . password security
+3.1 objective
+provide guideline appropriate management business password maintain
+adequate security integrity company business system .
+3.2 apply
+TraineeInterns Employees Consultants
+3.3 key guideline
+maintain security company business application software tool email
+system network facility voice mail critical provide datum integrity
+stability system . password provide limit access company asset
+need basis .
+• company access network electronic mail voice mail resource
+employee support company mission . password assign access
+8 www.techforceglobal.com
+TIITPolicy Techforce Infotech Pvt
+resource authenticate user identity protect network user
+provide security .
+• responsibility protect keep private
+password issue himher company .
+• Department will establish guideline issue password delete
+password require allow employee change password .
+• company strive manage secure computing networking
+environment company guarantee confidentiality security
+network mail voice mail password unauthorized disclosure .
+• employee password change request manager . help
+monitor manage protect password distribution
+reinforce integrity user access company system .
+• network manager approve password change request user
+supervisor . confirmation will user password change complete
+request supervisor .
+• customer support will handle request company manager
+way
+request person 1000 am 500 pm MondayFriday .
+request submit Ticketing System .
+password account request verify employee manager .
+• Department will delete password exit employee notification
+Human Resources .
+• system administrator employee assume
+responsibility
+system administrator protect confidentiality user 's password .
+employee manage password password guideline .
+employee responsible action function perform hisher
+account .
+suspect password compromise report support immediately .
+3.4 password guideline
+Select Wise password
+minimize password guess
+account identifier username login etc. .
+8 character .
+mixed alpha numeric special character .
+three short unrelated .
+9 www.techforceglobal.com
+TIITPolicy Techforce Infotech Pvt
+keep password safe
+password anyone .
+observe enter password .
+display password work area highly visible
+place .
+change password periodically 3 month recommend .
+reuse password .
+additional Security Practices
+• ensure systemlaptop reasonably secure absence office .
+consider passwordprotect screen saver lock log turning
+systemlaptop leave desk .
+4 . Software usage
+4.1 objective
+provide guideline appropriate software product utilize company equipment .
+4.2 apply
+TraineeInterns Employees Consultants
+4.3 key guideline
+policy intend ensure company employee understand
+computer software load computer own lease
+company software property license
+company .
+4.4 General
+• Software purchase company reside company own computer
+term license agreement software title .
+• provide license agreement duplication
+copyright software archival purpose violation copyright law
+contrary company Software usage policy .
+• purchase software employee approval department
+manager will follow procedure acquire company
+asset .
+• approve software will purchase Purchasing Department .
+10 www.techforceglobal.com
+TIITPolicy Techforce Infotech Pvt
+• CIO designate member Department will sole governing
+body define appropriate software title acceptable company .
+• circumstance will third party software application load company
+own computer system knowledge approval
+Department .
+• illegal reproduction software subject civil criminal penalty include
+fine imprisonment . company user acquire
+unauthorized copy software will discipline appropriate
+circumstance include termination employment .
+• company condone illegal duplication software form .
+4.5 compliance
+• will software license agreement .
+• circumstance will software company compute resource
+permit company Software usage policy .
+• legitimate software will provide employee it . company
+employee will unauthorized copy software circumstance .
+copying software backup purpose subject
+termination .
+• employee software purchase license company acquire
+software company Software usage policy
+applicable Software license agreement .
+• employee acknowledge software documentation own
+company individual license software publisher .
+• employee company prohibit company acquire software
+valid software license software title .
+include limited client vendor colleague fellow employee .
+• software company entity company own compute device
+purchase company fund will acquire appropriate procedure
+state company Software usage policy .
+• employee determine misuse software
+organization will notify software manager department manager .
+11 www.techforceglobal.com
+TIITPolicy Techforce Infotech Pvt
+4.6 Registration software
+• Software license company will register individual .
+• software deliver properly register software
+publisher procedure appropriate publisher . Software register
+company job title department use .
+• registration requirement meet software
+install policy procedure company . copy
+license agreement will file maintain Departments Software
+license administrator .
+• install original installation media safe storage area
+designate Department .
+• shareware software copyright software distribute freely bulletin
+board online service internet . company policy pay shareware
+author fee product software will
+company . installation registration shareware product will handle
+commercial software product .
+4.7 Software audit
+• Team will conduct periodic audits company own pc include laptop
+ensure company compliance software licens .
+• audit will conduct auditing software product .
+• Software support registration license andor original
+installation media will remove employee computer .
+• audits software manager will search computer virus
+eliminate find .
+• full cooperation employee require software audits .
+5 . pc software standard
+5.1 objective
+provide guideline purchase installing software company pc 's .
+5.2 apply
+TraineeInterns Employees Consultants
+12 www.techforceglobal.com
+TIITPolicy Techforce Infotech Pvt
+5.3 key guideline
+purpose policy explain company software standard identify
+level technical support company employee Department .
+5.4 applicability
+• policy apply TraineeInterns Employees Consultants company
+request purchase computer software desire compute support
+application technical support team .
+• software standard establish ensure efficient cost
+effective company compute asset
+help ensure compatibility application release .
+provide effective system administration
+assist computer planning process enable realization longterm
+goal future compute vision .
+ensure cost effective purchasing
+enable effective tracking software licens
+provide cost effective user software training
+facilitate efficient effective technical support effort
+5.5 technical support
+• Software support provide level base software
+company enterprise standard department specific .
+• Department will provide support evaluation software personally
+purchase software illegal copy software screen saver shareware
+nonnetwork software include standard software list .
+• Software application determine technical staff computer problem
+company standard network software will remove .
+5.6 Departments Role Purchase Hardware Software
+• assist department evaluate business software solution .
+• liaison department deal computing vendor .
+• recommend evaluate tasksjobsfunction accomplish
+software product .
+• assist hardware system requirement .
+• install software need .
+• enforce company hardware software standard .
+13 www.techforceglobal.com
+TIITPolicy Techforce Infotech Pvt
+5.7 standard pc Equipment Software List
+• standard pc hardware software configuration post company
+Portal Department section .
+• Contact Systems Support Manager Department question pertain
+company standard .
+5.8 request standard pc Equipment Software
+• equipment software request cover company pc equipment
+Software Standards List will provide appropriate approval
+grant .
+• step follow outline process purchase pc equipment software
+complete pc Equipment Software request AMS Asset Management
+System .
+gain approval Department Manager
+submit request Department 's System Support Manager .
+Department will review order forward Purchasing will contact
+requester clarification need .
+Department Purchasing Department followup question
+order need .
+5.9 request variance pc Hardware Software Standard
+• complete request variance pc Hardware Software Standard
+AMS .
+• practical sufficient justification key concise building case
+deviate standard .
+• gain approval request Department Manager .
+• submit request Departments Systems Support Manager review .
+• request review approve decline base justified reason
+present Departments ability support configuration
+company network .
+14 www.techforceglobal.com
+TIITPolicy Techforce Infotech Pvt
+6 . remote access
+6.1 objective
+provide guideline appropriate remote access capability
+company network business application system .
+6.2 apply
+TraineeInterns Employees Consultants
+6.3 key guideline
+• purpose policy define standard connect company
+network remote location company .
+• standard design minimize potential exposure company
+damages result unauthorized company resource .
+damages include loss sensitive confidential company datum intellectual
+property damage critical company internal system etc. .
+• policy apply company employee contractor vendor agent
+company own personally own computer workstation connect
+company network .
+• policy apply remote access connection work behalf
+company include read send email view Intranet web resource .
+• remote access implementation cover policy include
+limited router vpn SSH FTP SystemLaptops etc. .
+• responsibility company employee contractor vendor agent
+remote access privilege company corporate network ensure
+remote access connection consideration employee onsite
+connection company network .
+6.4 remote connection
+• secure remote access strictly control . Control will enforce
+time password authentication publicprivate key strong password phrase .
+• time company employee provide hisher login email password
+family member .
+• Company employee contractor remote access privilege ensure
+company own personal computer workstation remotely
+connected company corporate network connect network
+time .
+15 www.techforceglobal.com
+TIITPolicy Techforce Infotech Pvt
+• company employee contractor remote access privilege
+company corporate network noncompany email account i.e. Yahoo
+AOL external resource conduct company business ensure
+official business confused personal business .
+• router dedicate ISDN line configure access company network
+meet minimum authentication requirement establish Department .
+• host connect company internal network remote access
+technology uptodate antivirus software .
+• third party connection comply requirement define Department .
+• personal equipment connect company network meet
+requirement companyown equipment remote access .
+• Organizations individual implement nonstandard Remote Access
+solution company production network prior approval
+Department .
+6.5 enforcement
+• employee violate policy subject disciplinary action
+include termination employment .
+• Department responsible monitoring remote access address
+inappropriate remote access privilege .
+7 . printer usage
+7.1 objective
+provide guideline printer company .
+7.2 apply
+TraineeInterns Employees Consultants
+7.3 key guideline
+• printer install help Team raise support ticket
+helpdesk portal .
+• traineeemployeeconsultant black white print 10
+black white printer .
+• prior approval pmtl member Team color
+print .
+16 www.techforceglobal.com
+TIITPolicy Techforce Infotech Pvt
+8 . hardware damage charge
+8.1 objective
+provide guideline inappropriate asset LaptopMouseHeadphones
+etc. provide organization Techforce Infotech Pvt Ltd. .
+8.2 apply
+TraineeInterns Employees Consultants
+8.3 key guideline
+• case Hardware Software failure asset team will care
+recovery maintenance same .
+TraineeInterns Employees Consultants entitle pay
+repair maintenance charge mention maintenance
+damage cost r . Employee Company
+2500 100 0
+2500 5000 85 15
+5000 80 20
+vary case case base final review Team final decision
+will Team .
+• case Hardware physical damage liquid damage asset repair
+maintenance will care team .
+expense 100 damage maintenance penalty r .
+5000 minimum will rs 1000 will bear concern Trainee Employee
+consultant .
+final penalty charge will base case . final decision will Team
+management will require adhere to .
+9 . lose Assets
+9.1 objective
+provide guideline lose asset LaptopMouseHeadphonesLaptop Bags
+etc. provide organization Techforce Infotech Pvt Ltd. .
+17 www.techforceglobal.com
+TIITPolicy Techforce Infotech Pvt
+9.2 apply
+TraineeInterns Employees Consultants
+9.1 key guideline
+• case loss asset belong Techforce Infotech Pvt
+employee bind pay amount calculation lieu
+asset .
+duration
+base purchase
+invoice
+amount pay
+invoice amount
+1 year 100
+1 2 year 80
+2 3 year 64
+3 4 year 51
+4 year 40

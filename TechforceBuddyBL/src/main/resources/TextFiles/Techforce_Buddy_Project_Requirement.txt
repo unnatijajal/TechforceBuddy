@@ -1,23 +1,30 @@
-2 Confidential Manish Mori
-unauthorized request will reject appropriate message .
-3 . Registration Frontend
-description
-will allow user create account enter detail .
-ui element
-text Field
-text Field
-email text field
-password password field
-Register Button
-functionality
-form datum will validate JavaScript .
-post request will backend registration .
-Backend will store user detail return confirmation message .
-4 . Chat Interface PostLogin Frontend
-description
-user log will present Techforce Buddy chatbot
-interface enter query receive response .
-ui element
-search bar input field user query
-response area Textarea display chatbot response
-functionality
+3 Confidential Manish Mori
+• backend will analyze query policy document store system .
+• ai library opennlpdeeplearning4j backend will process policy
+content generate appropriate response .
+• response will return frontend json format display
+textarea search bar .
+5 . Backend
+• authentication
+rest api login registration .
+JWT authentication secure endpoint .
+validate incoming request jwt token handle authorization .
+• Chatbot functionality
+rest Controller handle chatbot request .
+accept request json format user 's query .
+analyze content policy document base query .
+opennlpdeeplearning4j prepare response base policy
+content .
+return response JSON frontend .
+6 . Technology Stack
+• Frontend
+Thymeleaf render html view dynamic content .
+JavaScript handle user interaction make http request .
+• Backend
+Java 21 backend logic api development .
+Spring Boot build restful service .
+hibernate ORM interact MySQL database .
+MySQL Database store user credentials policy document .
+opennlp deeplearning4j ai component processing user query
+policy content .
+JWT Authentication secure user login manage session .

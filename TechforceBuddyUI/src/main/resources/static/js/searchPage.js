@@ -129,7 +129,7 @@ document.getElementById('searchVersionTwo').addEventListener('click', function(e
 				});
 			}
 			// If the response is OK, parse the JSON
-			
+
 			return response.json();
 		})
 		.then(data => {
@@ -147,15 +147,20 @@ document.getElementById('searchVersionTwo').addEventListener('click', function(e
 					// Create a new anchor for the file name
 					const aElement = document.createElement('a');
 					aElement.className = 'card-link';
-					aElement.textContent ='Reference : '+ fileName;
+					aElement.textContent = 'Reference : ' + fileName;
+					aElement.addEventListener('click',function(event){
+						event.preventDefault();
+						openPdf(fileName);
+					})
 					
+
 					// Iterate over the sections list and add each section in a <p> tag
 					sections.forEach(section => {
 						// Create a paragraph tag for each section
 						const pElement = document.createElement('p');
 						pElement.className = 'card-text';
-						pElement.innerHTML =  section.replace(/\n/g, '<br>');
-						
+						pElement.innerHTML = section.replace(/\n/g, '<br>');
+
 						// Append the paragraph to the main div
 						mainDiv.appendChild(pElement);
 						mainDiv.appendChild(aElement);
@@ -182,3 +187,35 @@ document.getElementById('searchVersionTwo').addEventListener('click', function(e
 		});
 
 });
+
+
+// Function to open PDF in a new tab with authorization
+function openPdf(fileName) {
+	const token = localStorage.getItem('token');
+	const url = `http://localhost:8082/openPdf?fileName=${encodeURIComponent(fileName)}`;
+
+	// Create a new GET request with the Authorization header
+	fetch(url, {
+		method: 'GET',
+		headers: {
+			'Authorization': 'Bearer ' + token,
+			'Content-Type': 'application/json' // Adjust if necessary
+		}
+	})
+		.then(response => {
+			if (response.ok) {
+				// If the response is OK, open the PDF in a new tab
+				return response.blob();
+			} else {
+				throw new Error('Failed to fetch PDF: ' + response.statusText);
+			}
+		})
+		.then(blob => {
+			const pdfUrl = URL.createObjectURL(blob);
+			window.open(pdfUrl, '_blank'); // Open the PDF in a new tab
+		})
+		.catch(error => {
+			console.error('Error:', error);
+			alert('Access denied or PDF not found.');
+		});
+}
