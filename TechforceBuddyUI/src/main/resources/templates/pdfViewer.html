@@ -1,0 +1,25 @@
+<!-- pdfViewer.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Viewer</title>
+<style>
+/* Optional styling for the iframe */
+iframe {
+	border: none;
+	width: 100%;
+	height: 100vh;
+}
+</style>
+</head>
+<body>
+	<iframe id="pdfIframe" style="width: 100%; height: 800px;"
+		frameborder="0"></iframe>
+
+
+	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+	<script type="text/javascript" th:src="@{/js/pdfViewer.js}"></script>
+</body>
+</html>

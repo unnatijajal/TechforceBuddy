@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techforcebuddybl.services.impl.ExtractDataFromPdfServiceImpl;
+
 import com.techforcebuddybl.services.impl.Word2VecTraineFromJSON;
 import com.techforcebuddybl.services.impl.WordTwoVectorModelServiceImpl;
 /*
@@ -81,4 +82,6 @@ public class AdminController {
 			return ResponseEntity.badRequest().body("Error extracting PDF: " + e.getMessage());
 		}
 	}
+	
+	
 }

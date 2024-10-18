@@ -51,8 +51,6 @@ document.getElementById('searchVersionOne').addEventListener('click', function(e
 
 				// Iterate over the map (assuming it's a JSON object where each key is a string and value is a list)
 				for (const [key, value] of Object.entries(data)) {
-					/*resultText += `${key.join('\n')}`;  // Use backticks for template literals
-					fileName = `${value}`;  // Store the key as the fileName*/
 
 					const pElement = document.createElement('p');
 					pElement.className = 'card-text'; // Set the class name
@@ -148,11 +146,11 @@ document.getElementById('searchVersionTwo').addEventListener('click', function(e
 					const aElement = document.createElement('a');
 					aElement.className = 'card-link';
 					aElement.textContent = 'Reference : ' + fileName;
-					aElement.addEventListener('click',function(event){
+					aElement.addEventListener('click', function(event) {
 						event.preventDefault();
 						openPdf(fileName);
 					})
-					
+
 
 					// Iterate over the sections list and add each section in a <p> tag
 					sections.forEach(section => {
@@ -165,11 +163,13 @@ document.getElementById('searchVersionTwo').addEventListener('click', function(e
 						mainDiv.appendChild(pElement);
 						mainDiv.appendChild(aElement);
 
+
 					});
 
-					// Append a horizontal rule after each file entry for better separation
+					// Create and append <hr> tag
 					const hrElement = document.createElement('hr');
 					mainDiv.appendChild(hrElement);
+
 				}
 
 			}
@@ -191,31 +191,6 @@ document.getElementById('searchVersionTwo').addEventListener('click', function(e
 
 // Function to open PDF in a new tab with authorization
 function openPdf(fileName) {
-	const token = localStorage.getItem('token');
-	const url = `http://localhost:8082/openPdf?fileName=${encodeURIComponent(fileName)}`;
-
-	// Create a new GET request with the Authorization header
-	fetch(url, {
-		method: 'GET',
-		headers: {
-			'Authorization': 'Bearer ' + token,
-			'Content-Type': 'application/json' // Adjust if necessary
-		}
-	})
-		.then(response => {
-			if (response.ok) {
-				// If the response is OK, open the PDF in a new tab
-				return response.blob();
-			} else {
-				throw new Error('Failed to fetch PDF: ' + response.statusText);
-			}
-		})
-		.then(blob => {
-			const pdfUrl = URL.createObjectURL(blob);
-			window.open(pdfUrl, '_blank'); // Open the PDF in a new tab
-		})
-		.catch(error => {
-			console.error('Error:', error);
-			alert('Access denied or PDF not found.');
-		});
+	// Redirect to pdfViewer.html with the file name as a query parameter
+	window.open(`/pdfViewer?file=${encodeURIComponent(fileName)}`, '_blank');
 }

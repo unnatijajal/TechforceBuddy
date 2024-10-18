@@ -57,10 +57,10 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 				String[] lines = text.split("\n");
 
 				try {
-					createJsonOfPdfServiceImpl.createJsonOfPdf(lines, fileName);
+					
 					// Invoke the removeWordStop() to remove all the stop words.
 					lines = dataParsingServiceImpl.removeWordStop(lines);
-					createJsonOfPdfServiceImpl.saveJSONToFile();
+					
 					
 					// Invoke the lemmatizationOfData() to convert the word into it's root form.
 					lines = dataParsingServiceImpl.lemmatizationOfData(lines);
@@ -97,6 +97,7 @@ public class ExtractDataFromPdfServiceImpl implements ExtractDataFromPdfService 
 
 						try {
 							createJsonOfPdfServiceImpl.createJsonOfPdf(lines, fileName);
+							createJsonOfPdfServiceImpl.saveJSONToFile();
 
 						} catch (DataNotFoundException exception) {
 							System.out.println(exception.getMessage());
