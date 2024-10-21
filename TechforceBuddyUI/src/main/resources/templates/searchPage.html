@@ -17,39 +17,81 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/solid.min.css"
 	integrity="sha512-/r+0SvLvMMSIf41xiuy19aNkXxI+3zb/BN8K9lnDDWI09VM0dwgTMzK7Qi5vv5macJ3VH4XZXr60ip7v13QnmQ=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
+	
 
 <link rel="stylesheet" th:href="@{/css/searchPage.css}">
 </head>
 <body>
-	<div class="container container-width">
-		<div class="row div">
-			<form>
-				<input class="form-control me-2" type="search" placeholder="Search"
-					aria-label="Search" id="query"> <br>
-				<div class="d-flex justify-content-center">
-					<button class="btn btn-outline-success" type="submit"
-						id="searchVersionOne">Unstructured</button>
-					&nbsp;&nbsp;
-					<button class="btn btn-outline-success" type="submit"
-						id="searchVersionTwo">Structured</button>
+	<div class="container-fluid">
+		<div class="row">
+			<!-- Header Section -->
+			<header>
+				<div>
+					<div class="row  d-flex align-items-center">
+						<div class="col-md-4">
+							<img th:src="@{image/logo-footer.png}" alt="Logo"
+								class="mr-3 logo">
+						</div>
+						<div class="col-md-6 d-flex">
+							<h1>Techforce Buddy</h1>
+						</div>
+						<div class="col-md-2 text-end">
+							<button id="logout" class="btn rounded-circle">
+								<i class="fa-solid fa-arrow-right-from-bracket"></i>
+							</button>
+						</div>
+					</div>
 				</div>
-			</form>
+			</header>
 		</div>
-		<div class="row div">
-
-			<div class="card" style="width: 38rem;">
-				<div class="card-body" id = "responseDiv">
-					
+		<div class="row">
+			<!-- Main Content Section -->
+			<main class="container my-4">
+				<div class="row">
+					<div class="col-md-2">
+						<div>
+							<select class="dropdown select" id="version">
+								<option value="v1" class="dropdown-item">v1.0</option>
+								<option value="v2" class="dropdown-item" selected>Latest(v2.0)</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-10">
+						<div class="container container-width">
+							<div class="row">
+								<form class="d-flex justify-content-left">
+									<div class="main">
+										<input class=" search-input" type="search"
+											placeholder="Search query" aria-label="Search" id="query">
+										<span class="items-end">
+											<button type="submit" id="searchQuery"
+												class="rounded-circle" >
+												<i class="fa-solid fa-magnifying-glass"
+													style="color: #EAD8B1;"></i>
+											</button>
+										</span>
+									</div>
+								</form>
+							</div>
+							<div class="row">
+								<div class="card answer-card" id="responseCard">
+									<div class="card-body" id="responseDiv"></div>
+								</div>
+								<div class="loader" id="load"></div>
+							</div>
+						</div>
+					</div>
 				</div>
-			</div>
-			
+			</main>
 		</div>
-		<div class="div ">
-			<button id="logout">
-				<i class="fa-solid fa-arrow-right-from-bracket"></i>
-			</button>
+		<div class="row">
+			<!-- Footer Section -->
+			<footer class="text-center py-3 mt-auto">
+				<p>Created by @Unnati Jajal</p>
+			</footer>
 		</div>
 	</div>
+
 
 
 	<script type="text/javascript" th:src="@{/js/main.js}"></script>

@@ -1,10 +1,144 @@
-@charset "UTF-8";
-
-.div{
-	margin-top:20px;
+h1 {
+	padding: 20px;
+	font-weight: bold;
+	color: white;
 }
 
-.container-width{
-	width:40%;
+header {
+	background-color: #001F3F;
+	font-family: 'Times New Roman', Times, serif;
+	border-radius: 10px;
 }
 
+
+footer {
+	background: #001F3F;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+}
+
+footer p {
+	color: #edbc52;
+}
+
+.logo {
+	height: 40px;
+}
+
+.main {
+	position: absolute;
+	top: 25%;
+	left: 53%;
+	display: flex;
+	transform: translate(-50%, -50%);
+	border-radius: 28px;
+	background: #3A6D8C;
+	padding: 14px;
+}
+
+.search-input {
+	width: 350px;
+	border-radius: 50px;
+	padding: 0px 10px;
+	margin-left: 14px;
+	outline: none;
+	border: none;
+	background: #3A6D8C;
+	color: #EAD8B1;
+}
+
+.search-input::placeholder {
+	color: #EAD8B1;
+}
+
+.search-input:focus {
+	outline: none;
+	background: #3A6D8C;
+}
+
+.answer-card {
+	position: absolute;
+	top: 30%;
+	left: 40%;
+	margin-top: 20px;
+	width: 30px;
+	background: #fff1d3;
+	color: #3A6D8C;
+	visibility: hidden;
+	width: 400px;
+	height: 300px;
+	overflow: auto;
+}
+
+.responseDiv {
+	width: 300px;
+}
+.div {
+	margin-top: 20px;
+}
+
+.container-width {
+	width: 40%;
+}
+
+.select{
+	background-color: #6A9AB0;
+	color: #EAD8B1;
+	font-weight: bold;
+	height:38px;
+	padding: 5px;
+	border-radius: 4px; 
+}
+
+.loader{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: opacity 0.75s, visibility 0.75s;
+	visibility: hidden;
+}
+
+.loader::after{
+	 content: "";
+	 width: 55px;
+	 height:55px;
+	 border: 9px solid #dddddd;
+	 border-top-color: #3A6D8C;
+	 border-radius: 50px;
+	 animation: loading 0.75s ease infinite;
+	  
+}
+
+@keyframes loading{
+	from{
+		transform: rotate(0turn);	
+	}to{
+		transform: rotate(1turn);
+	}
+}
+
+#logout {
+	background-color: red;
+	color: white;
+	font-weight: bold;
+	width: auto;
+	height: 40px;
+}
+
+#searchQuery{
+	height:auto;
+	width:auto;
+	border:none;
+	outline:none;
+	background-color: #3A6D8C;
+}
+
+#searchQuery:active{
+	outline:none;
+}
