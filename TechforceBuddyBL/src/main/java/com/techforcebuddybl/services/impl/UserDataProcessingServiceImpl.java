@@ -55,7 +55,7 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 
 	// This is the method to get the response using unstructured data
 	@Override
-	public Map<String, String> getResponsUsingUnstructuredData(String query) throws DataNotFoundException, Exception {
+	public LinkedHashMap<String, String> getResponsUsingUnstructuredData(String query) throws DataNotFoundException, Exception {
 		// Split the sentence into the words.
 		tokens = divideSentenceIntoWords(query.toLowerCase());
 
@@ -67,7 +67,9 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 
 		// Token of user's query will store into the list
 		List<String> extractedWord = Arrays.asList(tokens);
-		Map<String, String> response = similarityServiceImpl.getRelaventFilesResponse(extractedWord);
+		
+		// here LinkedHashMap<String, String> is LinkedHashMap<value, filename>
+		LinkedHashMap<String, String> response = similarityServiceImpl.getRelaventFilesResponse(extractedWord);
 
 		return response;
 	}

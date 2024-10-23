@@ -6,7 +6,7 @@ document.getElementById('logout').addEventListener('click', function() {
 	}
 });
 
-document.getElementById('searchQuery').addEventListener('click', function(event) {
+/*document.getElementById('searchQuery').addEventListener('click', function(event) {
 	event.preventDefault();
 
 	const version = document.getElementById('version').value;
@@ -182,6 +182,77 @@ document.getElementById('searchQuery').addEventListener('click', function(event)
 			});
 	}
 });
+*/
+
+
+
+document.getElementById('searchQuery').addEventListener('click', function(event) {
+	event.preventDefault();
+	let api = '';
+	const version = document.getElementById('version').value;
+	const loader = document.getElementById('load');
+	const searchButton = document.getElementById('searchQuery');
+	searchButton.style.visibility = 'hidden';
+	const message = document.getElementById('query').value;
+	const userData = {
+		query: message,
+	};
+	loader.style.visibility = 'visible';
+
+	if (version == 'v1') {
+		api = 'http://localhost:8082/v1/generate-summary';
+	} else if (version == 'v2') {
+		api = 'http://localhost:8082/v2/generate-summary';
+	}
+	fetch(api, { // Changed endpoint to match your Spring Boot API
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': 'Bearer ' + localStorage.getItem('token'),
+		},
+		body: JSON.stringify(userData),
+	})
+		.then(response => {
+			if (!response.ok) {
+				return response.text().then(errMessage => {
+					throw new Error(errMessage);
+				});
+			}
+			return response.text(); // Changed from json() to text() since the response is a plain string
+		})
+		.then(summaryText => {
+			const mainDiv = document.getElementById('responseDiv');
+			mainDiv.innerHTML = ''; // Clear the main div if needed
+
+			// Create a heading for the summary
+			const headingElement = document.createElement('h4'); // You can use h2 or h1 based on your styling preference
+			headingElement.textContent = 'Summary:'; // Set the heading text
+
+			// Create a paragraph for the summary text
+			const pElement = document.createElement('p');
+			pElement.className = 'card-text'; // Set the class name
+			pElement.textContent = summaryText; // Directly set the summary text
+
+			// Append the heading and paragraph to the main div
+			mainDiv.appendChild(headingElement);
+			mainDiv.appendChild(pElement);
+
+			// Show the response card
+			document.getElementById('responseCard').style.visibility = 'visible';
+		})
+		.catch(error => {
+			const errorElement = document.createElement('p');
+			errorElement.textContent = `${error.message}`;
+			mainDiv.appendChild(errorElement);
+			console.error('Error:', error);
+		}).finally(() => {
+			loader.style.visibility = 'hidden';
+			searchButton.style.visibility = 'visible';
+		});
+
+
+});
+
 
 
 // Function to open PDF in a new tab with authorization

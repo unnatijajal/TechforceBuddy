@@ -21,10 +21,9 @@ public class CreateJsonOfPdfServiceImpl implements CreateJsonOfPdfService {
     private static boolean subHeadingFlag = false;
     private static JSONArray fileArray;
     private static  JSONObject jsonResult = new JSONObject();
-	
-	
-    public static void setHeadingAndContent(String line, int scenario) {
 		
+    public static void setHeadingAndContent(String line, int scenario) {
+    	
     	if (scenario == 1) {
 			if ( line.matches("^\\d+\\.\\s.*")) {
 				// Set the current heading, removing thenumbering

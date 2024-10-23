@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techforcebuddybl.dto.Question;
 import com.techforcebuddybl.entity.UserEntity;
+import com.techforcebuddybl.services.impl.PythonAPICallerServiceImpl;
 import com.techforcebuddybl.services.impl.UserDataProcessingServiceImpl;
 import com.techforcebuddybl.services.impl.UserServiceImpl;
 
@@ -39,6 +40,9 @@ public class UserController {
 
 	@Autowired
 	private UserDataProcessingServiceImpl dataProcessingServiceImpl;
+
+	@Autowired
+	private PythonAPICallerServiceImpl apiCallerServiceImpl;
 
 	/*
 	 * Create the POST API for saving the user's details into the DB.
@@ -105,19 +109,59 @@ public class UserController {
 		}
 	}
 
-	
 	@CrossOrigin(origins = "http://localhost:8081")
 	@GetMapping(value = "/download/{filename}", produces = MediaType.APPLICATION_PDF_VALUE)
 	public ResponseEntity<InputStreamResource> getPdf(@PathVariable String filename) throws IOException {
-		File pdfFile = new File(System.getProperty("user.dir")+"/src/main/resources/pdf/" + filename);
+		File pdfFile = new File(System.getProperty("user.dir") + "/src/main/resources/pdf/" + filename);
 		InputStreamResource resource = new InputStreamResource(new FileInputStream(pdfFile));
-		if(resource.exists()) {
+		if (resource.exists()) {
 			return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + filename)
 					.contentType(MediaType.APPLICATION_PDF).body(resource);
-		}else {
+		} else {
 			return ResponseEntity.notFound().build();
 		}
-		
+
 	}
 
+	@PostMapping("/v1/generate-summary")
+	@CrossOrigin(origins = "http://localhost:8081")
+	public ResponseEntity<String> callPythonApiForUntructuredContent(@RequestBody Question question) {
+
+		LinkedHashMap<String, String> content;
+		try {
+			content = dataProcessingServiceImpl.getResponsUsingUnstructuredData(question.getQuery());
+			StringBuilder inputText = new StringBuilder();
+			content.keySet().stream()
+					.forEach(value -> inputText.append(value));
+			return new ResponseEntity<String>(
+					apiCallerServiceImpl.callGenerateSummaryApi(inputText.toString()), HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+
+	}
+	
+	@PostMapping("/v2/generate-summary")
+	@CrossOrigin(origins = "http://localhost:8081")
+	public ResponseEntity<String> callPythonApiForStructuredContent(@RequestBody Question question) {
+
+		LinkedHashMap<String, List<String>> content;
+		try {
+			content = dataProcessingServiceImpl.getResponsUsingStructuredData(question.getQuery());
+			StringBuilder inputText = new StringBuilder();
+
+			content.values().stream().forEach(list -> list.stream().forEach(value -> inputText.append(value)));
+			return new ResponseEntity<String>(
+					apiCallerServiceImpl.callGenerateSummaryApi(inputText.toString()), HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+
+	}
+
+	
 }
