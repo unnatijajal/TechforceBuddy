@@ -55,7 +55,8 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 
 	// This is the method to get the response using unstructured data
 	@Override
-	public LinkedHashMap<String, String> getResponsUsingUnstructuredData(String query) throws DataNotFoundException, Exception {
+	public LinkedHashMap<String, String> getResponsUsingUnstructuredData(String query)
+			throws DataNotFoundException, Exception {
 		// Split the sentence into the words.
 		tokens = divideSentenceIntoWords(query.toLowerCase());
 
@@ -67,7 +68,7 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 
 		// Token of user's query will store into the list
 		List<String> extractedWord = Arrays.asList(tokens);
-		
+
 		// here LinkedHashMap<String, String> is LinkedHashMap<value, filename>
 		LinkedHashMap<String, String> response = similarityServiceImpl.getRelaventFilesResponse(extractedWord);
 
@@ -131,7 +132,7 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 					formattedSections.add(formattedSubheading);
 				}
 				formattedSections.add(formattedSection);
-			
+
 			}
 
 			// Store the formatted sections in the result map
@@ -167,47 +168,47 @@ public class UserDataProcessingServiceImpl implements UserDataProcessingService 
 
 	// Format the section content with bullet points based on complete sentences
 	public static String formatSectionWithBullets(String section) {
-	    StringBuilder formattedSection = new StringBuilder();
-	    StringBuilder currentSentence = new StringBuilder();
+		StringBuilder formattedSection = new StringBuilder();
+		StringBuilder currentSentence = new StringBuilder();
 
-	    // Split the section into sentences based on full stops followed by spaces
-	    String[] sentences = section.split("(?<=\\.)\\s*"); // Adjust regex to split by full stop
+		// Split the section into sentences based on full stops followed by spaces
+		String[] sentences = section.split("(?<=\\.)\\s*"); // Adjust regex to split by full stop
 
-	    for (String sentence : sentences) {
-	        // Replace newlines with spaces if they do not precede a period
-	        sentence = sentence.replaceAll("\n(?!\\s*\\.)", " ");
+		for (String sentence : sentences) {
+			// Replace newlines with spaces if they do not precede a period
+			sentence = sentence.replaceAll("\n(?!\\s*\\.)", " ");
 
-	        if (!sentence.trim().isEmpty()) {
-	            currentSentence.append(sentence.trim());
+			if (!sentence.trim().isEmpty()) {
+				currentSentence.append(sentence.trim());
 
-	            // Check if the current sentence ends with a full stop
-	            if (currentSentence.toString().endsWith(".")) {
-	                // Only add a bullet if the formatted section does not already start with a bullet
-	                if (!formattedSection.toString().trim().startsWith("•")) {
-	                    formattedSection.append("• ").append(currentSentence.toString().trim()).append("\n");
-	                } else {
-	                    // Append the current sentence without adding another bullet
-	                    formattedSection.append(currentSentence.toString().trim()).append("\n");
-	                }
-	                currentSentence.setLength(0); // Reset currentSentence for the next sentence
-	            }
-	        }
-	    }
+				// Check if the current sentence ends with a full stop
+				if (currentSentence.toString().endsWith(".")) {
+					// Only add a bullet if the formatted section does not already start with a
+					// bullet
+					if (!formattedSection.toString().trim().startsWith("•")) {
+						formattedSection.append("• ").append(currentSentence.toString().trim()).append("\n");
+					} else {
+						// Append the current sentence without adding another bullet
+						formattedSection.append(currentSentence.toString().trim()).append("\n");
+					}
+					currentSentence.setLength(0); // Reset currentSentence for the next sentence
+				}
+			}
+		}
 
-	    // If there are any remaining sentences not ending with a full stop
-	    if (currentSentence.length() > 0) {
-	        // Only add a bullet if the formatted section does not already start with a bullet
-	        if (!formattedSection.toString().trim().startsWith("•")) {
-	            formattedSection.append("• ").append(currentSentence.toString().trim()).append("\n");
-	        } else {
-	            // Append the current sentence without adding another bullet
-	            formattedSection.append(currentSentence.toString().trim()).append("\n");
-	        }
-	    }
+		// If there are any remaining sentences not ending with a full stop
+		if (currentSentence.length() > 0) {
+			// Only add a bullet if the formatted section does not already start with a
+			// bullet
+			if (!formattedSection.toString().trim().startsWith("•")) {
+				formattedSection.append("• ").append(currentSentence.toString().trim()).append("\n");
+			} else {
+				// Append the current sentence without adding another bullet
+				formattedSection.append(currentSentence.toString().trim()).append("\n");
+			}
+		}
 
-	    return formattedSection.toString().trim();
+		return formattedSection.toString().trim();
 	}
-
-
 
 }

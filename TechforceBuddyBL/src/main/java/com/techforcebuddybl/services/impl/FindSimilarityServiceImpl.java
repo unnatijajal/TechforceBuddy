@@ -228,10 +228,5 @@ public class FindSimilarityServiceImpl implements FindSimilarityService {
 		return lines;
 	}
 
-	public String filterParagraph(String responseData) {
-		responseData = responseData.replaceAll("\\b\\d+\\.\\d+\\b", "");
-		responseData = responseData.split("\\s").length < 4 ? "" : responseData;
-		responseData = responseData.replaceAll("^\\d+\\s*\\|\\s*P\\s*a\\s*g\\s*e", "");
-		return responseData;
-	}
+	
 }

@@ -67,9 +67,17 @@ footer p {
 	color: #3A6D8C;
 	visibility: hidden;
 	width: 400px;
-	height: 300px;
+	height: 200px;
 	overflow: auto;
 }
+
+.detailButton{
+	position: absolute;
+	top: 60%;
+	left: 40%;
+	margin-top: 25px;
+}
+
 
 .responseDiv {
 	width: 300px;

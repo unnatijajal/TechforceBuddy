@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techforcebuddybl.dto.Question;
@@ -50,7 +47,6 @@ public class UserController {
 	@PostMapping("/signin")
 	@CrossOrigin(origins = "http://localhost:8081")
 	public ResponseEntity<?> signin(@RequestBody UserEntity entity) {
-		System.out.println(entity);
 		if (userServiceImpl.saveUser(entity) != null) {
 			return new ResponseEntity<String>("Saved", HttpStatus.OK);
 		} else {
@@ -91,23 +87,6 @@ public class UserController {
 
 	}
 
-	@GetMapping("/openPdf")
-	@CrossOrigin(origins = "http://localhost:8081")
-	public ResponseEntity<Resource> downloadFile(@RequestParam String fileName) throws IOException {
-		// Load file from the resources folder
-		Resource resource = new ClassPathResource(
-				System.getProperty("user.dir") + "\\src\\main\\resources\\pdf\\" + fileName);
-
-		if (resource.exists()) {
-			// Set the content disposition header to force download
-			String contentDisposition = "attachment; filename=\"" + fileName + "\"";
-
-			return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
-					.contentType(MediaType.APPLICATION_PDF).body(resource);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
 
 	@CrossOrigin(origins = "http://localhost:8081")
 	@GetMapping(value = "/download/{filename}", produces = MediaType.APPLICATION_PDF_VALUE)
