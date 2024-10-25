@@ -35,14 +35,14 @@ if(token!=null){
 			// Set message local storage for session expiration 
 			localStorage.setItem('tokenExpiredMessage','Your session has expired. Please log in again.');
 			// Redirect on login page.
-			window.location.href='/login';
+			window.location.href='/auth/login';
 		}
 	}
 
 	// setInterval() call the validateToken after every 5 sec to check whether token is valid or not.
 	setInterval(validateToken,5000);	
 }else{
-	window.location.href='/login';
+	window.location.href='/auth/login';
 }
 
 

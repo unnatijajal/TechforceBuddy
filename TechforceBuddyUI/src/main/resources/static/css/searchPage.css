@@ -3,6 +3,22 @@ h1 {
 	font-weight: bold;
 	color: white;
 }
+.a{
+	cursor: pointer;
+	color: white;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.a:hover{
+	color:white;
+}
+
+.btn-link, .btn:hover{
+	text-decoration:none !important;
+	color: #3A6D8C;
+	font-weight: bold;
+}
 
 header {
 	background-color: #001F3F;
@@ -57,19 +73,6 @@ footer p {
 	background: #3A6D8C;
 }
 
-.answer-card {
-	position: absolute;
-	top: 30%;
-	left: 40%;
-	margin-top: 20px;
-	width: 30px;
-	background: #fff1d3;
-	color: #3A6D8C;
-	visibility: hidden;
-	width: 400px;
-	height: 200px;
-	overflow: auto;
-}
 
 .detailButton{
 	position: absolute;
@@ -80,7 +83,7 @@ footer p {
 
 
 .responseDiv {
-	width: 300px;
+	visibility: hidden;
 }
 .div {
 	margin-top: 20px;
@@ -147,6 +150,34 @@ footer p {
 	background-color: #3A6D8C;
 }
 
+
+
 #searchQuery:active{
 	outline:none;
 }
+
+#accordion{
+	visibility: hidden;
+	position :absolute;
+	top : 35%;
+	left :40%;
+	width :400px; 
+}
+
+.card-header{
+	background-color: #fff2d7;
+	color:#3A6D8C;
+	
+}
+
+.card-body{
+	background-color: #3A6D8C;
+	color:white;
+}
+
+
+#detailsContent{
+	height : 200px;
+	overflow : auto;
+}
+

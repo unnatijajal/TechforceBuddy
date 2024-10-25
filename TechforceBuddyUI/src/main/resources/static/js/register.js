@@ -19,7 +19,7 @@ document.getElementById('registerForm')
 		};
 
 		//send the post request
-		fetch('http://localhost:8082/signin', {
+		fetch('http://localhost:8085/auth/signin', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ document.getElementById('registerForm')
 		.then(response => response.json)
 		.then(data => {
 		        // Redirect to another page if needed
-		        window.location.href = "/login";
+		        window.location.href = "/auth/login";
 			  // console.log('saved');
 		 })
 		.catch(error => {

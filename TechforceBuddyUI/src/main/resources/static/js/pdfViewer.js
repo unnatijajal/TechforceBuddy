@@ -10,10 +10,9 @@ window.addEventListener("load", function() {
 
 	// Retrieve the token from local storage (declare once)
 	let token = localStorage.getItem('token'); // Using let here ensures no redeclaration error
-	console.log(token);
 	if (fileName) {
 	    // Proceed with fetching the PDF if the file name is present
-	    fetch(`http://localhost:8082/download/${encodeURIComponent(fileName)}`, {
+	    fetch(`http://localhost:8081/pdfExtraction/download/${encodeURIComponent(fileName)}`, {
 	        method: 'GET',
 	        headers: {
 	            'Authorization': 'Bearer ' + token,

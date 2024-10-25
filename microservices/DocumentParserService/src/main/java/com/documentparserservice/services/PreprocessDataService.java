@@ -1,0 +1,15 @@
+package com.documentparserservice.services;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+public interface PreprocessDataService {
+	
+	public String[] tokenizeData(String text) throws IOException;
+
+	public String[] lemmatizationOfData(String[] lines) throws FileNotFoundException, IOException;
+
+	public String lemmatizationOfData(String line) throws FileNotFoundException, IOException;
+
+	public String[] removeWordStop(String[] lines) throws IOException;
+}

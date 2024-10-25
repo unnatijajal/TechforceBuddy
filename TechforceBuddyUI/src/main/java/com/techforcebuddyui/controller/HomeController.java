@@ -8,12 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class HomeController {
 
-	@GetMapping("/")
-	public String index() {
-		return "login";
-	}
-	
-	@GetMapping("/login")
+
+	@GetMapping("/auth/login")
 	public String login() {
 		return "login";
 	}
