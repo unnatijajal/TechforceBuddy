@@ -12,6 +12,7 @@ import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,13 +29,15 @@ public class SearchingKeywordsStructuredDataServiceImpl implements SearchingKeyw
 	@Autowired
 	private TFIDFSimilarity tfidfSimilarity;
 	
+	
 	@Override
 	public LinkedHashMap<String, List<String>> getResponsUsingStructuredData(String query) throws Exception {
+		
 		@SuppressWarnings("deprecation")
 		Word2Vec word2Vec = WordVectorSerializer.readWord2Vec(
 				new File(System.getProperty("user.dir") + "/src/main/resources/AiModel/word2vecModel.bin"));
 
-		List<String> extractedWord = restTemplate.postForObject("http://localhost:8084/processQuery?query=" + query,
+		List<String> extractedWord = restTemplate.postForObject("http://192.168.1.214:8084/processQuery?query=" + query,
 				null, List.class);
 		
 		Map<String, List<String>> relevantSection;

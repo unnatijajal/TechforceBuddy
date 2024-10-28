@@ -13,4 +13,6 @@ public class ConstantDataMember {
 		public static final String TEXT_FILE_DIR = System.getProperty("user.dir") + "/src/main/resources/TextFiles";
 	
 		public static final String JSON_DIR =  System.getProperty("user.dir") + "/src/main/resources/json";
+		
+		public static final String HOST_NAME = "http://192.168.1.214:";
 }

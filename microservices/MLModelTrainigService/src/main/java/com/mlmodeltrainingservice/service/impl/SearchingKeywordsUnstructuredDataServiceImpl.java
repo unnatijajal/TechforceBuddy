@@ -25,11 +25,11 @@ public class SearchingKeywordsUnstructuredDataServiceImpl implements SearchingKe
 
 	@Autowired
 	private RestTemplate restTemplate;
-
+	
 	@Override
 	public LinkedHashMap<String, String> getResponsUsingUnstructuredData(String query) throws Exception {
 		// Token of user's query will store into the list
-		List<String> extractedWord = restTemplate.postForObject("http://localhost:8084/processQuery?query=" + query,
+		List<String> extractedWord = restTemplate.postForObject("http://192.168.1.214:8084/processQuery?query=" + query,
 				null, List.class);
 
 		// here LinkedHashMap<String, String> is LinkedHashMap<value, filename>
@@ -40,7 +40,7 @@ public class SearchingKeywordsUnstructuredDataServiceImpl implements SearchingKe
 
 	@Override
 	public LinkedHashMap<String, String> getRelaventFilesResponse(List<String> queryKeywords) throws IOException {
-		Map<String, String> pdfContent = restTemplate.getForObject("http://localhost:8081/pdfExtraction/getContent",
+		Map<String, String> pdfContent = restTemplate.getForObject("http://192.168.1.214:8081/pdfExtraction/getContent",
 				Map.class);
 
 		@SuppressWarnings("deprecation")

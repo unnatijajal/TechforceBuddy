@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ public class ProcessQueryController {
 	private ProcessQueryServiceImpl queryServiceImpl;
 	
 	@PostMapping("/processQuery")
+	@CrossOrigin(origins = "*")
 	public ResponseEntity<?> getQuerKeywords(@RequestParam String query){
 		try {
 			return new ResponseEntity<List<String>>(queryServiceImpl.getQueryKeywords(query),HttpStatus.OK);	 

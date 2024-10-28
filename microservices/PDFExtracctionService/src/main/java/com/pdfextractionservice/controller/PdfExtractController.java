@@ -34,6 +34,7 @@ public class PdfExtractController {
 	 * This is GET API for get the content of the pdf file 
 	 */
 	@GetMapping("/getContent")
+	@CrossOrigin(origins = "*")
 	public ResponseEntity<?> getContentOfPdf(){
 		try {
 			return new ResponseEntity<LinkedHashMap<String,String>>(pdfExtractionServiceImpl.getContentFromPdf(),HttpStatus.FOUND);
@@ -42,7 +43,7 @@ public class PdfExtractController {
 		}
 	}
 	
-	@CrossOrigin(origins = "http://localhost:8080")
+	@CrossOrigin(origins = "*")
 	@GetMapping(value = "/download/{filename}", produces = MediaType.APPLICATION_PDF_VALUE)
 	public ResponseEntity<InputStreamResource> getPdf(@PathVariable String filename) throws IOException {
 		File pdfFile = new File(System.getProperty("user.dir") + "/src/main/resources/pdf/" + filename);

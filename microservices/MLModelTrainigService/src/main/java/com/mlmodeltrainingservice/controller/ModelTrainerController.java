@@ -37,19 +37,22 @@ public class ModelTrainerController {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	
 	@Autowired
 	private PythonAPICallerServiceImpl apiCallerServiceImpl;
 	
+	@CrossOrigin(origins = "*")
 	@GetMapping("/v1/trainModel")
 	public ResponseEntity<String> trainModelUsingTextFile(){
-		List<String> sentences = restTemplate.getForObject("http://localhost:8082/getTextFileContent", List.class);
+		List<String> sentences = restTemplate.getForObject("http://192.168.1.214:8082/getTextFileContent", List.class);
 		trainModelServiceImpl.trainModelUsingTextFileContent(sentences);
 		return new ResponseEntity<String>("Model trained..",HttpStatus.OK);
 	}
 	
+	@CrossOrigin(origins = "*")
 	@GetMapping("/v2/trainModel")
 	public ResponseEntity<String> trainModelUsingJsonFile(){
-		JsonNode rootNode= restTemplate.getForObject("http://localhost:8082/getJsonFileContent", JsonNode.class);
+		JsonNode rootNode= restTemplate.getForObject("http://192.168.1.214:8082/getJsonFileContent", JsonNode.class);
 		trainModelServiceImpl.trainModelUSingJSonFileContent(rootNode);
 		return new ResponseEntity<String>("Model trained..",HttpStatus.OK);
 	}
@@ -59,7 +62,7 @@ public class ModelTrainerController {
 	 * and generate the summary
 	 */
 	@PostMapping("/v1/query-and-summary")
-	@CrossOrigin(origins = "http://localhost:8080")
+	@CrossOrigin(origins = "*")
 	public ResponseEntity<Map<String, Object>> getResponseAndSummaryUnstructuredData(@RequestBody Question question) {
 	    try {
 	        // Retrieve structured content
@@ -87,7 +90,7 @@ public class ModelTrainerController {
 	 * and generate the summary
 	 */
 	@PostMapping("/v2/query-and-summary")
-	@CrossOrigin(origins = "http://localhost:8080")
+	@CrossOrigin(origins = "*")
 	public ResponseEntity<Map<String, Object>> getResponseAndSummaryStructuredData(@RequestBody Question question) {
 	    try {
 	        // Retrieve structured content

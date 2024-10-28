@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.documentparserservice.constant.ConstantDataMember;
 import com.documentparserservice.services.impl.FetchFileContentServiceImpl;
 import com.documentparserservice.services.impl.GenerateFileServiceImpl;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -29,10 +30,10 @@ public class DocumentParserController {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	@GetMapping("/create/textFiles")
-	@CrossOrigin(origins = "http://localhost:8080")
+	@GetMapping("/v1/preProcess")
+	@CrossOrigin(origins = "*")
 	public ResponseEntity<?> createTextFile() throws IOException {
-		LinkedHashMap<String,String> contentWithFileName = restTemplate.getForObject("http://localhost:8081/pdfExtraction/getContent", LinkedHashMap.class);
+		LinkedHashMap<String,String> contentWithFileName = restTemplate.getForObject(ConstantDataMember.HOST_NAME+"8081/pdfExtraction/getContent", LinkedHashMap.class);
 		
 		contentWithFileName.entrySet()
 				.stream()
@@ -46,10 +47,10 @@ public class DocumentParserController {
 		return new ResponseEntity<String>("File created successfully",HttpStatus.OK);
 	}
 	
-	@GetMapping("/create/jsonFile")
-	@CrossOrigin(origins = "http://localhost:8080")
+	@GetMapping("/v2/preProcess")
+	@CrossOrigin(origins = "*")
 	public ResponseEntity<?> createJsonFile(){
-		LinkedHashMap<String,String> contentWithFileName = restTemplate.getForObject("http://localhost:8081/pdfExtraction/getContent", LinkedHashMap.class);
+		LinkedHashMap<String,String> contentWithFileName = restTemplate.getForObject(ConstantDataMember.HOST_NAME+"8081/pdfExtraction/getContent", LinkedHashMap.class);
 		try {
 			fileServiceImpl.createJsonFile(contentWithFileName);
 			return new ResponseEntity<String>("Json file created",HttpStatus.OK); 
@@ -60,7 +61,7 @@ public class DocumentParserController {
 		}
 	}
 	
-	@CrossOrigin(origins = "http://localhost:8080")
+	@CrossOrigin(origins = "*")
 	@GetMapping("/getTextFileContent")
 	public ResponseEntity<?> getContentOfTextFiles(){
 		try {
@@ -72,7 +73,7 @@ public class DocumentParserController {
 		}
 	}
 	
-	@CrossOrigin("http://localhost:8080")
+	@CrossOrigin(origins = "*")
 	@GetMapping("/getJsonFileContent")
 	public ResponseEntity<?> getContentOfJsonFile(){
 		try {
