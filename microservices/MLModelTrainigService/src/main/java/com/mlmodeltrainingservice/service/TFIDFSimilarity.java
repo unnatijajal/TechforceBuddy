@@ -24,20 +24,21 @@ import org.apache.lucene.store.ByteBuffersDirectory;
 import org.apache.lucene.store.Directory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.mlmodeltrainingservice.feign.GetRawData;
 
 @Service
 public class TFIDFSimilarity {
 	
 	@Autowired
-	private RestTemplate restTemplate;
+	private GetRawData getRawData;
+	
 
 	public LinkedHashMap<String, List<String>> searchRelevantSections(List<String> keywords) throws IOException, ParseException {
 		
 		
-		JsonNode rootNode = restTemplate.getForObject("http://localhost:8082/getJsonFileContent", JsonNode.class);
+		JsonNode rootNode = getRawData.getContentOfJsonFile().getBody();
 
 		// Step 2: Create a Lucene index
 		Directory directory = new ByteBuffersDirectory();

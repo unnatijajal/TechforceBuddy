@@ -15,23 +15,28 @@ import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import com.mlmodeltrainingservice.feign.PdfExtraction;
+import com.mlmodeltrainingservice.feign.ProcessTheQuery;
 import com.mlmodeltrainingservice.service.SearchingKeywordsUnstructuredDataService;
 
 
 @Service
 public class SearchingKeywordsUnstructuredDataServiceImpl implements SearchingKeywordsUnstructuredDataService {
-
+	
 	@Autowired
-	private RestTemplate restTemplate;
+	private ProcessTheQuery processTheQuery;
+	
+	@Autowired
+	private PdfExtraction pdfExtraction;
+	
+	
 	
 	@Override
 	public LinkedHashMap<String, String> getResponsUsingUnstructuredData(String query) throws Exception {
 		// Token of user's query will store into the list
-		List<String> extractedWord = restTemplate.postForObject("http://192.168.1.214:8084/processQuery?query=" + query,
-				null, List.class);
-
+		List<String> extractedWord = (List<String>) processTheQuery.getQuerKeywords(query).getBody();
+		
 		// here LinkedHashMap<String, String> is LinkedHashMap<value, filename>
 		LinkedHashMap<String, String> response = getRelaventFilesResponse(extractedWord);
 
@@ -40,9 +45,9 @@ public class SearchingKeywordsUnstructuredDataServiceImpl implements SearchingKe
 
 	@Override
 	public LinkedHashMap<String, String> getRelaventFilesResponse(List<String> queryKeywords) throws IOException {
-		Map<String, String> pdfContent = restTemplate.getForObject("http://192.168.1.214:8081/pdfExtraction/getContent",
-				Map.class);
-
+		/*Map<String, String> pdfContent = restTemplate.getForObject("http://192.168.1.214:8081/pdfExtraction/getContent",
+				Map.class);*/
+		LinkedHashMap<String, String> pdfContent = (LinkedHashMap<String, String>) pdfExtraction.getContentOfPdf().getBody();
 		@SuppressWarnings("deprecation")
 		Word2Vec word2Vec = WordVectorSerializer.readWord2Vec(
 				new File(System.getProperty("user.dir") + "/src/main/resources/AiModel/word2vecModel.txt"));

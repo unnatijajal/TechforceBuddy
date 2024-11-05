@@ -21,7 +21,7 @@ public class ProcessQueryController {
 	private ProcessQueryServiceImpl queryServiceImpl;
 	
 	@PostMapping("/processQuery")
-	@CrossOrigin(origins = "*")
+	//@CrossOrigin(origins = "*")
 	public ResponseEntity<?> getQuerKeywords(@RequestParam String query){
 		try {
 			return new ResponseEntity<List<String>>(queryServiceImpl.getQueryKeywords(query),HttpStatus.OK);	 

@@ -3,7 +3,6 @@ package com.mlmodeltrainingservice.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -18,8 +17,6 @@ import com.mlmodeltrainingservice.service.PythonAPICallerService;
 @Service
 public class PythonAPICallerServiceImpl implements PythonAPICallerService {
 	
-	@Value("${hostName}")
-	private String hostName;
 
 	@Override
 	public String callGenerateSummaryApi(String inputText) throws Exception {

@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: MLModelTrainigService
+          uri: http://MLMODELTRAINIGSERVICE
+          predicates:
+            - Path=/**
+          filters:
+            - name: AuthenticationFilter

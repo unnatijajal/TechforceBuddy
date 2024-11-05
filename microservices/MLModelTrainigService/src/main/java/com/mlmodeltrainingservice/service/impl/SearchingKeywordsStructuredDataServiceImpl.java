@@ -12,10 +12,9 @@ import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import com.mlmodeltrainingservice.feign.ProcessTheQuery;
 import com.mlmodeltrainingservice.service.SearchingKeywordsStructuredDataService;
 import com.mlmodeltrainingservice.service.TFIDFSimilarity;
 
@@ -24,10 +23,12 @@ import com.mlmodeltrainingservice.service.TFIDFSimilarity;
 public class SearchingKeywordsStructuredDataServiceImpl implements SearchingKeywordsStructuredDataService{
 
 	@Autowired
-	private RestTemplate restTemplate;
+	private TFIDFSimilarity tfidfSimilarity;
 	
 	@Autowired
-	private TFIDFSimilarity tfidfSimilarity;
+	private ProcessTheQuery processTheQuery;
+	
+	
 	
 	
 	@Override
@@ -36,10 +37,7 @@ public class SearchingKeywordsStructuredDataServiceImpl implements SearchingKeyw
 		@SuppressWarnings("deprecation")
 		Word2Vec word2Vec = WordVectorSerializer.readWord2Vec(
 				new File(System.getProperty("user.dir") + "/src/main/resources/AiModel/word2vecModel.bin"));
-
-		List<String> extractedWord = restTemplate.postForObject("http://192.168.1.214:8084/processQuery?query=" + query,
-				null, List.class);
-		
+		List<String> extractedWord = (List<String>) processTheQuery.getQuerKeywords(query).getBody();
 		Map<String, List<String>> relevantSection;
 
 		relevantSection = tfidfSimilarity.searchRelevantSections(extractedWord);

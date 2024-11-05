@@ -8,16 +8,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mlmodeltrainingservice.dto.Question;
-import com.mlmodeltrainingservice.service.impl.PythonAPICallerServiceImpl;
+import com.mlmodeltrainingservice.feign.GetRawData;
+import com.mlmodeltrainingservice.feign.GetSummaryOfResponse;
 import com.mlmodeltrainingservice.service.impl.SearchingKeywordsStructuredDataServiceImpl;
 import com.mlmodeltrainingservice.service.impl.SearchingKeywordsUnstructuredDataServiceImpl;
 import com.mlmodeltrainingservice.service.impl.TrainModelServiceImpl;
@@ -35,24 +34,29 @@ public class ModelTrainerController {
 	private SearchingKeywordsUnstructuredDataServiceImpl keywordsServiceImpl;
 	
 	@Autowired
-	private RestTemplate restTemplate;
-	
+	private GetRawData getRawData;
 	
 	@Autowired
-	private PythonAPICallerServiceImpl apiCallerServiceImpl;
+	private GetSummaryOfResponse getSummaryOfResponse;
 	
-	@CrossOrigin(origins = "*")
+	
+	/*
+	 * @Autowired private PythonAPICallerServiceImpl apiCallerServiceImpl;
+	 */
+	
+	//@CrossOrigin(origins = "*")
 	@GetMapping("/v1/trainModel")
 	public ResponseEntity<String> trainModelUsingTextFile(){
-		List<String> sentences = restTemplate.getForObject("http://192.168.1.214:8082/getTextFileContent", List.class);
+		List<String> sentences = (List<String>) getRawData.getContentOfTextFiles().getBody();
 		trainModelServiceImpl.trainModelUsingTextFileContent(sentences);
 		return new ResponseEntity<String>("Model trained..",HttpStatus.OK);
 	}
 	
-	@CrossOrigin(origins = "*")
+	//@CrossOrigin(origins = "*")
 	@GetMapping("/v2/trainModel")
+	
 	public ResponseEntity<String> trainModelUsingJsonFile(){
-		JsonNode rootNode= restTemplate.getForObject("http://192.168.1.214:8082/getJsonFileContent", JsonNode.class);
+		JsonNode rootNode = getRawData.getContentOfJsonFile().getBody();
 		trainModelServiceImpl.trainModelUSingJSonFileContent(rootNode);
 		return new ResponseEntity<String>("Model trained..",HttpStatus.OK);
 	}
@@ -62,7 +66,6 @@ public class ModelTrainerController {
 	 * and generate the summary
 	 */
 	@PostMapping("/v1/query-and-summary")
-	@CrossOrigin(origins = "*")
 	public ResponseEntity<Map<String, Object>> getResponseAndSummaryUnstructuredData(@RequestBody Question question) {
 	    try {
 	        // Retrieve structured content
@@ -70,8 +73,18 @@ public class ModelTrainerController {
 			StringBuilder inputText = new StringBuilder();
 			content.keySet().stream()
 					.forEach(value -> inputText.append(value));
-	        String summary = apiCallerServiceImpl.callGenerateSummaryApi(inputText.toString());
-
+			Map<String, String> requestBodyForSummary = Map.of("input_text",inputText.toString());
+			Map<String,Object> summaryResponse = getSummaryOfResponse.generateSummary(requestBodyForSummary);
+	     // Get the generated_text which is expected to be a List
+	        List<Map<String, String>> generatedTextList = (List<Map<String, String>>) summaryResponse.get("generated_text");
+	     // Check if the list is not empty
+	        String summary = "";
+	        if (generatedTextList != null && !generatedTextList.isEmpty()) {
+	            // Get the first item from the list
+	            Map<String, String> firstItem = generatedTextList.get(0);
+	            // Extract the summary_text value
+	            summary = firstItem.get("summary_text");
+	        }
 	        // Create response map
 	        Map<String, Object> response = new HashMap<>();
 	        response.put("summary", summary);
@@ -90,7 +103,6 @@ public class ModelTrainerController {
 	 * and generate the summary
 	 */
 	@PostMapping("/v2/query-and-summary")
-	@CrossOrigin(origins = "*")
 	public ResponseEntity<Map<String, Object>> getResponseAndSummaryStructuredData(@RequestBody Question question) {
 	    try {
 	        // Retrieve structured content
@@ -99,8 +111,18 @@ public class ModelTrainerController {
 	        // Generate summary from structured content
 	        StringBuilder inputText = new StringBuilder();
 	        content.values().forEach(list -> list.forEach(inputText::append));
-	        String summary = apiCallerServiceImpl.callGenerateSummaryApi(inputText.toString());
-
+	        Map<String, String> requestBodyForSummary = Map.of("input_text",inputText.toString());
+			Map<String,Object> summaryResponse = getSummaryOfResponse.generateSummary(requestBodyForSummary);
+			 // Get the generated_text which is expected to be a List
+	        List<Map<String, String>> generatedTextList = (List<Map<String, String>>) summaryResponse.get("generated_text");
+	     // Check if the list is not empty
+	        String summary = "";
+	        if (generatedTextList != null && !generatedTextList.isEmpty()) {
+	            // Get the first item from the list
+	            Map<String, String> firstItem = generatedTextList.get(0);
+	            // Extract the summary_text value
+	            summary = firstItem.get("summary_text");
+	        }
 	        // Create response map
 	        Map<String, Object> response = new HashMap<>();
 	        response.put("summary", summary);
